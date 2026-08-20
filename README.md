@@ -4,3 +4,5 @@ This repository is a direct extension of the previously implemented ![Asynchrono
 This project aims to wrap the asynchronous fifo into AXI protocol, so that it can become a universal compatible module with AXI interface.
 
 This project is currently in the design phase, with completion targetted at late August/early September.
+
+The initial development targets a common clock at the writer and reader side, with expansion to true asynchronous read/write.
