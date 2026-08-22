@@ -60,6 +60,7 @@ module axi_fifo_wrapper #(
 parameter VALID_ADDR_WIDTH = ADDR_WIDTH - $clog2(STRB_WIDTH);
 parameter WORD_WIDTH = STRB_WIDTH;
 parameter WORD_SIZE = DATA_WIDTH/WORD_WIDTH;	//always 8
+parameter FIFO_ADDRESS = 32'h02000000;			//Starting address of fifo
 
 initial begin
 	if(WORD_SIZE * STRB_WIDTH != DATA_WIDTH) begin
@@ -255,7 +256,7 @@ always_comb begin
 
 	case (write_state_reg)
 		WRITE_STATE_IDLE: begin
-			s_axi_awready = fifo_full ? 1'b0 : 1'b1;		//FIFO is ready for writing when it is not full
+			s_axi_awready = 1'b1;		//FIFO is ready for writing when it is not full
 			if (s_axi_awready && s_axi_awvalid)	begin			//Start operation only when handshake is complete
 				write_id_next    = s_axi_awid;
 				write_addr_next  = s_axi_awaddr;
@@ -270,43 +271,49 @@ always_comb begin
 		end	
 		WRITE_STATE_BURST: begin
 			s_axi_wready = fifo_full ? 1'b0 : 1'b1;
-			if (s_axi_wready && s_axi_wvalid) begin		
-				if (s_axi_awlen > available_entries) begin		//The requested data cannot be all fitted into the fifo buffer
-					bresp_next = EXOKAY;						//Indicate that there is no problem, but FIFO is full
-					write_state_next = WRITE_STATE_RESP;		// Go to response state
-				end
-				else begin
-					fifo_wen = 1'b1;
-					if (write_burst_reg != 2'b00) begin
-						bresp_next = DECERR;					// A FIFO specifically needs a fixed address
-						write_state_next = WRITE_STAGE_RESP;	// A decoding error has occured and must be reported back
+			if (write_address_next == FIFO_ADDRESS) begin
+				if (s_axi_wready && s_axi_wvalid) begin		
+					if (s_axi_awlen > available_entries) begin		//The requested data cannot be all fitted into the fifo buffer
+						bresp_next = EXOKAY;						//Indicate that FIFO can become full before completion of operation
+						write_state_next = WRITE_STATE_RESP;		// Go to response state
 					end
-					write_count_next = write_count_reg - 1;
-					if (write_count_reg > 0) begin
-						if (!full) begin
-							write_state_next = WRITE_STATE_BURST;
-						end 
+					else begin
+						fifo_wen = 1'b1;
+						if (write_burst_reg != 2'b00) begin
+							bresp_next = DECERR;					// A FIFO specifically needs a fixed address
+							write_state_next = WRITE_STAGE_RESP;	// A decoding error has occured and must be reported back
+						end
+						write_count_next = write_count_reg - 1;
+						if (write_count_reg > 0) begin
+							if (!full) begin
+								write_state_next = WRITE_STATE_BURST;
+							end 
+							else begin
+								bresp_next = EXOKAY;
+								write_state_next = WRITE_STATE_RESP;
+							end
+						end
 						else begin
-							bresp_next = EXOKAY;
-							write_state_next = WRITE_STATE_RESP;
+							s_axi_wready_next = 1'b0;
+							if (s_axi_bready || !s_axi_bvalid_net) begin
+								s_axi_bid_next = write_id_reg;
+								s_axi_bvalid_next = 1'b1;
+								s_axi_awready_next = 1'b1;
+								write_state_next = WRITE_STATE_IDLE;
+							end
+							else begin
+								write_state_next = WRITE_STATE_RESP;
+							end
 						end
 					end
 					else begin
-						s_axi_wready_next = 1'b0;
-						if (s_axi_bready || !s_axi_bvalid_net) begin
-							s_axi_bid_next = write_id_reg;
-							s_axi_bvalid_next = 1'b1;
-							s_axi_awready_next = 1'b1;
-							write_state_next = WRITE_STATE_IDLE;
-						end
-						else begin
-							write_state_next = WRITE_STATE_RESP;
-						end
+						write_state_next = WRITE_STATE_BURST;
 					end
 				end
-				else begin
-					write_state_next = WRITE_STATE_BURST;
-				end
+			end
+			else begin
+				bresp_next = DECERR;
+				write_state_next = WRITE_STATE_RESP;
 			end
 		end
 		WRITE_STATE_RESP : begin
@@ -350,6 +357,126 @@ always_ff @(posedge clk) begin
 		s_axi_bid_reg     <= s_axi_bid_next;
 		s_axi_bvalid_reg  <= s_axi_bvalid_next;
 	end
+end
+
+//READ CHANNEL CONTROL
+
+always_comb begin
+	read_state_next = READ_STATE_IDLE;
+
+	fifo_ren = 1'b0;
+
+	s_axi_rid_next    = s_axi_rid_reg;
+	s_axi_rlast_next  = s_axi_rlast_reg;
+	s_axi_rvalid_next = s_axi_rvalid_reg && !(s_axi_rready || (PIPELINE_OUTPUT && !s_axi_rvalid_pipe_reg));
+
+	read_id_next    = read_id_reg;
+	read_addr_next  = read_addr_reg;
+	read_count_next = read_count_reg;
+	read_size_next  = read_size_reg;
+	read_burst_next = read_burst_reg;
+	rresp_next      = OKAY;
+
+	s_axi_arready_next = 1'b0;
+
+	case(read_state_reg)
+		READ_STATE_IDLE: begin
+			s_axi_arready_next = 1'b1;												//Ready to read data if fifo is not already empty
+			if(s_axi_arready && s_axi_arvalid) begin
+				//if (filled_entries > s_axi_arlen || filled_entries == s_axi_arlen ) begin				//Proceed to Reading only if there is data filled in the fifo
+					read_id_next    = s_axi_arid;
+					read_addr_next  = s_axi_araddr;
+					read_count_next = s_axi_arlen;														
+					read_size_next  = s_axi_arsize < $clog2(STRB_WIDTH) ? s_axi_arsize : $clog2(STRB_WIDTH);
+					read_burst_next = s_axi_arburst;
+
+					s_axi_arready_next = 1'b0;
+					read_state_next = READ_BURST;
+				//end
+			end
+			else begin
+				read_state_next = READ_STATE_IDLE;
+			end
+		end
+		READ_STATE_BURST: begin
+			if (read_addr_next == FIFO_ADDRESS) begin
+				if (s_axi_rready || (PIPELINE_OUTPUT && !s_axi_rvalid_pipe_reg) || !s_axi_rvalid_reg) begin
+					if(!(filled_entries < s_axi_arlen)) begin
+						fifo_ren = 1'b1;
+						s_axi_rvalid_next = 1'b1;
+						s_axi_rid_next = read_id_reg;
+						s_axi_rlast_next = read_count_reg == 0;
+						if(read_burst_reg != 2'b00) begin
+							rresp_next = DECERR;					// The burst type should be 2'b00 for accessing FIFO
+							read_state_next = READ_STATE_IDLE;
+						end
+						read_count_next = read_count_reg - '1;		// Start reading fifo entries
+						if (read_count_reg > 0) begin
+							read_state_next = READ_STATE_BURST;
+						end
+						else begin
+							s_axi_arready_next = 1'b1;
+							read_state_next = READ_STATE_IDLE;
+						end
+					end
+					else begin
+						fifo_ren = 1'b0;
+						rresp_next = EXOKAY;						// The requested operation cannot be performed as there are not enough entries in FIFO as requested
+						s_axi_rvalid_next = 1'b0;
+						s_axi_rid_next = read_id_reg;
+						s_axi_rlast_next = 1'b0;
+						s_axi_arready_next = 1'b1;
+						read_state_next = READ_STATE_IDLE;
+					end	
+				end
+			end
+			else begin
+				rresp_next = DECERR;						//The provided address is not the same as starting address of FIFO
+				read_state_next = READ_STATE_IDLE;
+			end
+		end
+	endcase
+end
+
+
+always_ff @(posedge clk) begin
+	if (!rst) begin
+		read_state_reg <= READ_STATE_IDLE;
+
+		s_axi_arready_reg     <= 1'b0;
+		s_axi_rvalid_reg      <= 1'b0;
+		s_axi_rvalid_pipe_reg <= 1'b0;
+
+		read_id_reg <= '0;
+		read_count_reg <= '0;
+		read_size_reg <= '0;
+		read_burst_reg <= '0;
+
+		s_axi_rid_pipe_reg 	   <= '0;
+		s_axi_arready_pipe_reg <= '0;
+		s_axi_rdata_pipe_reg   <= '0;
+		s_axi_rlast_pipe_reg   <= '0;
+		s_axi_rvalid_pipe_reg  <= '0;
+	end
+		read_state_reg <= read_state_next;
+
+		read_id_reg <= read_id_next;
+		read_addr_reg <= read_addr_next;
+		read_count_reg <= read_count_next;
+		read_size_reg <= read_size_next;
+		read_burst_reg <= read_burst_next;
+
+		s_axi_arready_reg <= s_axi_arready_next;
+		s_axi_rid_reg <= s_axi_rid_next;
+		s_axi_rlast_reg <= s_axi_rlast_next;
+		s_axi_rvalid_reg <= s_axi_rvalid_next;
+
+		if (!s_axi_rvalid_pipe_reg || s_axi_rready) begin
+			s_axi_rid_pipe_reg <= s_axi_rid_reg;
+			s_axi_rdata_pipe_reg <= s_axi_rdata_reg;
+			s_axi_rlast_pipe_reg <= s_axi_rlast_reg;
+			s_axi_rvalid_pipe_reg <= s_axi_rvalid_reg;
+		end
 end
 
 endmodule
