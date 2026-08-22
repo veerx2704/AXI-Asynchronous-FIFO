@@ -20,7 +20,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module async_fifo #(parameter data_width = 32, N = 16)(
+module async_fifo #(parameter data_width = 32, 
+                    parameter N = 16, 
+                    parameter ptr_width = $clog2(N))(
     input wire [data_width - 1:0] wdata,
     input wire wen,
     input wire wclk,
@@ -30,9 +32,10 @@ module async_fifo #(parameter data_width = 32, N = 16)(
     input wire ren,
     output wire [data_width - 1:0] rdata,
     output wire fifo_full,
-    output wire fifo_empty
+    output wire fifo_empty,
+    output wire [ptr_width:0] wptr_out,
+    output wire [ptr_width:0] rptr_out
     );
-    localparam ptr_width = $clog2(N);
     
     
     wire [data_width-1:0] rdata_mem;
@@ -82,4 +85,6 @@ module async_fifo #(parameter data_width = 32, N = 16)(
                                                 .rdata(rdata_mem));
      
      assign rdata = rdata_mem;
+     assign wptr_out = wptr_bin;
+     assign rptr_out = rptr_bin;
 endmodule
