@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module operation_control #(parameter N = 16, localparam ptr_width = $clog2(N))(
     input wire [ptr_width:0] in_addr,
     input wire clk,

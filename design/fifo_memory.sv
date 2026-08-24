@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module fifo_memory #(parameter N = 16, parameter D = 32, localparam ptr_width = $clog2(N))(
     input wire [ptr_width-1:0] waddr,
     input wire [ptr_width-1:0] raddr,

@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module axi_fifo_wrapper #(
 	parameter DATA_WIDTH = 32,
 	parameter ADDR_WIDTH = 16,
@@ -190,7 +191,7 @@ assign s_axi_bresp = bresp_reg;
 
 assign s_axi_bvalid = s_axi_bvalid_reg;
 
-assign s_axi_bvalid_net = s_axi_bvalid_reg;
+wire s_axi_bvalid_net = s_axi_bvalid_reg;
 
 //Address validity is not necessarily a check that should be performed, since this is just a fifo.
 //However, for the purpose of integration with a system, address validity can be performed to check the location of the fifo buffer in memory
@@ -244,6 +245,7 @@ adder #(.WIDTH($clog2(FIFO_DEPTH)+1)) LEN_AVAILABLE (.SrcA(total_capacity),
 always_comb begin
 	write_state_next = WRITE_STATE_IDLE;
 	fifo_wen = 1'b0;
+	bresp_next = OKAY;
 
 	write_id_next    = write_id_reg;
 	write_addr_next  = write_addr_reg;
@@ -487,4 +489,5 @@ always_ff @(posedge clk) begin
 end
 
 endmodule
+
 

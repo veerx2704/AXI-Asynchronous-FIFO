@@ -73,8 +73,8 @@ module async_fifo #(parameter data_width = 32,
      single_flop #(.N(ptr_width+1)) R_CROSSED_1(.clk(wclk), .rst(wrst), .en('1), .d_in(rptr_0), .d_out(rptr_1));
      
      
-     assign wen_mem = wen & (~fifo_full);
-     assign ren_mem = ren & (~fifo_empty);
+     wire wen_mem = wen & (~fifo_full);
+     wire ren_mem = ren & (~fifo_empty);
      fifo_memory #(.N(N), .D(data_width)) FIFO (.clk(wclk),
                                                 .rst(wrst),
                                                 .waddr(wptr_bin[ptr_width-1:0]),

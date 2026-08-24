@@ -1,5 +1,4 @@
 synth.ys
 async_fifo_sta.tcl
-axi_fifo_wrapper.sv
 results/axi_fifo_netlist.v
 axi_wrapper.sv
