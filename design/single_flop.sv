@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module single_flop #(parameter N = 1)(
     input wire clk,
     input wire rst,

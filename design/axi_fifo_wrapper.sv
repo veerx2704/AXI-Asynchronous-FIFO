@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module axi_fifo_wrapper #(
 	parameter DATA_WIDTH = 32,
 	parameter ADDR_WIDTH = 16,
@@ -37,7 +38,7 @@ module axi_fifo_wrapper #(
 	
 	//Read address channel
 	input wire [ID_WIDTH - 1:0]	s_axi_arid,
-	input wire [ADDR_WIDTh - 1:0]	s_axi_araddr,
+	input wire [ADDR_WIDTH - 1:0]	s_axi_araddr,
 	input wire [7:0]		s_axi_arlen,
 	input wire [2:0]		s_axi_arsize,
 	input wire [1:0]		s_axi_arburst,
@@ -64,7 +65,11 @@ parameter FIFO_ADDRESS = 32'h02000000;			//Starting address of fifo
 
 initial begin
 	if(WORD_SIZE * STRB_WIDTH != DATA_WIDTH) begin
+<<<<<<< HEAD:axi_custom_wrapper.sv
 		$error("Error: AXI data width not evenly divisible (instance %m)")
+=======
+		$error("Error: AXI data width not evenly divisible (instance %m)");
+>>>>>>> axi_development:design/axi_fifo_wrapper.sv
 		$finish;
 	end
 	if(2**$clog2(WORD_WIDTH) != WORD_WIDTH) begin
@@ -118,6 +123,8 @@ reg s_axi_rvalid_reg = 1'b0, s_axi_rvalid_next;
 reg [ID_WIDTH - 1:0] s_axi_rid_pipe_reg = {ID_WIDTH{1'b0}};
 
 reg [DATA_WIDTH - 1:0] s_axi_rdata_pipe_reg = {DATA_WIDTH{1'b0}};
+
+reg s_axi_rlast_pipe_reg = 1'b0;
 
 reg s_axi_rvalid_pipe_reg = 1'b0;
 
@@ -188,7 +195,7 @@ assign s_axi_bresp = bresp_reg;
 
 assign s_axi_bvalid = s_axi_bvalid_reg;
 
-assign s_axi_bvalid_net = s_axi_bvalid_reg;
+wire s_axi_bvalid_net = s_axi_bvalid_reg;
 
 //Address validity is not necessarily a check that should be performed, since this is just a fifo.
 //However, for the purpose of integration with a system, address validity can be performed to check the location of the fifo buffer in memory
@@ -197,15 +204,15 @@ assign s_axi_bvalid_net = s_axi_bvalid_reg;
 localparam FIFO_DEPTH = 16;
 
 reg fifo_wen;
-reg fifO_ren;
+reg fifo_ren;
 reg fifo_full;
 reg fifo_empty;
-reg fifo_wrst;
-reg fifo_rrst;
+//reg fifo_wrst;
+//reg fifo_rrst;
 reg [$clog2(FIFO_DEPTH):0] fifo_rptr_out;
 reg [$clog2(FIFO_DEPTH):0] fifo_wptr_out;
 
-async_fifo #(.data_width(DATA_WIDTH), .N(FIFO_DEPTH)) u_FIFO_INST(.wdata(s_axi_wdata),
+async_fifo #(.data_width(DATA_WIDTH), .N(FIFO_DEPTH)) FIFO_INST(.wdata(s_axi_wdata),
 														  .wptr_out(fifo_wptr_out),
 														  .wen(fifo_wen),
 														  .wclk(clk),
@@ -214,11 +221,12 @@ async_fifo #(.data_width(DATA_WIDTH), .N(FIFO_DEPTH)) u_FIFO_INST(.wdata(s_axi_w
 														  .rclk(clk),
 														  .ren(fifo_ren),
 														  .rptr_out(fifo_rptr_out),
-														  .rdata(s_axi_rdata_reg),
+														  .rdata(s_axi_rdata_next),
 														  .fifo_full(fifo_full),
 														  .fifo_empty(fifo_empty));
 
 wire [$clog2(FIFO_DEPTH):0] filled_entries;
+wire [$clog2(FIFO_DEPTH):0] available_entries;
 
 //To calculate available space in FIFO, subtract rptr from wptr.
 //wptr will always be ahead of rptr (unless empty). 
@@ -241,6 +249,7 @@ adder #(.WIDTH($clog2(FIFO_DEPTH)+1)) LEN_AVAILABLE (.SrcA(total_capacity),
 always_comb begin
 	write_state_next = WRITE_STATE_IDLE;
 	fifo_wen = 1'b0;
+	bresp_next = OKAY;
 
 	write_id_next    = write_id_reg;
 	write_addr_next  = write_addr_reg;
@@ -256,7 +265,7 @@ always_comb begin
 
 	case (write_state_reg)
 		WRITE_STATE_IDLE: begin
-			s_axi_awready = 1'b1;		//FIFO is ready for writing when it is not full
+			s_axi_awready_next = 1'b1;		//FIFO is ready for writing when it is not full
 			if (s_axi_awready && s_axi_awvalid)	begin			//Start operation only when handshake is complete
 				write_id_next    = s_axi_awid;
 				write_addr_next  = s_axi_awaddr;
@@ -270,8 +279,8 @@ always_comb begin
 			end
 		end	
 		WRITE_STATE_BURST: begin
-			s_axi_wready = fifo_full ? 1'b0 : 1'b1;
-			if (write_address_next == FIFO_ADDRESS) begin
+			s_axi_wready_next = fifo_full ? 1'b0 : 1'b1;
+			if (write_addr_next == FIFO_ADDRESS) begin
 				if (s_axi_wready && s_axi_wvalid) begin		
 					if (s_axi_awlen > available_entries) begin		//The requested data cannot be all fitted into the fifo buffer
 						bresp_next = EXOKAY;						//Indicate that FIFO can become full before completion of operation
@@ -281,11 +290,11 @@ always_comb begin
 						fifo_wen = 1'b1;
 						if (write_burst_reg != 2'b00) begin
 							bresp_next = DECERR;					// A FIFO specifically needs a fixed address
-							write_state_next = WRITE_STAGE_RESP;	// A decoding error has occured and must be reported back
+							write_state_next = WRITE_STATE_RESP;	// A decoding error has occured and must be reported back
 						end
 						write_count_next = write_count_reg - 1;
 						if (write_count_reg > 0) begin
-							if (!full) begin
+							if (!fifo_full) begin
 								write_state_next = WRITE_STATE_BURST;
 							end 
 							else begin
@@ -306,9 +315,9 @@ always_comb begin
 							end
 						end
 					end
-					else begin
-						write_state_next = WRITE_STATE_BURST;
-					end
+				end
+				else begin
+				    write_state_next = WRITE_STATE_BURST;
 				end
 			end
 			else begin
@@ -347,6 +356,7 @@ always_ff @(posedge clk) begin
 	end
 	else begin
 		write_state_reg   <= write_state_next;
+		write_addr_reg    <= write_addr_next;
 		write_id_reg      <= write_id_next;
 		write_count_reg   <= write_count_next;
 		write_size_reg    <= write_size_next;
@@ -391,7 +401,7 @@ always_comb begin
 					read_burst_next = s_axi_arburst;
 
 					s_axi_arready_next = 1'b0;
-					read_state_next = READ_BURST;
+					read_state_next = READ_STATE_BURST;
 				//end
 			end
 			else begin
@@ -402,7 +412,7 @@ always_comb begin
 			if (read_addr_next == FIFO_ADDRESS) begin
 				if (s_axi_rready || (PIPELINE_OUTPUT && !s_axi_rvalid_pipe_reg) || !s_axi_rvalid_reg) begin
 					if(!(filled_entries < s_axi_arlen)) begin
-						fifo_ren = 1'b1;
+						fifo_ren = fifo_empty ? 1'b0 : 1'b1;
 						s_axi_rvalid_next = 1'b1;
 						s_axi_rid_next = read_id_reg;
 						s_axi_rlast_next = read_count_reg == 0;
@@ -446,6 +456,8 @@ always_ff @(posedge clk) begin
 		s_axi_arready_reg     <= 1'b0;
 		s_axi_rvalid_reg      <= 1'b0;
 		s_axi_rvalid_pipe_reg <= 1'b0;
+		s_axi_rdata_reg 	  <= '0;
+		rresp_reg <= rresp_next;
 
 		read_id_reg <= '0;
 		read_count_reg <= '0;
@@ -453,7 +465,6 @@ always_ff @(posedge clk) begin
 		read_burst_reg <= '0;
 
 		s_axi_rid_pipe_reg 	   <= '0;
-		s_axi_arready_pipe_reg <= '0;
 		s_axi_rdata_pipe_reg   <= '0;
 		s_axi_rlast_pipe_reg   <= '0;
 		s_axi_rvalid_pipe_reg  <= '0;
@@ -465,11 +476,13 @@ always_ff @(posedge clk) begin
 		read_count_reg <= read_count_next;
 		read_size_reg <= read_size_next;
 		read_burst_reg <= read_burst_next;
+		rresp_reg <= rresp_next;
 
 		s_axi_arready_reg <= s_axi_arready_next;
 		s_axi_rid_reg <= s_axi_rid_next;
 		s_axi_rlast_reg <= s_axi_rlast_next;
 		s_axi_rvalid_reg <= s_axi_rvalid_next;
+		s_axi_rdata_reg <= s_axi_rdata_next;
 
 		if (!s_axi_rvalid_pipe_reg || s_axi_rready) begin
 			s_axi_rid_pipe_reg <= s_axi_rid_reg;
@@ -480,4 +493,5 @@ always_ff @(posedge clk) begin
 end
 
 endmodule
+
 
