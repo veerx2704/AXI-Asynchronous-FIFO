@@ -208,7 +208,7 @@ reg fifo_empty;
 reg [$clog2(FIFO_DEPTH):0] fifo_rptr_out;
 reg [$clog2(FIFO_DEPTH):0] fifo_wptr_out;
 
-async_fifo #(.data_width(DATA_WIDTH), .N(FIFO_DEPTH)) u_FIFO_INST(.wdata(s_axi_wdata),
+async_fifo #(.data_width(DATA_WIDTH), .N(FIFO_DEPTH)) FIFO_INST(.wdata(s_axi_wdata),
 														  .wptr_out(fifo_wptr_out),
 														  .wen(fifo_wen),
 														  .wclk(clk),
