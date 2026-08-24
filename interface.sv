@@ -1,14 +1,16 @@
 `ifndef AXI_INTERFACE
 `define AXI_INTERFACE
 
-interface axi_interface(input clk);
-    parameter DATA_WIDTH = 32;
-    parameter ADDR_WIDTH = 16;
-    parameter STRB_WIDTH = (DATA_WIDTH)/8;
-    parameter ID_WIDTH = 8;
-    parameter PIPELINE_OUTPUT = 0;
+interface axi_interface(input s_axi_wclk, m_axi_rclk);
+	parameter DATA_WIDTH = 32;
+	parameter ADDR_WIDTH = 16;
+	parameter BURST_LEN  = 8;
+	parameter STRB_WIDTH = (DATA_WIDTH)/8;
+	parameter ID_WIDTH = 8;
+	parameter PIPELINE_OUTPUT = 0;	
 
-    logic reset;
+    logic wrst;
+    logic rrst;
 
 
     //WRITE ADDRESS CHANNEL
@@ -57,7 +59,7 @@ interface axi_interface(input clk);
     logic                   rready;
 
 
-    clocking driver_sb @(posedge clk)
+    clocking driver_cb_w @(posedge s_axi_wclk)
 
     //WRITE ADDRESS CHANNEL
     input awready;
@@ -71,6 +73,10 @@ interface axi_interface(input clk);
     input bid, bresp, bvalid;
     output bready;
 
+    endclocking
+
+    clocking driver_cb_r @(posedge m_axi_rclk)
+
     //READ ADDRESS CHANNEL
     input arready;
     output arid, araddt, arlen, arsize, arburst, arvalid, arcache,arprot, arlock;
@@ -81,4 +87,95 @@ interface axi_interface(input clk);
 
     endclocking
 
-    modport driver_mp(clocking driver_cb, input clk, reset);
+    modport driver_mp_w(clocking driver_cb_w, input s_axi_wclk, wrst);
+    modport driver_mp_r(clocking driver_cb_r, input m_axi_rclk, rrst)
+
+    clocking monitor_cb_w @(posedge s_axi_wclk);
+
+    //WRITE ADDRESS CHANNEL
+    input awready;
+    input awid, awaddr, awlen, awsize, awburst, awvalid, awprot, awcache, awlock;
+
+    //WRITE DATA CHANNEL
+    input wready;
+    input wdata, wstrb, wlast, wvalid;
+
+    //WRITE RESPONSE CHANNEL
+    input bid, bresp, bvalid;
+    input bready;
+
+    endclocking
+
+    clocking monitor_cb_r @(posedge m_axi_rclk);
+
+    //READ ADDRESS CHANNEL
+    input arready;
+    input arid, araddr, arlen, arsize, arburst, arvalid, arcache, arprot, arlock;
+
+    //READ DATA CHANNEL
+    input rid, rdata, rresp, rlast, rvalid;
+    input rready;
+
+    endclocking
+
+    modport monitor_mp_w(clocking monitor_cb_w, input s_axi_wclk, wrst);
+    modport monitor_mp_r(clocking monitor_cb_r, input m_axi_rclk, rrst);
+
+    property awready_awvalid;
+        @(posedge s_axi_wclk) disable iff(wrst==0) awvalid |-> ##[0:2] awready;
+    endproperty
+
+    assertion1: assert property (awready_awvalid) begin
+        `uvm_info("*** ASSERTION PASED *** - AWREADY && AWVALID","",UVM_HIGH);    
+    end
+    else begin
+        `uvm_info("ASSERTION FAILED - AWREADY && AWVALID","",UVM_NONE);
+    end
+
+    property wready_wvalid;
+        @(posedge s_axi_wclk) disable iff(wrst==0) wvalid |-> ##[0:2] wready;
+    endproperty
+
+    assertion2: assert property (wready_wvalid) begin
+        `uvm_info("*** ASSERTION PASED *** - WREADY && WVALID","",UVM_HIGH);    
+    end
+    else begin
+        `uvm_info("ASSERTION FAILED - WREADY && WVALID","",UVM_NONE);
+    end
+
+    property bready_bvalid;
+        @(posedge s_axi_wclk) disable iff(wrst==0) bvalid |-> ##[0:2] bready;
+    endproperty
+
+    assertion3: assert property (bready_bvalid) begin
+        `uvm_info("*** ASSERTION PASED *** - BREADY && BVALID","",UVM_HIGH);    
+    end
+    else begin
+        `uvm_info("ASSERTION FAILED - BREADY && BVALID","",UVM_NONE);
+    end
+
+    property arready_arvalid;
+        @(posedge m_axi_rclk) disable iff(rrst==0) arvalid |-> ##[0:2] arready;
+    endproperty
+
+    assertion4: assert property (arready_arvalid) begin
+        `uvm_info("*** ASSERTION PASED *** - ARREADY && ARVALID","",UVM_HIGH);    
+    end
+    else begin
+        `uvm_info("ASSERTION FAILED - ARREADY && ARVALID","",UVM_NONE);
+    end
+
+    property rready_rvalid;
+        @(posedge m_axi_rclk) disable iff(rrst==0) rvalid |-> ##[0:2] rready;
+    endproperty
+
+    assertion5: assert property (rready_rvalid) begin
+        `uvm_info("*** ASSERTION PASED *** - RREADY && RVALID","",UVM_HIGH);    
+    end
+    else begin
+        `uvm_info("ASSERTION FAILED - RREADY && RVALID","",UVM_NONE);
+    end
+
+endinterface
+
+`endif
