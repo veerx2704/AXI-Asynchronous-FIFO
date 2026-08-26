@@ -14,11 +14,11 @@ class write_driver extends uvm_driver#(transaction);
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-    if (!uvm_config_db#(virtual write_interface)::get(this,"","DATA",vintf)) begin
-        `uvm_fatal("*   (WRITE) DRIVER CONNECTION FAILED    *","")
+    if (!uvm_config_db#(virtual write_interface)::get(this,"","DATA",v_wintf)) begin
+        `uvm_fatal("*   (WRITE) DRIVER CONNECTION FAILED    *","");
     end
     else begin
-        `uvm_info("*    (WRITE) DIRVER CONNECTED    *","",UVM_NONE)
+        `uvm_info("*    (WRITE) DIRVER CONNECTED    *","",UVM_NONE);
     end
 
     endfunction
