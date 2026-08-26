@@ -1,7 +1,7 @@
 `ifndef AXI_INTERFACE
 `define AXI_INTERFACE
 
-interface axi_interface(input s_axi_wclk, m_axi_rclk);
+interface write_interface(input s_axi_wclk);
 	parameter DATA_WIDTH = 32;
 	parameter ADDR_WIDTH = 16;
 	parameter BURST_LEN  = 8;
@@ -10,8 +10,6 @@ interface axi_interface(input s_axi_wclk, m_axi_rclk);
 	parameter PIPELINE_OUTPUT = 0;	
 
     logic wrst;
-    logic rrst;
-
 
     //WRITE ADDRESS CHANNEL
     logic [ID_WIDTH-1:0]    awid;
@@ -38,27 +36,6 @@ interface axi_interface(input s_axi_wclk, m_axi_rclk);
     logic                   bvalid;
     logic                   bready;
 
-    //READ ADDRESS CHANNEL
-    logic [ID_WIDTH-1:0]    arid;
-    logic [ADDR_WIDTH-1:0]  araddr;
-    logic [7:0]             arlen;
-    logic [2:0]             awsize;
-    logic [1:0]             arburst;
-    logic                   arlock;
-    logic [3:0]             arcache;
-    logic [2:0]             arprot;
-    logic                   arvalid;
-    logic                   arready;
-
-    //READ DATA CHANNEL
-    logic [ID_WIDTH-1:0]    rid;
-    logic [DATA_WIDTH-1:0]  rdata;
-    logic [1:0]             rresp;
-    logic                   rlast;
-    logic                   rvalid;
-    logic                   rready;
-
-
     clocking driver_cb_w @(posedge s_axi_wclk)
 
     //WRITE ADDRESS CHANNEL
@@ -74,22 +51,6 @@ interface axi_interface(input s_axi_wclk, m_axi_rclk);
     output bready;
 
     endclocking
-
-    clocking driver_cb_r @(posedge m_axi_rclk)
-
-    //READ ADDRESS CHANNEL
-    input arready;
-    output arid, araddt, arlen, arsize, arburst, arvalid, arcache,arprot, arlock;
-
-    //READ DATA CHANNEL
-    input rid, rdata, rvalid, rresp, rlast;
-    output rready;
-
-    endclocking
-
-    modport driver_mp_w(clocking driver_cb_w, input s_axi_wclk, wrst);
-    modport driver_mp_r(clocking driver_cb_r, input m_axi_rclk, rrst)
-
     clocking monitor_cb_w @(posedge s_axi_wclk);
 
     //WRITE ADDRESS CHANNEL
@@ -105,21 +66,8 @@ interface axi_interface(input s_axi_wclk, m_axi_rclk);
     input bready;
 
     endclocking
-
-    clocking monitor_cb_r @(posedge m_axi_rclk);
-
-    //READ ADDRESS CHANNEL
-    input arready;
-    input arid, araddr, arlen, arsize, arburst, arvalid, arcache, arprot, arlock;
-
-    //READ DATA CHANNEL
-    input rid, rdata, rresp, rlast, rvalid;
-    input rready;
-
-    endclocking
-
+    modport driver_mp_w(clocking driver_cb_w, input s_axi_wclk, wrst);
     modport monitor_mp_w(clocking monitor_cb_w, input s_axi_wclk, wrst);
-    modport monitor_mp_r(clocking monitor_cb_r, input m_axi_rclk, rrst);
 
     property awready_awvalid;
         @(posedge s_axi_wclk) disable iff(wrst==0) awvalid |-> ##[0:2] awready;
@@ -154,11 +102,72 @@ interface axi_interface(input s_axi_wclk, m_axi_rclk);
         `uvm_info("ASSERTION FAILED - BREADY && BVALID","",UVM_NONE);
     end
 
+
+endinterface
+interface read_interface(input m_axi_rclk)
+	parameter DATA_WIDTH = 32;
+	parameter ADDR_WIDTH = 16;
+	parameter BURST_LEN  = 8;
+	parameter STRB_WIDTH = (DATA_WIDTH)/8;
+	parameter ID_WIDTH = 8;
+	parameter PIPELINE_OUTPUT = 0;	
+
+    logic rrst;
+
+    //READ ADDRESS CHANNEL
+    logic [ID_WIDTH-1:0]    arid;
+    logic [ADDR_WIDTH-1:0]  araddr;
+    logic [7:0]             arlen;
+    logic [2:0]             awsize;
+    logic [1:0]             arburst;
+    logic                   arlock;
+    logic [3:0]             arcache;
+    logic [2:0]             arprot;
+    logic                   arvalid;
+    logic                   arready;
+
+    //READ DATA CHANNEL
+    logic [ID_WIDTH-1:0]    rid;
+    logic [DATA_WIDTH-1:0]  rdata;
+    logic [1:0]             rresp;
+    logic                   rlast;
+    logic                   rvalid;
+    logic                   rready;
+
+
+    clocking driver_cb_r @(posedge m_axi_rclk)
+
+    //READ ADDRESS CHANNEL
+    input arready;
+    output arid, araddt, arlen, arsize, arburst, arvalid, arcache,arprot, arlock;
+
+    //READ DATA CHANNEL
+    input rid, rdata, rvalid, rresp, rlast;
+    output rready;
+
+    endclocking
+
+    modport driver_mp_r(clocking driver_cb_r, input m_axi_rclk, rrst)
+
+    clocking monitor_cb_r @(posedge m_axi_rclk);
+
+    //READ ADDRESS CHANNEL
+    input arready;
+    input arid, araddr, arlen, arsize, arburst, arvalid, arcache, arprot, arlock;
+
+    //READ DATA CHANNEL
+    input rid, rdata, rresp, rlast, rvalid;
+    input rready;
+
+    endclocking
+
+    modport monitor_mp_r(clocking monitor_cb_r, input m_axi_rclk, rrst);
+
     property arready_arvalid;
         @(posedge m_axi_rclk) disable iff(rrst==0) arvalid |-> ##[0:2] arready;
     endproperty
 
-    assertion4: assert property (arready_arvalid) begin
+    assertion1: assert property (arready_arvalid) begin
         `uvm_info("*** ASSERTION PASED *** - ARREADY && ARVALID","",UVM_HIGH);    
     end
     else begin
@@ -169,7 +178,7 @@ interface axi_interface(input s_axi_wclk, m_axi_rclk);
         @(posedge m_axi_rclk) disable iff(rrst==0) rvalid |-> ##[0:2] rready;
     endproperty
 
-    assertion5: assert property (rready_rvalid) begin
+    assertion2: assert property (rready_rvalid) begin
         `uvm_info("*** ASSERTION PASED *** - RREADY && RVALID","",UVM_HIGH);    
     end
     else begin
