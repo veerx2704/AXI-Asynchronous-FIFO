@@ -61,15 +61,11 @@ module axi_fifo_wrapper #(
 parameter VALID_ADDR_WIDTH = ADDR_WIDTH - $clog2(STRB_WIDTH);
 parameter WORD_WIDTH = STRB_WIDTH;
 parameter WORD_SIZE = DATA_WIDTH/WORD_WIDTH;	//always 8
-parameter FIFO_ADDRESS = 32'h02000000;			//Starting address of fifo
+parameter FIFO_ADDRESS = 32'h00002000;			//Starting address of fifo
 
 initial begin
 	if(WORD_SIZE * STRB_WIDTH != DATA_WIDTH) begin
-<<<<<<< HEAD:axi_custom_wrapper.sv
-		$error("Error: AXI data width not evenly divisible (instance %m)")
-=======
 		$error("Error: AXI data width not evenly divisible (instance %m)");
->>>>>>> axi_development:design/axi_fifo_wrapper.sv
 		$finish;
 	end
 	if(2**$clog2(WORD_WIDTH) != WORD_WIDTH) begin
