@@ -2,8 +2,8 @@
 `define AXI_TRANSACTION
 
 class transaction extends uvm_sequence_item;
-rand bit s_axi_wrst;
-rand bit m_axi_rrst;
+rand bit wrst;
+rand bit rrst;
 
 
 // WRITE ADDRESS CHANNEL
@@ -66,8 +66,8 @@ constraint read_depth {soft rdata.size() == arlen + 1;}
 
 `uvm_object_utils_begin(transaction)
 
-`uvm_field_int(s_axi_wrst,UVM_ALL_ON)
-`uvm_field_int(m_axi_rrst,UVM_ALL_ON)
+`uvm_field_int(wrst,UVM_ALL_ON)
+`uvm_field_int(rrst,UVM_ALL_ON)
 
 // WRITE ADDRESS CHANNEL
    `uvm_field_int(awid,UVM_ALL_ON)
