@@ -2,4 +2,3 @@ synth.ys
 async_fifo_sta.tcl
 results/axi_fifo_netlist.v
 axi_wrapper.sv
-point_of_contact.sv
