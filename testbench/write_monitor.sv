@@ -59,7 +59,7 @@ class write_monitor extends uvm_monitor#(transaction);
                             end
                             trans.wstrb = `vif.wstrb;
                             trans.wvalid = `vif.wvalid;
-                            trans.wreadt = `vif.wvalid;
+                            trans.wready = `vif.wready;
                             trans.wdata[wdata_count] = `vif.wdata;
                             wdata_count++;
                             @(posedge v_wintf.s_axi_wclk);
@@ -80,7 +80,7 @@ class write_monitor extends uvm_monitor#(transaction);
                     begin : MONITOR_WRITE_SCOREBOARD
                         sema.get(3);
                         monw2scor.write(trans);
-                        `uvm_info("MONITOR PACKETS SENT",$sformatf("%0s", trans.sprint),UVM_HIGH);
+                        `uvm_info(" (WRITE) MONITOR PACKETS SENT",$sformatf("%0s", trans.sprint),UVM_HIGH);
                         `uvm_info("DATA CHECK: ",$sformatf("\n\n wdata == %p \n wsize == %0d",trans.wdata,trans.wdata.size),UVM_NONE);
                     end : MONITOR_WRITE_SCOREBOARD
                 end
