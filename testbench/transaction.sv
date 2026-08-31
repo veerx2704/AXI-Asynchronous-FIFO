@@ -59,7 +59,8 @@ constraint burst_type {awburst==0 && arburst==0;}
 constraint length_range{awlen inside [0:15]; arlen inside [0:15];}
 constraint strobe_type {wstrb inside {4'b0001, 4'b0011, 4'b0111, 4'b1111}; rstrb inside {4'b0001, 4'b0011, 4'b0111, 4'b1111};}      //strobe should be coherent with byte selects
 constraint size_val {awsize==2 && arsize==2;}
-constraint valid_handshake {soft awvalid==1 && arvalid==1 && wvalid==1;}
+constraint exclusivity {(awvalid ^ arvalid) == 1'b1; (wvalid ^ rvalid) == 1'b1;}
+constraint valid_handshake {awvalid && wvalid == 1'b1; arvalid && rvalid == 1'b1;}
 constraint ready_when {soft bready == 1 && rready == 1;}
 constraint address {araddr.size() == 1; awaddr.size() == 1; awaddr[0] == 16'h2000;}
 constraint write_depth {soft wdata.size() == awlen + 1;}
