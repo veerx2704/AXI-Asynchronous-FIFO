@@ -1,4 +1,3 @@
-`timescale 1ns / 1ps
 module axi_fifo_wrapper #(
 	parameter DATA_WIDTH = 32,
 	parameter ADDR_WIDTH = 16,
@@ -7,8 +6,11 @@ module axi_fifo_wrapper #(
 	parameter ID_WIDTH = 8,
 	parameter PIPELINE_OUTPUT = 0	
 ) (
-	input wire clk,
-	input wire rst,
+	input wire s_axi_wclk,
+	input wire s_axi_wrst,
+	
+	input wire m_axi_rclk,
+	input wire m_axi_rrst,
 	
 	//Write address channel
 	input wire [ID_WIDTH - 1:0] 	s_axi_awid,
@@ -191,7 +193,7 @@ assign s_axi_bresp = bresp_reg;
 
 assign s_axi_bvalid = s_axi_bvalid_reg;
 
-wire s_axi_bvalid_net = s_axi_bvalid_reg;
+assign s_axi_bvalid_net = s_axi_bvalid_reg;
 
 //Address validity is not necessarily a check that should be performed, since this is just a fifo.
 //However, for the purpose of integration with a system, address validity can be performed to check the location of the fifo buffer in memory
@@ -211,10 +213,10 @@ reg [$clog2(FIFO_DEPTH):0] fifo_wptr_out;
 async_fifo #(.data_width(DATA_WIDTH), .N(FIFO_DEPTH)) FIFO_INST(.wdata(s_axi_wdata),
 														  .wptr_out(fifo_wptr_out),
 														  .wen(fifo_wen),
-														  .wclk(clk),
-														  .wrst(rst),
-														  .rrst(rst),
-														  .rclk(clk),
+														  .wclk(s_axi_wclk),
+														  .wrst(s_axi_wrst),
+														  .rrst(m_axi_rrst),
+														  .rclk(m_axi_rclk),
 														  .ren(fifo_ren),
 														  .rptr_out(fifo_rptr_out),
 														  .rdata(s_axi_rdata_next),
@@ -245,13 +247,13 @@ adder #(.WIDTH($clog2(FIFO_DEPTH)+1)) LEN_AVAILABLE (.SrcA(total_capacity),
 always_comb begin
 	write_state_next = WRITE_STATE_IDLE;
 	fifo_wen = 1'b0;
-	bresp_next = OKAY;
 
 	write_id_next    = write_id_reg;
 	write_addr_next  = write_addr_reg;
 	write_count_next = write_count_reg;
 	write_size_next  = write_size_reg;
 	write_burst_next = write_burst_reg;
+	bresp_next = OKAY;
 
 	s_axi_awready_next = 1'b0;
 	s_axi_wready_next  = 1'b0;
@@ -336,8 +338,8 @@ always_comb begin
 end
 
 // Write channel register update
-always_ff @(posedge clk) begin
-	if (!rst) begin
+always_ff @(posedge s_axi_wclk) begin
+	if (!s_axi_wrst) begin
 		write_state_reg   <= WRITE_STATE_IDLE;
 		write_id_reg      <= '0;
 		write_count_reg   <= '0;
@@ -445,8 +447,8 @@ always_comb begin
 end
 
 
-always_ff @(posedge clk) begin
-	if (!rst) begin
+always_ff @(posedge m_axi_rclk) begin
+	if (!m_axi_rrst) begin
 		read_state_reg <= READ_STATE_IDLE;
 
 		s_axi_arready_reg     <= 1'b0;
@@ -489,5 +491,4 @@ always_ff @(posedge clk) begin
 end
 
 endmodule
-
 
