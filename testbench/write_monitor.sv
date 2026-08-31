@@ -44,8 +44,8 @@ class write_monitor extends uvm_monitor#(transaction);
                         trans.awvalid   =   `vif.awvalid;
                         trans.awready   =   `vif.awready;
                         trans.awlen     =   `vif.awlen;
+                        trans.awaddr    =   new[1];
                         trans.awaddr[0] =   `vif.awaddr;
-                        trans.awaddr    =   new[trans.awlen+1];
                         trans.wdata     =   new[trans.awlen+1];
                         sema.put(1);
                     end : WRITE_ADDRESS_CHANNEL
