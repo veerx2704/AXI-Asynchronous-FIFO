@@ -24,6 +24,7 @@ bit         awready;
 rand bit [31:0] wdata[];
 rand bit        wlast;
 rand bit [3:0]  wstrb;
+rand bit        wvalid;
 bit             wready;
 
 //WRITE RESPONSE CHANNEL
