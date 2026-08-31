@@ -1,7 +1,7 @@
 `ifndef AXI_SUBSCRIBER
 `define AXI_SUBSCRIBER
 
-class subscriber extends ubm_subscriber#(transaction);
+class subscriber extends uvm_subscriber#(transaction);
     `uvm_component_utils(subscriber);
 
     transaction w_trans;
