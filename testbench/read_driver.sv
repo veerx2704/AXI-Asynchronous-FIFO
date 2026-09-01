@@ -1,7 +1,7 @@
 `ifndef AXI_READ_DRIVER
 `define AXI_READ_DRIVER
 
-`define r_vifd v_rintf.driver_mp_r.driver_cb_r;
+`define r_vifd v_rintf.driver_mp_r.driver_cb_r
 
 
 class read_driver extends uvm_driver #(read_transaction);
@@ -17,7 +17,7 @@ class read_driver extends uvm_driver #(read_transaction);
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
 
-        if (!uvm_config_db#(virtual read_interface)::get(this,"DATA",v_rintf)) begin
+        if (!uvm_config_db#(virtual read_interface)::get(this,"","DATA",v_rintf)) begin
             `uvm_fatal("*   (READ) DRIVER CONNECTION FAILED     *","");
         end
         else begin

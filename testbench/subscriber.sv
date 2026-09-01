@@ -75,7 +75,7 @@ bit             rvalid;
 bit             rready; 
 
     task run_phase(uvm_phase phase);
-        fork begin
+        fork
             forever begin
                 monr2scor.get(r_trans);
                 repeat(r_trans.arlen + 1) begin
@@ -124,7 +124,6 @@ bit             rready;
                     w_write(w_trans);
                 end
             end
-        end
         join_none
     endtask
 

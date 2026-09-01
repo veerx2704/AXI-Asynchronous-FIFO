@@ -19,7 +19,7 @@ class write_monitor extends uvm_monitor#(write_transaction);
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if (!uvm_config_db#(virtual v_wintf)::get(this,"DATA",v_wintf)) begin
+        if (!uvm_config_db#(virtual v_wintf)::get(this,"","DATA",v_wintf)) begin
             `uvm_fatal("*   (WRITE) MONITOR CONNECTION FAILED   *","");
         end
         else begin
@@ -37,7 +37,7 @@ class write_monitor extends uvm_monitor#(write_transaction);
         forever begin
             if (v_wintf.wrst == 1) begin
                 trans = write_transaction::type_id::create("trans",this);
-                fork begin
+                fork
                     begin : WRITE_ADDRESS_CHANNEL
                         @(posedge v_wintf.s_axi_wclk)
                         while (v_wintf.awvalid == 0 || v_wintf.awready == 0) begin
@@ -85,7 +85,6 @@ class write_monitor extends uvm_monitor#(write_transaction);
                         `uvm_info(" (WRITE) MONITOR PACKETS SENT",$sformatf("%0s", trans.sprint),UVM_HIGH);
                         `uvm_info("DATA CHECK: ",$sformatf("\n\n wdata == %p \n wsize == %0d",trans.wdata,trans.wdata.size),UVM_NONE);
                     end : MONITOR_WRITE_SCOREBOARD
-                end
                 join_none
                 wait fork;
             end

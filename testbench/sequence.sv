@@ -28,7 +28,7 @@ class sequence_1 extends my_sequence;
       write_transaction w_trans;
       read_transaction r_trans;
       `uvm_info("SEQUENCE STARTED - 1","READ AND WRITE WITH SAME BURST LENGTH",UVM_HIGH);
-      fork begin
+      fork
          begin : WRITE_CHANNEL
             repeat(1) begin
                w_trans=write_transaction::type_id::create("w_trans");
@@ -77,7 +77,6 @@ class sequence_1 extends my_sequence;
                finish_item(r_trans);
             end
          end : READ_CHANNEL
-      end
       join_none
       `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
    endtask
@@ -103,7 +102,7 @@ class sequence_2 extends my_sequence;
       write_transaction w_trans;
       read_transaction r_trans;
       `uvm_info("SEQUENCE STARTED - 2","LESS WRITE BURST MORE READ BURST",UVM_HIGH);
-      fork begin
+      fork
          begin : WRITE_CHANNEL
             repeat(1) begin
                w_trans = write_transaction::type_id::create("w_trans");
@@ -151,7 +150,6 @@ class sequence_2 extends my_sequence;
                finish_item(r_trans);
             end
          end : READ_CHANNEL
-      end
       join_none
       `uvm_info("SEQUENCE ENDED - 2","",UVM_HIGH);
    endtask
@@ -174,7 +172,7 @@ class sequence_3 extends my_sequence;
       write_transaction w_trans;
       read_transaction r_trans;
       `uvm_info("SEQUENCE STARTED - 3","LESS READ BURST MORE WRITE BURST",UVM_HIGH);
-      fork begin
+      fork
          begin : WRITE_CHANNEL
             repeat(1) begin
                w_trans = write_transaction::type_id::create("w_trans");
@@ -222,7 +220,6 @@ class sequence_3 extends my_sequence;
                finish_item(r_trans);
             end
          end : READ_CHANNEL
-      end
       join_none
       `uvm_info("SEQUENCE ENDED - 3","",UVM_HIGH);
    endtask
@@ -332,7 +329,7 @@ class sequence_6 extends my_sequence;
       write_transaction w_trans;
       read_transaction r_trans;
       `uvm_info("SEQUENCE STARTED - 6","INCORRECT ADDRESSING",UVM_HIGH);
-      fork begin
+      fork
          begin : WRITE_CHANNEL
             repeat(1) begin
                w_trans = write_transaction::type_id::create("w_trans");
@@ -376,7 +373,6 @@ class sequence_6 extends my_sequence;
                finish_item(r_trans);
             end
          end : READ_CHANNEL         
-      end
       join_none
    endtask
 
@@ -398,7 +394,7 @@ class sequence_7 extends my_sequence;
    task body();
       write_transaction w_trans;
       read_transaction r_trans;
-      fork begin
+      fork
          begin : WRITE_CHANNEL
             repeat(1) begin
                w_trans = write_transaction::type_id::create("w_trans");
@@ -442,7 +438,6 @@ class sequence_7 extends my_sequence;
                finish_item(r_trans);
             end
          end : READ_CHANNEL          
-      end
       join_none
       `uvm_info("SEQUENCE ENDED - 7", "", UVM_HIGH);
    endtask
@@ -468,7 +463,7 @@ class sequence_8 extends my_sequence;
       write_transaction w_trans;
       read_transaction r_trans;
       `uvm_info("SEQUENCE STARTED - 8","READ AND WRITE WITH SINGULAR BURST LENGTHS BUT DIFFERENT STROBES",UVM_HIGH);
-      fork begin
+      fork
          begin : WRITE_CHANNEL
             repeat(1) begin
                w_trans=write_transaction::type_id::create("w_trans");
@@ -516,7 +511,6 @@ class sequence_8 extends my_sequence;
                finish_item(r_trans);
             end
          end : READ_CHANNEL
-      end
       join_none
       `uvm_info("SEQUENCE ENDED - 8","",UVM_HIGH);
    endtask

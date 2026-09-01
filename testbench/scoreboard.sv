@@ -41,7 +41,7 @@ class scoreboard extends uvm_scoreboard;
     bit data_valid;
 
     task run_phase(uvm_phase phase);
-        fork begin
+        fork
             forever begin
                 wdata.delete();
                 monw2scor.get(w_trans);
@@ -99,7 +99,6 @@ class scoreboard extends uvm_scoreboard;
                     `uvm_warning("*    SCOREBOARD    *","The transaction may not be intended for DUT, there is decoding error", UVM_MEDIUM);
                 end
             end
-        end
         join_none
     endtask
 
