@@ -384,7 +384,7 @@ endclass
 //verification of non-fixed burst with correct address
 
 class sequence_7 extends my_sequence;
-   `uvm_component_utils(sequence_7);
+   `uvm_object_utils(sequence_7);
       `uvm_declare_p_sequencer(virtual_sequencer);
 
    function new(string name = "sequence_7");
@@ -452,7 +452,7 @@ endclass
 //verification of fixed burst with singular long singular read/write bursts with different
 
 class sequence_8 extends my_sequence;
-   `uvm_component_utils(sequence_8);
+   `uvm_object_utils(sequence_8);
    `uvm_declare_p_sequencer(virtual_sequencer);
 
    function new(string name = "sequence_8");
