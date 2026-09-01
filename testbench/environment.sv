@@ -8,6 +8,7 @@ class environment extends uvm_env;
     read_agent r_agent_h;
     scoreboard scoreboard_h;
     subscriber subscriber_h;
+    virtual_sequencer v_seqr;
 
     function new (string name = "environment", uvm_component parent = null);
         super.new = new(name,this);
@@ -19,6 +20,7 @@ class environment extends uvm_env;
         r_agent_h = read_agent::type_id::create("r_agent_h",this);
         scoreboard_h = scoreboard::type_id::create("scoreboard_h",this);
         subscriber_h = subscriber::type_id::create("subscriber_h",this);
+        v_seqr = virtual_sequencer::type_id::create("v_seqr",this);
     endfunction
 
     function void connect_phase(uvm_phase phase);
@@ -27,6 +29,9 @@ class environment extends uvm_env;
         w_agent_h.monw2scor.connect(subscriber_h.monw2scor.analysis_export);
         r_agent_h.monr2scor.connect(scoreboard_h.monr2scor.analysis_export);
         r_agent_h.monr2scor.connect(subscriber_h.monr2scor.analysis_export);
+
+        v_seqr.w_seqr = w_agent_h.seqr;
+        v_seqr.r_seqr = r_agent_h.seqr;
     endfunction
 endclass
 

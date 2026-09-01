@@ -3,7 +3,7 @@
 
 class write_agent extends uvm_agent;
     `uvm_component_utils(write_agent);
-    sequencer sequencer_h;
+    write_sequencer sequencer_h;
     write_driver driver_h;
     write_monitor monitor_h;
 
@@ -16,7 +16,7 @@ class write_agent extends uvm_agent;
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        sequencer_h = sequencer::type_id::create("sequencer_h",this);
+        sequencer_h = write_sequencer::type_id::create("sequencer_h",this);
         driver_h = write_driver::type_id::create("driver_h",this);
         monitor_h = write_monitor::type_id::create("monitor_h",this);
     endfunction

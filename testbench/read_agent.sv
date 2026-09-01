@@ -4,7 +4,7 @@
 class read_agent extends uvm_agent;
     `uvm_component_utils(read_agent);
 
-    sequencer sequencer_h;
+    read_sequencer sequencer_h;
     read_driver driver_h;
     read_monitor monitor_h;
 
@@ -16,7 +16,7 @@ class read_agent extends uvm_agent;
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        sequencer_h = sequencer::type_id::create("sequencer_h",this);
+        sequencer_h = read_sequencer::type_id::create("sequencer_h",this);
         driver_h = read_driver::type_id::create("driver_h", this);
         monitor_h = read_monitor::type_id::create("monitor_h",this);
     endfunction
