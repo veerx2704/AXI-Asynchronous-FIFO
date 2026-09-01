@@ -36,7 +36,7 @@ interface write_interface(input s_axi_wclk);
     logic                   bvalid;
     logic                   bready;
 
-    clocking driver_cb_w @(posedge s_axi_wclk)
+    clocking driver_cb_w @(posedge s_axi_wclk);
 
     //WRITE ADDRESS CHANNEL
     input awready;

@@ -15,7 +15,7 @@ interface read_interface(input m_axi_rclk)
     logic [ID_WIDTH-1:0]    arid;
     logic [ADDR_WIDTH-1:0]  araddr;
     logic [7:0]             arlen;
-    logic [2:0]             awsize;
+    logic [2:0]             arsize;
     logic [1:0]             arburst;
     logic                   arlock;
     logic [3:0]             arcache;
@@ -32,11 +32,11 @@ interface read_interface(input m_axi_rclk)
     logic                   rready;
 
 
-    clocking driver_cb_r @(posedge m_axi_rclk)
+    clocking driver_cb_r @(posedge m_axi_rclk);
 
     //READ ADDRESS CHANNEL
     input arready;
-    output arid, araddt, arlen, arsize, arburst, arvalid, arcache,arprot, arlock;
+    output arid, araddr, arlen, arsize, arburst, arvalid, arcache,arprot, arlock;
 
     //READ DATA CHANNEL
     input rid, rdata, rvalid, rresp, rlast;
@@ -44,7 +44,7 @@ interface read_interface(input m_axi_rclk)
 
     endclocking
 
-    modport driver_mp_r(clocking driver_cb_r, input m_axi_rclk, rrst)
+    modport driver_mp_r(clocking driver_cb_r, input m_axi_rclk, rrst);
 
     clocking monitor_cb_r @(posedge m_axi_rclk);
 
