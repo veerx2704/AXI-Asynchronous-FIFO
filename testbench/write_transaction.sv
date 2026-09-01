@@ -34,7 +34,7 @@ bit         bready;
 
 
 constraint id_range {awid inside [1:20];}
-constraint burst_type {awburst == 0;}
+constraint burst_type {awburst inside [0:2'b10];}
 constraint length_range{awlen inside [0:15];}
 constraint strobe_type {wstrb inside {4'b0001, 4'b0011, 4'b0111, 4'b1111};}      //strobe should be coherent with byte selects
 constraint size_val {awsize == 2'b10;}                                                 //fixed 32-bit size

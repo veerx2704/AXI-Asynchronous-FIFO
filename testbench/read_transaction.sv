@@ -25,7 +25,7 @@ bit             rvalid;
 rand bit        rready;
 
 constraint id_range {arid inside [1:20];}
-constraint burst_type {arburst==0;}
+constraint burst_type {arburst inside [0:2'b10];}
 constraint length_range {arlen inside [0:15];}
 constraint size_val {arsize==2;}
 constraint valid_handshake {arvalid==1}
