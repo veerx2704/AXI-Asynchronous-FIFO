@@ -41,7 +41,7 @@ constraint size_val {awsize == 2'b10;}                                          
 constraint valid_aw {soft awvalid == 1'b1;}
 constraint valid_w {soft wvalid == 1'b1}
 constraint ready_when {soft bready == 1;}
-constraint address {awaddr.size() == 1;}
+constraint address {awaddr.size() == 1; awaddr inside [0:16'hffff];}
 constraint write_depth {wdata.size() == awlen + 1;}
 
 `uvm_object_utils_begin(transaction)
