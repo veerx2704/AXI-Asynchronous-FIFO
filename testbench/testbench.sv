@@ -6,60 +6,61 @@ module tb_top;
 bit wclk;
 bit rclk;
 
-axi_interface intf(.s_axi_wclk(wclk), .m_axi_rclk(rclk));
+write_interface wintf(.s_axi_wclk(wclk));
+read_interface  rintf(.m_axi_rclk(rclk));
 
 axi_fifo_wrapper inst(
 
    //GLOBAL CLOCK AND RESET
    .s_axi_wclk(wclk),
-   .s_axi_wrst(intf.wrst),
-   .m_axi_rrst(intf.rrst),
+   .s_axi_wrst(wintf.wrst),
+   .m_axi_rrst(rintf.rrst),
   .m_axi_rclk(rclk),
    
    //WRITE ADDRESS BUS
-   .s_axi_awid(intf.awid),
-   .s_axi_awaddr(intf.awaddr),
-   .s_axi_awlen(intf.awlen),
-   .s_axi_awsize(intf.awsize),
-   .s_axi_awburst(intf.awburst),
-   .s_axi_awlock(intf.awlock),
-   .s_axi_awcache(intf.awcache),
-   .s_axi_awprot(intf.awprot),
-   .s_axi_awvalid(intf.awvalid),
-   .s_axi_awready(intf.awready),
+   .s_axi_awid    (wintf.awid),
+   .s_axi_awaddr  (wintf.awaddr),
+   .s_axi_awlen   (wintf.awlen),
+   .s_axi_awsize  (wintf.awsize),
+   .s_axi_awburst (wintf.awburst),
+   .s_axi_awlock  (wintf.awlock),
+   .s_axi_awcache (wintf.awcache),
+   .s_axi_awprot  (wintf.awprot),
+   .s_axi_awvalid (wintf.awvalid),
+   .s_axi_awready (wintf.awready),
    
    //WRITE DATA BUS
-   .s_axi_wdata(intf.wdata),
-   .s_axi_wstrb(intf.wstrb),
-   .s_axi_wlast(intf.wlast),
-   .s_axi_wvalid(intf.wvalid),
-   .s_axi_wready(intf.wready),
+   .s_axi_wdata   (wintf.wdata),
+   .s_axi_wstrb   (wintf.wstrb),
+   .s_axi_wlast   (wintf.wlast),
+   .s_axi_wvalid  (wintf.wvalid),
+   .s_axi_wready  (wintf.wready),
    
    //WRITE RESPONSE BUS
-   .s_axi_bid(intf.bid),
-   .s_axi_bresp(intf.bresp),
-   .s_axi_bvalid(intf.bvalid),
-   .s_axi_bready(intf.bready),
+   .s_axi_bid     (wintf.bid),
+   .s_axi_bresp   (wintf.bresp),
+   .s_axi_bvalid  (wintf.bvalid),
+   .s_axi_bready  (wintf.bready),
    
    //READ ADDRESS BUS
-   .s_axi_arid(intf.arid),
-   .s_axi_araddr(intf.araddr),
-   .s_axi_arlen(intf.arlen),
-   .s_axi_arsize(intf.arsize),
-   .s_axi_arburst(intf.arburst),
-   .s_axi_arlock(intf.arlock),
-   .s_axi_arcache(intf.arcache),
-   .s_axi_arprot(intf.arprot),
-   .s_axi_arvalid(intf.arvalid),
-   .s_axi_arready(intf.arready),
+   .s_axi_arid    (rintf.arid),
+   .s_axi_araddr  (rintf.araddr),
+   .s_axi_arlen   (rintf.arlen),
+   .s_axi_arsize  (rintf.arsize),
+   .s_axi_arburst (rintf.arburst),
+   .s_axi_arlock  (rintf.arlock),
+   .s_axi_arcache (rintf.arcache),
+   .s_axi_arprot  (rintf.arprot),
+   .s_axi_arvalid (rintf.arvalid),
+   .s_axi_arready (rintf.arready),
    
    //READ DATA BUS
-   .s_axi_rid(intf.rid),
-   .s_axi_rdata(intf.rdata),
-   .s_axi_rresp(intf.rresp),
-   .s_axi_rlast(intf.rlast),
-   .s_axi_rvalid(intf.rvalid),
-   .s_axi_rready(intf.rready)
+   .s_axi_rid     (rintf.rid),
+   .s_axi_rdata   (rintf.rdata),
+   .s_axi_rresp   (rintf.rresp),
+   .s_axi_rlast   (rintf.rlast),
+   .s_axi_rvalid  (rintf.rvalid),
+   .s_axi_rready  (rintf.rready)
 );
 
 initial begin
