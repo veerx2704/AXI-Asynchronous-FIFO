@@ -166,7 +166,10 @@ bit             rready;
 
     function void check_phase(uvm_phase phase);
         $display("---------------------------------------------------------------");
-        `uvm_info("*    COVERAGE    *",$sformatf("Write Channel Coverage %0d \%",axi_cg.get_coverage()),UVM_NONE);
+        `uvm_info("*    COVERAGE    *",$sformatf("Write Channel Coverage %0d \%",axi_w_cg.get_coverage()),UVM_NONE);
+        $display("---------------------------------------------------------------");
+        $display("---------------------------------------------------------------");
+        `uvm_info("*    COVERAGE    *",$sformatf("Read Channel Coverage %0d \%",axi_r_cg.get_coverage()),UVM_NONE);
         $display("---------------------------------------------------------------");
     endfunction
 
