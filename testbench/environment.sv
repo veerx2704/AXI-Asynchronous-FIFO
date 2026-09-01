@@ -30,8 +30,8 @@ class environment extends uvm_env;
         r_agent_h.monr2scor.connect(scoreboard_h.monr2scor.analysis_export);
         r_agent_h.monr2scor.connect(subscriber_h.monr2scor.analysis_export);
 
-        v_seqr.w_seqr = w_agent_h.seqr;
-        v_seqr.r_seqr = r_agent_h.seqr;
+        v_seqr.w_seqr = w_agent_h.sequencer_h;
+        v_seqr.r_seqr = r_agent_h.sequencer_h;
     endfunction
 endclass
 
