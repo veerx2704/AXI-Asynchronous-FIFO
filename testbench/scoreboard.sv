@@ -9,10 +9,11 @@
 class scoreboard extends uvm_scoreboard;
     `uvm_component_utils(scoreboard);
 
-    uvm_tlm_analysis_fifo#(transaction) monr2scor;
-    uvm_tlm_analysis_fifo#(transaction) monw2scor;
+    uvm_tlm_analysis_fifo#(read_transaction) monr2scor;
+    uvm_tlm_analysis_fifo#(write_transaction) monw2scor;
 
-    transaction w_trans, r_trans;
+    write_transaction w_trans;
+    read_transaction r_trans;
     bit [31:0] fifo_queue[$];
 
     bit [31:0] wdata[$];

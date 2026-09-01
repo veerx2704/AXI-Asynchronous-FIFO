@@ -7,7 +7,7 @@ class write_agent extends uvm_agent;
     write_driver driver_h;
     write_monitor monitor_h;
 
-    uvm_analysis_port #(transaction) monw2scor;
+    uvm_analysis_port #(write_transaction) monw2scor;
 
     function new(string name = "write_agent", uvm_component parent = null);
         super.new(name,parent);

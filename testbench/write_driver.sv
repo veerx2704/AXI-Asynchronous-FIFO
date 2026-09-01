@@ -3,7 +3,7 @@
 
 `define w_vif v_wintf.driver_mp_w.driver_cb_w
 
-class write_driver extends uvm_driver#(transaction);
+class write_driver extends uvm_driver#(write_transaction);
     `uvm_component_utils(write_driver)
 
     virtual write_interface v_wintf;
@@ -24,7 +24,7 @@ class write_driver extends uvm_driver#(transaction);
     endfunction
 
 
-    task write_address (transaction wtrans);
+    task write_address (write_transaction trans);
         `uvm_info("DRIVER - WRITE ADDRESS CHANNEL","",UVM_HIGH)
         @(posedge v_wintf.s_axi_wclk);
         `vif.awid       <= trans.awid;
@@ -45,7 +45,7 @@ class write_driver extends uvm_driver#(transaction);
     endtask
 
     int wdata_count;
-    task write_data(transaction trans);
+    task write_data(write_transaction trans);
         wdata_count <= '0;
         repeat (trans.wdata.size()) begin
             @(posedge v_wintf.s_axi_wclk);
@@ -70,7 +70,7 @@ class write_driver extends uvm_driver#(transaction);
         `vif.wdata <= 0;    
     endtask
 
-    task write_response(transaction trans);
+    task write_response(write_transaction trans);
         `uvm_info("DRIVER - WRITE RESPONSE CHANNEL","",UVM_HIGH);
         `vif.bready <= trans.bready;
         while(v_wintf.bvalid == 0) begin
@@ -84,14 +84,14 @@ class write_driver extends uvm_driver#(transaction);
         `vif.bready <= '0;
     endtask
 
-    task write_driver_logic(transaction trans);
+    task write_driver_logic(write_transaction trans);
         write_address(trans);
         write_data(trans);
         write_response(trans);
     endtask
 
     task run_phase(uvm_phase phase);
-        transaction trans;
+        write_transaction trans;
         forever begin
             seq_item_port.get_next_item(trans);
             if(trans.wrst == 0) begin

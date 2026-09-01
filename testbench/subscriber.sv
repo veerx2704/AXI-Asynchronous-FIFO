@@ -1,14 +1,14 @@
 `ifndef AXI_SUBSCRIBER
 `define AXI_SUBSCRIBER
 
-class subscriber extends uvm_subscriber#(transaction);
+class subscriber extends uvm_subscriber#(write_transaction, read_transaction);
     `uvm_component_utils(subscriber);
 
-    transaction w_trans;
-    transaction r_trans;
+    write_transaction w_trans;
+    read_transaction r_trans;
 
-    uvm_tlm_analysis_fifo#(transaction) monr2scor;
-    uvm_tlm_analysis_fifo#(transaction) monw2scor;
+    uvm_tlm_analysis_fifo#(read_transaction) monr2scor;
+    uvm_tlm_analysis_fifo#(write_transaction) monw2scor;
 
     function new (string name = "subscriber", uvm_component parent = null);
         super.new(name,parent);

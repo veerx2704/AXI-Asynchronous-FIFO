@@ -3,12 +3,12 @@
 
 `define vif v_rintf.monitor_mp_r.monitor_cb_r
 
-class read_monitor extends uvm_monitor#(transaction);
+class read_monitor extends uvm_monitor#(read_transaction);
     `uvm_component_utils(read_monitor);
 
     virtual read_interface v_rintf;
 
-    uvm_analysis_port#(transaction) monr2scor;
+    uvm_analysis_port#(read_transaction) monr2scor;
 
     semaphore sema new(2);
 
@@ -31,10 +31,10 @@ class read_monitor extends uvm_monitor#(transaction);
 
     int rdata_count;
     task run_phase(uvm_phase phase);
-        transaction trans;
+        read_transaction trans;
         forever begin
             if (v_rintf.rrst == 1) begin
-                trans = transaction::type_id::create("trans",this);
+                trans = read_transaction::type_id::create("trans",this);
                 fork begin
                     begin : READ_ADDRESS_CHANNEL
                         @(posedge v_rintf.m_axi_rclk);
@@ -80,7 +80,7 @@ class read_monitor extends uvm_monitor#(transaction);
             end
             else begin
                 @(posedge v_rintf.m_axi_rclk);
-                trans = transaction::type_id::create("trans",this);
+                trans = read_transaction::type_id::create("trans",this);
                 trans.rrst = `vif.rrst;
                 monr2scor.write(trans);
             end

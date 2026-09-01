@@ -4,7 +4,7 @@
 `define vif v_rintf.driver_mp_r.driver_cb_r;
 
 
-class read_driver extends uvm_driver #(transaction);
+class read_driver extends uvm_driver #(read_transaction);
     `uvm_component_utils(read_driver);
 
     virtual read_interface v_rintf;
@@ -26,7 +26,7 @@ class read_driver extends uvm_driver #(transaction);
 
     endfunction
 
-    task read_address(transaction trans);
+    task read_address(read_transaction trans);
         `uvm_info("DRIVER - READ ADDRESS CHANNEL","",UVM_HIGH);
         `vif.arid <= trans.arid;
         `vif.araddr <= trans.araddr[0];
@@ -46,7 +46,7 @@ class read_driver extends uvm_driver #(transaction);
         `vif.arvalid <= '0;
     endtask
 
-    task read_data(transaction trans);
+    task read_data(read_transaction trans);
         repeat (trans.rdata.size()) begin
             @(posedge v_rintf.m_axi_rclk);
             `uvm_info("DRIVER - READ DATA CHANNEL","",UVM_HIGH);
@@ -64,13 +64,13 @@ class read_driver extends uvm_driver #(transaction);
         `vif.rready <= '0;
     endtask
 
-    task read_driver_logic(transaction trans);
+    task read_driver_logic(read_transaction trans);
         read_address(trans);
         read_data(trans);
     endtask
 
     task run_phase(uvm_phase phase);
-        transaction trans;
+        read_transaction trans;
         forever begin
             seq_item_port.get_next_item(trans);
             if(trans.rrst == 0) begin

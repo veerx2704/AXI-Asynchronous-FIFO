@@ -24,10 +24,11 @@ class sequence_1 extends my_sequence;
    endfunction
 
    task body();
-      transaction w_trans, r_trans;
+      write_transaction w_trans;
+      read_transaction r_trans;
       repeat(1) begin
          `uvm_info("SEQUENCE STARTED - 1","",UVM_HIGH);
-         w_trans=transaction::type_id::create("w_trans");
+         w_trans=write_transaction::type_id::create("w_trans");
          start_item(w_trans);
          w_trans.randomize with { 
                            reset==0;
@@ -36,7 +37,7 @@ class sequence_1 extends my_sequence;
       end  
       #30;
       repeat(1) begin
-         w_trans=transaction::type_id::create("w_trans");
+         w_trans=write_transaction::type_id::create("w_trans");
          start_item(w_trans);
          w_trans.randomize with {
                            reset==1;

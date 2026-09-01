@@ -8,7 +8,7 @@ class read_agent extends uvm_agent;
     read_driver driver_h;
     read_monitor monitor_h;
 
-    uvm_analysis_port #(transaction) monr2scor;
+    uvm_analysis_port #(read_transaction) monr2scor;
 
     function new(string name = "read_agent", uvm_component parent = null);
         super.new(name,parent);
@@ -25,7 +25,6 @@ class read_agent extends uvm_agent;
         super.connect_phase(phase);
         driver_h.seq_item_port.connect(sequencer_h.seq_item_export);
         monitor_h.monr2scor.connect(monr2scor);
-    endfunction
 
 endclass
 `endif
