@@ -91,7 +91,7 @@ class write_monitor extends uvm_monitor#(write_transaction);
             else begin
                 @(posedge v_wintf.s_axi_wclk);
                 trans = write_transaction::type_id::create("trans",this);
-                trans.wrst = w_vintf.wrst;
+                trans.wrst = v_wintf.wrst;
                 monw2scor.write(trans);
             end
         end

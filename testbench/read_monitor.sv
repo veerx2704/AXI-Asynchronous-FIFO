@@ -82,7 +82,7 @@ class read_monitor extends uvm_monitor#(read_transaction);
             else begin
                 @(posedge v_rintf.m_axi_rclk);
                 trans = read_transaction::type_id::create("trans",this);
-                trans.rrst = r_vintf.rrst;
+                trans.rrst = v_rintf.rrst;
                 monr2scor.write(trans);
             end
         end 
