@@ -1,0 +1,33 @@
+`ifndef AXI_ENVIRONMENT
+`define AXI_ENVIRONMENT
+
+class environment extends uvm_env;
+    `uvm_component_utils(environment);
+
+    write_agent w_agent_h;
+    read_agent r_agent_h;
+    scoreboard scoreboard_h;
+    subscriber subscriber_h;
+
+    function new (string name = "environment", uvm_component parent = null);
+        super.new = new(name,this);
+    endfunction
+
+    function void build_phase(uvm_phase phase);
+        super.build_phase(phase);
+        w_agent_h = write_agent::type_id::create("w_agent_h",this);
+        r_agent_h = read_agent::type_id::create("r_agent_h",this);
+        scoreboard_h = scoreboard::type_id::create("scoreboard_h",this);
+        subscriber_h = subscriber::type_id::create("subscriber_h",this);
+    endfunction
+
+    function void connect_phase(uvm_phase phase);
+        super.connect_phase(phase);
+        w_agent_h.monw2scor.connect(scoreboard_h.monw2scor.analysis_export);
+        w_agent_h.monw2scor.connect(subscriber_h.monw2scor.analysis_export);
+        r_agent_h.monr2scor.connect(scoreboard_h.monr2scor.analysis_export);
+        r_agent_h.monr2scor.connect(subscriber_h.monr2scor.analysis_export);
+    endfunction
+endclass
+
+`endif

@@ -2,3 +2,4 @@ synth.ys
 async_fifo_sta.tcl
 results/axi_fifo_netlist.v
 axi_wrapper.sv
+yosys_flow.sh
