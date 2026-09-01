@@ -1,7 +1,7 @@
 `ifndef AXI_WRITE_MONITOR
 `define AXI_WRITE_MONITOR
 
-`define vif v_wintf.monitor_mp_w.monitor_cb_w
+`define w_vifm v_wintf.monitor_mp_w.monitor_cb_w
 
 class write_monitor extends uvm_monitor#(write_transaction);
     `uvm_component_utils(write_monitor);
@@ -10,7 +10,7 @@ class write_monitor extends uvm_monitor#(write_transaction);
 
     uvm_analysis_port#(write_transaction) monw2scor;
 
-    semaphore sema new(3);
+    semaphore sema = new(3);
 
     function new (string name = "write_monitor", uvm_component parent = null);
         super.new(name,parent);
@@ -19,10 +19,12 @@ class write_monitor extends uvm_monitor#(write_transaction);
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if (!`uvm_config_db#(virtual v_wintf)::get(this,"DATA",v_wintf))
+        if (!uvm_config_db#(virtual v_wintf)::get(this,"DATA",v_wintf)) begin
             `uvm_fatal("*   (WRITE) MONITOR CONNECTION FAILED   *","");
-        else
-            `uvm_info("*    (WRITE) MONITOR CONNECTED SUCCESSFULLY  *",UVM_HIGH);
+        end
+        else begin
+            `uvm_info("*    (WRITE) MONITOR CONNECTED SUCCESSFULLY  *","",UVM_HIGH);
+        end
     endfunction
 
     function void connect_phase(uvm_phase phase);
@@ -41,11 +43,11 @@ class write_monitor extends uvm_monitor#(write_transaction);
                         while (v_wintf.awvalid == 0 || v_wintf.awready == 0) begin
                             @(posedge v_wintf.s_axi_wclk);
                         end
-                        trans.awvalid   =   `vif.awvalid;
-                        trans.awready   =   `vif.awready;
-                        trans.awlen     =   `vif.awlen;
+                        trans.awvalid   =   `w_vifm.awvalid;
+                        trans.awready   =   `w_vifm.awready;
+                        trans.awlen     =   `w_vifm.awlen;
                         trans.awaddr    =   new[1];
-                        trans.awaddr[0] =   `vif.awaddr;
+                        trans.awaddr[0] =   `w_vifm.awaddr;
                         trans.wdata     =   new[trans.awlen+1];
                         sema.put(1);
                     end : WRITE_ADDRESS_CHANNEL
@@ -57,10 +59,10 @@ class write_monitor extends uvm_monitor#(write_transaction);
                             while(v_wintf.wvalid == 0 || v_wintf.wready == 0) begin
                                 @(posedge v_wintf.s_axi_wclk);
                             end
-                            trans.wstrb = `vif.wstrb;
-                            trans.wvalid = `vif.wvalid;
-                            trans.wready = `vif.wready;
-                            trans.wdata[wdata_count] = `vif.wdata;
+                            trans.wstrb = `w_vifm.wstrb;
+                            trans.wvalid = `w_vifm.wvalid;
+                            trans.wready = `w_vifm.wready;
+                            trans.wdata[wdata_count] = `w_vifm.wdata;
                             wdata_count++;
                             @(posedge v_wintf.s_axi_wclk);
                         end
@@ -71,9 +73,9 @@ class write_monitor extends uvm_monitor#(write_transaction);
                         while (v_wintf.bvalid == 0 || v_wintf.bready == 0) begin
                             @(posedge v_wintf.s_axi_wclk);
                         end
-                        trans.bresp = `vif.bresp;
-                        trans.bready = `vif.bready;
-                        trans.bvalid = `vif.bvalid;
+                        trans.bresp = `w_vifm.bresp;
+                        trans.bready = `w_vifm.bready;
+                        trans.bvalid = `w_vifm.bvalid;
                         sema.put(1);
                     end : WRITE_RESPONSE_CHANNEL
 
@@ -90,7 +92,7 @@ class write_monitor extends uvm_monitor#(write_transaction);
             else begin
                 @(posedge v_wintf.s_axi_wclk);
                 trans = write_transaction::type_id::create("trans",this);
-                trans.wrst = `vif.wrst;
+                trans.wrst = `w_vifm.wrst;
                 monw2scor.write(trans);
             end
         end

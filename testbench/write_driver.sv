@@ -1,7 +1,7 @@
 `ifndef AXI_WRITE_DRIVER
 `define AXI_WRITE_DRIVER
 
-`define w_vif v_wintf.driver_mp_w.driver_cb_w
+`define w_vifd v_wintf.driver_mp_w.driver_cb_w
 
 class write_driver extends uvm_driver#(write_transaction);
     `uvm_component_utils(write_driver)
@@ -27,21 +27,21 @@ class write_driver extends uvm_driver#(write_transaction);
     task write_address (write_transaction trans);
         `uvm_info("DRIVER - WRITE ADDRESS CHANNEL","",UVM_HIGH)
         @(posedge v_wintf.s_axi_wclk);
-        `vif.awid       <= trans.awid;
-        `vif.awaddr     <= trans.awaddr[0];
-        `vif.awlen      <= trans.awlen;
-        `vif.awsize     <= trans.awsize;
-        `vif.awburst    <= trans.awburst;
-        `vif.awlock     <= trans.awlock;
-        `vif.awcache    <= trans.awcache;
-        `vif.awprot     <= trans.awprot;
-        `vif.awvalid    <= trans.awvalid;
-        wait(v_wintf..awready==1);
+        `w_vifd.awid       <= trans.awid;
+        `w_vifd.awaddr     <= trans.awaddr[0];
+        `w_vifd.awlen      <= trans.awlen;
+        `w_vifd.awsize     <= trans.awsize;
+        `w_vifd.awburst    <= trans.awburst;
+        `w_vifd.awlock     <= trans.awlock;
+        `w_vifd.awcache    <= trans.awcache;
+        `w_vifd.awprot     <= trans.awprot;
+        `w_vifd.awvalid    <= trans.awvalid;
+        wait(v_wintf.awready==1);
 
         @(posedge v_wintf.s_axi_wclk);
-        `vif.awaddr     <= '0;
-        `vif.awid       <= '0;
-        `vif.awvalid    <= '0;
+        `w_vifd.awaddr     <= '0;
+        `w_vifd.awid       <= '0;
+        `w_vifd.awvalid    <= '0;
     endtask
 
     int wdata_count;
@@ -50,38 +50,38 @@ class write_driver extends uvm_driver#(write_transaction);
         repeat (trans.wdata.size()) begin
             @(posedge v_wintf.s_axi_wclk);
             `uvm_info("DRIVER - WRITE DATA CHANNEL","",UVM_HIGH);
-            `vif.wdata <= trans.wdata[wdata_count];
-            `vif.wstrb <= trans.wstrb;
-            `vif.wvalid <= trans.wvalid;
+            `w_vifd.wdata <= trans.wdata[wdata_count];
+            `w_vifd.wstrb <= trans.wstrb;
+            `w_vifd.wvalid <= trans.wvalid;
             if (wdata_count == trans.awlen) begin
-                `vif.wlast <= '1;
+                `w_vifd.wlast <= '1;
             end
             else begin
-                `vif.wlast <= '0;
+                `w_vifd.wlast <= '0;
             end
             while (v_wintf.wready == 0) begin
                 @(posedge v_wintf.s_axi_wclk);
             end
             wdata_count++;
             @(posedge v_wintf.s_axi_wclk);
-            `vif.wvalid <= '0;
+            `w_vifd.wvalid <= '0;
             trans.wstrb <= 4'b1111;
         end
-        `vif.wdata <= 0;    
+        `w_vifd.wdata <= 0;    
     endtask
 
     task write_response(write_transaction trans);
         `uvm_info("DRIVER - WRITE RESPONSE CHANNEL","",UVM_HIGH);
-        `vif.bready <= trans.bready;
+        `w_vifd.bready <= trans.bready;
         while(v_wintf.bvalid == 0) begin
             @(posedge v_wintf.s_axi_wclk);
         end
     endtask
 
     task write_reset_logic;
-        `vif.awvalid <= '0;
-        `vif.wvalid <= '0;
-        `vif.bready <= '0;
+        `w_vifd.awvalid <= '0;
+        `w_vifd.wvalid <= '0;
+        `w_vifd.bready <= '0;
     endtask
 
     task write_driver_logic(write_transaction trans);
@@ -99,7 +99,7 @@ class write_driver extends uvm_driver#(write_transaction);
                 write_reset_logic();
             end
             else if (trans.wrst == 1) begin
-                v_wintf.wrst == 1;
+                v_wintf.wrst = 1;
                 write_driver_logic(trans);
             end
             seq_item_port.item_done();

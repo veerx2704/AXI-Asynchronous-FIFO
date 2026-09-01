@@ -1,7 +1,7 @@
 `ifndef AXI_READ_MONITOR
 `define AXI_READ_MONITOR
 
-`define vif v_rintf.monitor_mp_r.monitor_cb_r
+`define r_vifm v_rintf.monitor_mp_r.monitor_cb_r
 
 class read_monitor extends uvm_monitor#(read_transaction);
     `uvm_component_utils(read_monitor);
@@ -41,11 +41,11 @@ class read_monitor extends uvm_monitor#(read_transaction);
                         while (v_rintf.arvalid == 0 || v_rintf.arready == 0) begin
                             @(posedge v_rintf.m_axi_rclk);
                         end
-                        trans.arvalid = `vif.arvalid;
-                        trans.arready = `vif.arready;
-                        trans.arlen = `vif.arlen;
+                        trans.arvalid = `r_vifm.arvalid;
+                        trans.arready = `r_vifm.arready;
+                        trans.arlen = `r_vifm.arlen;
                         trans.araddr = new[1];
-                        trans.araddr[0] = `vif.araddr;
+                        trans.araddr[0] = `r_vifm.araddr;
                         trans.rdata = new[trans.arlen + 1];
                         sema.put(1);
                     end : READ_ADDRESS_CHANNEL
@@ -57,9 +57,9 @@ class read_monitor extends uvm_monitor#(read_transaction);
                             while (v_rintf.rvalid == 0 || v_rintf.rready == 0) begin
                                 @(posedge v_rintf.m_axi_rclk);
                             end
-                            trans.rvalid = `vif.rvalid;
-                            trans.rready = `vif.rready;
-                            trans.rdata[rdata_count] = `vif.rdata;
+                            trans.rvalid = `r_vifm.rvalid;
+                            trans.rready = `r_vifm.rready;
+                            trans.rdata[rdata_count] = `r_vifm.rdata;
                             rdata_count++;
                             @(posedge v_rintf.m_axi_rclk);
                         end
@@ -80,7 +80,7 @@ class read_monitor extends uvm_monitor#(read_transaction);
             else begin
                 @(posedge v_rintf.m_axi_rclk);
                 trans = read_transaction::type_id::create("trans",this);
-                trans.rrst = `vif.rrst;
+                trans.rrst = `r_vifm.rrst;
                 monr2scor.write(trans);
             end
         end 
