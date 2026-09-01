@@ -12,7 +12,8 @@ class subscriber extends uvm_subscriber#(write_transaction, read_transaction);
 
     function new (string name = "subscriber", uvm_component parent = null);
         super.new(name,parent);
-        axi_cg = new();
+        axi_w_cg = new();
+        axi_r_cg = new();
     endfunction
 
     function void build_phase(uvm_phase phase);
@@ -21,8 +22,12 @@ class subscriber extends uvm_subscriber#(write_transaction, read_transaction);
         monr2scor = new("monr2scor",this);
     endfunction
 
-    function void write(T t);
-        axi_cg.sample();
+    function void w_write(write_transaction t);
+        axi_w_cg.sample();
+    endfunction
+
+    function void r_write(read_transaction r);
+        axi_r_cg.sample();
     endfunction
 
     int wdata_count;
@@ -79,7 +84,7 @@ bit             rready;
             forever begin
                 monr2scor.get(r_trans);
                 repeat(r_trans.arlen + 1) begin
-                    araddr = r_trans.araddr;
+                    araddr = r_trans.araddr[0];
                     arlen = r_trans.arlen;
                     arsize = r_trans.arsize;
                     arburst = r_trans.arburst;
@@ -96,14 +101,14 @@ bit             rready;
                     rvalid = r_trans.rvalid;
                     
                     rdata_count++;
-                    write(r_trans);
+                    r_write(r_trans);
                 end
             end
 
             forever begin
                 monw2scor.get(w_trans);
                 repeat(w_trans.awlen + 1) begin
-                    awaddr = w_trans.awaddr;
+                    awaddr = w_trans.awaddr[0];
                     awlen = w_trans.awlen;
                     awsize = w_trans.awsize;
                     awburst = w_trans.awburst;
@@ -121,13 +126,13 @@ bit             rready;
                     bvalid = w_trans.bvalid;
                     
                     wdata_count++;
-                    write(w_trans);
+                    w_write(w_trans);
                 end
             end
         join_none
     endtask
 
-    covergroup axi_cg;
+    covergroup axi_r_cg;
         cp1:  coverpoint rdata      {bins b1 = {[0:32'hffff_ffff]};}
         cp2:  coverpoint araddr     {bins b2 = {[0:16'hffff]};}
         cp3:  coverpoint arlen      {bins b3 = {[0:8'hff]};}
@@ -139,21 +144,24 @@ bit             rready;
         cp10: coverpoint rready     {bins b10 = {0,1'b1};}
         cp11: coverpoint rvalid     {bins b11 = {0,1'b1};}
         cp12: coverpoint rresp      {bins b12 = {[0:2'b11]};}
+    endgroup
 
-        cp13: coverpoint wdata      {bins b13 = {[0:32'hffff_ffff]};}
-        cp14: coverpoint awaddr     {bins b14 = {[0:16'hffff]};}
-        cp15: coverpoint awlen      {bins b15 = {[0:8'hff]};}
-        cp16: coverpoint awsize     {bins b16 = {[0:3'b111]};}
-        cp17: coverpoint awburst    {bins b17 = {[0:2'b11]};}
-        cp18: coverpoint awvalid    {bins b18 = {[0:1'b1]};}
-        cp19: coverpoint awready    {bins b19 = {[0:1'b1]};}
-        cp20: coverpoint wlast      {bins b20 = {[0:1'b1]};}
-        cp21: coverpoint wstrb      {bins b21 = {4'b0001,4'b0011,4'b0111,4'b1111};}
-        cp22: coverpoint wready     {bins b22 = {0,1'b1};}
-        cp23: coverpoint wvalid     {bins b23 = {0,1'b1};}
-        cp24: coverpoint bresp      {bins b24 = {[0:2'b11]};}
-        cp25: coverpoint bvalid     {bins b25 = {0,1'b1};}
-        cp26: coverpoint bready     {bins b26 = {0,1'b1};}
+    covergroup axi_w_cg;
+
+        cp1: coverpoint wdata      {bins b13 = {[0:32'hffff_ffff]};}
+        cp2: coverpoint awaddr     {bins b14 = {[0:16'hffff]};}
+        cp3: coverpoint awlen      {bins b15 = {[0:8'hff]};}
+        cp4: coverpoint awsize     {bins b16 = {[0:3'b111]};}
+        cp5: coverpoint awburst    {bins b17 = {[0:2'b11]};}
+        cp6: coverpoint awvalid    {bins b18 = {[0:1'b1]};}
+        cp7: coverpoint awready    {bins b19 = {[0:1'b1]};}
+        cp8: coverpoint wlast      {bins b20 = {[0:1'b1]};}
+        cp9: coverpoint wstrb      {bins b21 = {4'b0001,4'b0011,4'b0111,4'b1111};}
+        cp10: coverpoint wready     {bins b22 = {0,1'b1};}
+        cp11: coverpoint wvalid     {bins b23 = {0,1'b1};}
+        cp12: coverpoint bresp      {bins b24 = {[0:2'b11]};}
+        cp13: coverpoint bvalid     {bins b25 = {0,1'b1};}
+        cp14: coverpoint bready     {bins b26 = {0,1'b1};}
     endgroup
 
     function void check_phase(uvm_phase phase);
