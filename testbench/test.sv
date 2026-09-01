@@ -21,7 +21,7 @@ class base_test extends uvm_test;
    endfunction
    function void report_phase(uvm_phase phase);
       uvm_report_server server;
-      int err_num;
+      int err_num, fatal_num;
       super.report_phase(phase);
 
       server = get_report_server();
