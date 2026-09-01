@@ -1,7 +1,7 @@
 `ifndef AXI_WRITE_SEQUENCER
 `define AXI_WRITE_SEQUENCER
 
-class write_sequencer extends uvm_sequencer #(write_transaction, read_transaction);
+class write_sequencer extends uvm_sequencer #(write_transaction);
     `uvm_component_utils(write_sequencer);
 
     function new(string name = "write_sequencer", uvm_component parent = null);

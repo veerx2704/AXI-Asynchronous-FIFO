@@ -1,7 +1,7 @@
 `ifndef AXI_READ_SEQUENCER
 `define AXI_READ_SEQUENCER
 
-class read_sequencer extends uvm_sequencer #(write_transaction, read_transaction);
+class read_sequencer extends uvm_sequencer #(read_transaction);
     `uvm_component_utils(read_sequencer);
 
     function new(string name = "read_sequencer", uvm_component parent = null);
