@@ -26,33 +26,58 @@ class sequence_1 extends my_sequence;
    task body();
       write_transaction w_trans;
       read_transaction r_trans;
-      repeat(1) begin
-         `uvm_info("SEQUENCE STARTED - 1","",UVM_HIGH);
-         w_trans=write_transaction::type_id::create("w_trans");
-         start_item(w_trans);
-         w_trans.randomize with { 
-                           reset==0;
-                        };
-         finish_item(w_trans);
-      end  
-      #30;
-      repeat(1) begin
-         w_trans=write_transaction::type_id::create("w_trans");
-         start_item(w_trans);
-         w_trans.randomize with {
-                           reset==1;
-                           awlen==6;
-                           awlen==arlen;
-                           awaddr.size==1;
-                           awaddr[0]==araddr[0];
-                           wstrb==4'b1111;
-                           wdata.size==(awlen+1);
+      `uvm_info("SEQUENCE STARTED - 1","",UVM_HIGH);
+      fork begin
+         begin : WRITE_CHANNEL
+            repeat(1) begin
+               w_trans=write_transaction::type_id::create("w_trans");
+               start_item(w_trans);
+               w_trans.randomize with { 
+                                 wrst == 0;
+                              };
+               finish_item(w_trans);
+            end  
+            #30;
+            repeat(1) begin
+               w_trans=write_transaction::type_id::create("w_trans");
+               start_item(w_trans);
+               w_trans.randomize with {
+                                 reset==1;
+                                 awlen==6;   //6 data entities to be sent
+                                 awaddr.size==1;
+                                 awaddr[0] = 16'h2000;
+                                 wstrb==4'b1111;
+                                 wdata.size==(awlen+1);
+                                 unique{wdata};
+                              };
+               finish_item(trans);
+               `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
+            end   
+         end : WRITE_CHANNEL
 
-                           unique{wdata};
-                        };
-         finish_item(trans);
-         `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
-      end   
+         begin : READ_CHANNEL
+            repeat(1) begin
+               r_trans = read_transaction::type_id::create("r_trans");
+               start_item(r_trans);
+               r_trans.randomize with {
+                  rrst = 0;
+               };
+               finish_item(r_trans);
+            end
+
+            repeat(1) begin
+               r_trans = read_transaction::type_id::create("r_trans");
+               start_item(r_trans);
+               r_trans.randomize with {
+                  rrst == 1;
+                  arlen == 6;
+                  araddr.size == 1;
+                  araddr[0] == 16'h2000;
+                  rstrb == 4'b1111;
+                  rdata.size == arlen + 1;
+               }
+            end
+         end : READ_CHANNEL
    endtask
 
 endclass
@@ -72,49 +97,6 @@ class sequence_2 extends my_sequence;
    endfunction
 
    task body();
-      transaction trans;
-      repeat(1) begin
-         `uvm_info("SEQUENCE STARTED - 1","",UVM_HIGH);
-         trans=transaction::type_id::create("trans");
-         start_item(trans);
-         trans.randomize with { 
-                           reset==1;
-                        };
-         finish_item(trans);
-      end  
-      #30;
-      repeat(1) begin
-         `uvm_info("SEQUENCE STARTED - 2","",UVM_HIGH);
-         trans=transaction::type_id::create("trans");
-         start_item(trans);
-         trans.randomize with {
-                           awlen==9;
-                           reset==0;
-                           arlen==5;
-                           wstrb==4'b1111;
-                           wdata.size==(awlen+1);
-                           unique{wdata};
-                           unique{awaddr};
-                           awaddr[0]==araddr[0];
-                        };
-         finish_item(trans);
-      end
-      repeat(1) begin
-         trans=transaction::type_id::create("trans");
-         start_item(trans);
-         trans.randomize with {
-                           awlen==5;
-                           reset==0;
-                           arlen==9;
-                           wstrb==4'b1111;
-                           wdata.size==(awlen+1);
-                           unique{wdata};
-                           unique{awaddr};
-                           awaddr[0]==araddr[0];
-                        };
-         finish_item(trans);
-         `uvm_info("SEQUENCE ENDED - 2","",UVM_HIGH);
-      end 
    endtask
 
 endclass
@@ -132,36 +114,7 @@ class sequence_3 extends my_sequence;
    endfunction
 
    task body();
-      transaction trans;
-      repeat(1) begin
-         `uvm_info("SEQUENCE STARTED - 1","",UVM_HIGH);
-         trans=transaction::type_id::create("trans");
-         start_item(trans);
-         trans.randomize with { 
-                           reset==1;
-                        };
-         finish_item(trans);
-      end  
-      #30;
-      repeat(1) begin
-         `uvm_info("SEQUENCE STARTED - 3","",UVM_HIGH);
-         trans=transaction::type_id::create("trans");
-         start_item(trans);
-         trans.randomize with {
-                           awaddr[0]==122;
-                           reset==0;
-                           araddr[0]==120;
-                           wstrb==4'b1111;
-                           awlen==9;
-                           awlen==arlen;
-                           wdata.size==(awlen+1);
-                           unique{wdata};
-                        };
-         finish_item(trans);
-         `uvm_info("SEQUENCE ENDED - 3","",UVM_HIGH);
-      end
-
-
+ 
    endtask
 
 endclass
@@ -180,36 +133,6 @@ class sequence_4 extends my_sequence;
    endfunction
 
    task body();
-      transaction trans;
-      repeat(1) begin
-         `uvm_info("SEQUENCE STARTED - 1","",UVM_HIGH);
-         trans=transaction::type_id::create("trans");
-         start_item(trans);
-         trans.randomize with { 
-                           reset==1;
-                        };
-         finish_item(trans);
-      end  
-      #30;
-      repeat(10) begin
-         `uvm_info("SEQUENCE STARTED - 1","",UVM_HIGH);
-         trans=transaction::type_id::create("trans");
-         start_item(trans);
-         trans.randomize with {
-                           awlen==0;
-                           awburst==0;
-                           reset==0;
-                           arburst==0;
-                           awlen==arlen;
-                           wdata.size==(awlen+1);
-                           unique{wdata};
-                           unique{awaddr};
-                           awaddr[0]%4==0;
-                           awaddr[0]==araddr[0];
-                        };
-         finish_item(trans);
-         `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
-      end   
    endtask
 
 endclass
@@ -227,40 +150,6 @@ class sequence_5 extends my_sequence;
    endfunction
 
    task body();
-      transaction trans;
-      repeat(1) begin
-         `uvm_info("SEQUENCE STARTED - 1","",UVM_HIGH);
-         trans=transaction::type_id::create("trans");
-         start_item(trans);
-         trans.randomize with { 
-                           reset==1;
-                        };
-         finish_item(trans);
-      end  
-      #30;
-      repeat(10) begin
-         `uvm_info("SEQUENCE STARTED - 5","",UVM_HIGH);
-         trans=transaction::type_id::create("trans");
-         start_item(trans);
-         trans.randomize with {
-                           awlen==0;
-                           reset==0;
-                           awburst==0;
-                           arburst==0;
-                           awlen==arlen;
-                           wdata.size==(awlen+1);
-                           unique{wdata};
-                           unique{awaddr};
-                           awaddr[0]%4!=0;
-                           awaddr[0]==araddr[0];
-                           awaddr[0]%4==0 -> wstrb==4'b1111;
-                           awaddr[0]%4==1 -> wstrb==4'b0111;
-                           awaddr[0]%4==2 -> wstrb==4'b0011;
-                           awaddr[0]%4==3 -> wstrb==4'b0001;
-                        };
-         finish_item(trans);
-         `uvm_info("SEQUENCE ENDED - 5","",UVM_HIGH);
-      end   
    endtask
 
 endclass
