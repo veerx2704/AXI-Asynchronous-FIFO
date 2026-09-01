@@ -19,7 +19,6 @@ bit             arready;
 //READ DATA CHANNEL
 bit [7:0]       rid;
 bit [31:0]      rdata[];
-bit [3:0]       rstrb;
 bit             rlast;
 bit [1:0]       rresp;
 bit             rvalid;
@@ -28,12 +27,11 @@ rand bit        rready;
 constraint id_range {arid inside [1:20];}
 constraint burst_type {arburst==0;}
 constraint length_range {arlen inside [0:15];}
-constraint strobe_type {rstrb inside {4'b0001, 4'b0011, 4'b0111, 4'b1111};}      //strobe should be coherent with byte selects
 constraint size_val {arsize==2;}
 constraint valid_handshake {arvalid==1}
 constraint ready_when {soft rready == 1;}
-constraint address {araddr.size() == 1; araddr[0] == 16'h2000;}
-constraint read_depth {soft rdata.size() == arlen + 1;}
+constraint address {araddr.size() == 1; }
+constraint read_depth {rdata.size() == arlen + 1;}
 
 `uvm_object_utils_begin(read_transaction)
 

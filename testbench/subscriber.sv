@@ -69,7 +69,6 @@ bit        arready;
 
 //READ DATA CHANNEL
 bit [31:0]      rdata;
-bit [3:0]       rstrb;
 bit             rlast;
 bit [1:0]       rresp;
 bit             rvalid;
@@ -88,7 +87,6 @@ bit             rready;
                     arready = r_trans.arready;
 
                     rdata = r_trans.rdata[rdata_count];
-                    rstrb = r_trans.rstrb;
                     rlast = r_trans.rlast;
                     rvalid = r_trans.rvalid;
                     rready = r_trans.rready;
@@ -139,7 +137,6 @@ bit             rready;
         cp6:  coverpoint arvalid    {bins b6 = {[0:1'b1]};}
         cp7:  coverpoint arready    {bins b7 = {[0:1'b1]};}
         cp8:  coverpoint rlast      {bins b8 = {[0:1'b1]};}
-        cp9:  coverpoint rstrb      {bins b9 = {4'b0001,4'b0011,4'b0111,4'b1111};}
         cp10: coverpoint rready     {bins b10 = {0,1'b1};}
         cp11: coverpoint rvalid     {bins b11 = {0,1'b1};}
         cp12: coverpoint rresp      {bins b12 = {[0:2'b11]};}

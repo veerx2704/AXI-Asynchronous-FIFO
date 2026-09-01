@@ -57,7 +57,6 @@ class read_monitor extends uvm_monitor#(read_transaction);
                             while (v_rintf.rvalid == 0 || v_rintf.rready == 0) begin
                                 @(posedge v_rintf.m_axi_rclk);
                             end
-                            trans.rstrb = `vif.rstrb;
                             trans.rvalid = `vif.rvalid;
                             trans.rready = `vif.rready;
                             trans.rdata[rdata_count] = `vif.rdata;

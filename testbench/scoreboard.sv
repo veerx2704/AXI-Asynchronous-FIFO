@@ -75,14 +75,7 @@ class scoreboard extends uvm_scoreboard;
                 `uvm_info("SCOREBOARD-PACKETS (READ) RECEIVED",$sformatf("%p",r_trans.rdata),UVM_HIGH);        
                 if (r_trans.rresp == `OKAY) begin                       // DATA WILL ONLY BE READ IF FIFO IS NOT EMPTY (ALL OKAY)
                     for(int i = 0; i < r_trans.arlen; i++) begin
-                        if (r_trans.rstrb == 4'b1111)
-                            rdata[i] = r_trans.rdata[i];
-                        else if (r_trans.rstrb == 4'b0111)
-                            rdata[i][23:0] = r_trans.rdata[i][23:0];
-                        else if (r_trans.rstrb == 4'b0011)
-                            rdata[i][15:0] = r_trans.rdata[i][15:0];
-                        else if (r_trans.rstrb == 4'b0001)
-                            rdata[i][7:0] = r_trans.rdata[i][7:0];
+                        rdata[i] = r_trans.rdata[i];
                         data_inspect = fifo_queue.pop_front();
                         data_valid = rdata[i].compare(data_inspect);
 
