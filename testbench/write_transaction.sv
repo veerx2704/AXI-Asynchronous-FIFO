@@ -44,7 +44,7 @@ constraint ready_when {soft bready == 1;}
 constraint address {awaddr.size() == 1; awaddr inside {[0:16'hffff]};}
 constraint write_depth {wdata.size() == awlen + 1;}
 
-`uvm_object_utils_begin(transaction)
+`uvm_object_utils_begin(write_transaction)
 
 `uvm_field_int(wrst,UVM_ALL_ON)
 
