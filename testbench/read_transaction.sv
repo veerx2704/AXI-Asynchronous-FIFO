@@ -28,7 +28,7 @@ constraint id_range {arid inside {[1:20]};}
 constraint burst_type {arburst inside {[0:2'b10]};}
 constraint length_range {arlen inside {[0:15]};}
 constraint size_val {arsize==2;}
-constraint valid_handshake {arvalid==1}
+constraint valid_handshake {arvalid==1;}
 constraint ready_when {soft rready == 1;}
 constraint address {araddr.size() == 1; araddr inside {[0:16'hffff]};}
 constraint read_depth {rdata.size() == arlen + 1;}
