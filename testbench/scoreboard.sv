@@ -77,7 +77,7 @@ class scoreboard extends uvm_scoreboard;
                     for(int i = 0; i < r_trans.arlen; i++) begin
                         rdata[i] = r_trans.rdata[i];
                         data_inspect = fifo_queue.pop_front();
-                        data_valid = rdata[i].compare(data_inspect);
+                        data_valid = rdata[i]==(data_inspect);
 
                         if (data_valid) begin
                             `uvm_info("*    SCOREBOARD    *","COMPARE SUCCESSFUL",UVM_LOW);
