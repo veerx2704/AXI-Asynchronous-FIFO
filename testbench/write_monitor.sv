@@ -19,7 +19,7 @@ class write_monitor extends uvm_monitor#(write_transaction);
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if (!uvm_config_db#(virtual v_wintf)::get(this,"","DATA",v_wintf)) begin
+        if (!uvm_config_db#(virtual write_interface)::get(this,"","DATA",v_wintf)) begin
             `uvm_fatal("*   (WRITE) MONITOR CONNECTION FAILED   *","");
         end
         else begin
@@ -91,7 +91,7 @@ class write_monitor extends uvm_monitor#(write_transaction);
             else begin
                 @(posedge v_wintf.s_axi_wclk);
                 trans = write_transaction::type_id::create("trans",this);
-                trans.wrst = `w_vifm.wrst;
+                trans.wrst = w_vintf.wrst;
                 monw2scor.write(trans);
             end
         end

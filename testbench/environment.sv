@@ -11,7 +11,7 @@ class environment extends uvm_env;
     virtual_sequencer v_seqr;
 
     function new (string name = "environment", uvm_component parent = null);
-        super.new = new(name,this);
+        super.new(name,this);
     endfunction
 
     function void build_phase(uvm_phase phase);

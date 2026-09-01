@@ -21,7 +21,7 @@ class subscriber extends uvm_subscriber#(write_transaction, read_transaction);
         monr2scor = new("monr2scor",this);
     endfunction
 
-    function void w_write(T t);
+    function void write(T t);
         axi_cg.sample();
     endfunction
 
@@ -96,7 +96,7 @@ bit             rready;
                     rvalid = r_trans.rvalid;
                     
                     rdata_count++;
-                    r_write(r_trans);
+                    write(r_trans);
                 end
             end
 
@@ -121,7 +121,7 @@ bit             rready;
                     bvalid = w_trans.bvalid;
                     
                     wdata_count++;
-                    w_write(w_trans);
+                    write(w_trans);
                 end
             end
         join_none
@@ -132,7 +132,7 @@ bit             rready;
         cp2:  coverpoint araddr     {bins b2 = {[0:16'hffff]};}
         cp3:  coverpoint arlen      {bins b3 = {[0:8'hff]};}
         cp4:  coverpoint arsize     {bins b4 = {[0:3'b111]};}
-        cp5:  coverpoint arburst    {bins b5 = {[0:2'b11]}};
+        cp5:  coverpoint arburst    {bins b5 = {[0:2'b11]};}
         cp6:  coverpoint arvalid    {bins b6 = {[0:1'b1]};}
         cp7:  coverpoint arready    {bins b7 = {[0:1'b1]};}
         cp8:  coverpoint rlast      {bins b8 = {[0:1'b1]};}
@@ -144,7 +144,7 @@ bit             rready;
         cp14: coverpoint awaddr     {bins b14 = {[0:16'hffff]};}
         cp15: coverpoint awlen      {bins b15 = {[0:8'hff]};}
         cp16: coverpoint awsize     {bins b16 = {[0:3'b111]};}
-        cp17: coverpoint awburst    {bins b17 = {[0:2'b11]}};
+        cp17: coverpoint awburst    {bins b17 = {[0:2'b11]};}
         cp18: coverpoint awvalid    {bins b18 = {[0:1'b1]};}
         cp19: coverpoint awready    {bins b19 = {[0:1'b1]};}
         cp20: coverpoint wlast      {bins b20 = {[0:1'b1]};}

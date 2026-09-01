@@ -32,13 +32,13 @@ class read_driver extends uvm_driver #(read_transaction);
         `r_vifd.araddr <= trans.araddr[0];
         `r_vifd.arlen <= trans.arlen;
         `r_vifd.arsize <= trans.arsize;
-        `r_vifd.arburst <= trans.burst;
+        `r_vifd.arburst <= trans.arburst;
         `r_vifd.arlock <= trans.arlock;
         `r_vifd.arcache <= trans.arcache;
         `r_vifd.arprot <= trans.arprot;
         `r_vifd.arvalid <= trans.arvalid;
         while (trans.arready == 0) begin
-            @(posedge v_rintnf.m_axi_rclk);
+            @(posedge v_rintf.m_axi_rclk);
         end
         @(posedge v_rintf.m_axi_rclk);
         `r_vifd.arid <= '0;

@@ -51,7 +51,7 @@ class sequence_1 extends my_sequence;
                                  wdata.size==(awlen+1);
                                  unique{wdata};
                               };
-               finish_item(trans);
+               finish_item(w_trans);
             end   
          end : WRITE_CHANNEL
 
@@ -73,7 +73,7 @@ class sequence_1 extends my_sequence;
                   arlen == 6;
                   arburst == 2'b00;
                   araddr[0] == 16'h2000;
-               }
+               };
                finish_item(r_trans);
             end
          end : READ_CHANNEL
@@ -109,7 +109,7 @@ class sequence_2 extends my_sequence;
                start_item(w_trans,p_sequencer.w_seqr);
                w_trans.randomize with {
                   wrst == 0;
-               }
+               };
                finish_item(w_trans);
             end
             #30;
@@ -118,12 +118,12 @@ class sequence_2 extends my_sequence;
                start_item(w_trans,p_sequencer.w_seqr);
                w_trans.randomize with {
                   wrst == 1;
-                  awaddr[0] == 16'h20000;
+                  awaddr[0] == 16'h2000;
                   awlen == 4;
                   wstrb == 4'b1111;
                   awburst == 2'b00;
-                  unique{wdata}
-               }
+                  unique{wdata};
+               };
                finish_item(w_trans);
             end
          end : WRITE_CHANNEL
@@ -134,7 +134,7 @@ class sequence_2 extends my_sequence;
                start_item(r_trans,p_sequencer.r_seqr);
                r_trans.randomize with {
                   rrst == 0;
-               }
+               };
                finish_item(r_trans);
             end
             #30;
@@ -146,7 +146,7 @@ class sequence_2 extends my_sequence;
                   arlen == 7;
                   araddr == 16'h2000;
                   arburst == 2'b00;
-               }
+               };
                finish_item(r_trans);
             end
          end : READ_CHANNEL
@@ -179,12 +179,12 @@ class sequence_3 extends my_sequence;
                start_item(w_trans,p_sequencer.w_seqr);
                w_trans.randomize with {
                   wrst == 0;
-               }
+               };
                finish_item(w_trans);
             end
             #30;
             repeat(1) begin
-               w_trans = write_trans::type_id::create("w_trans");
+               w_trans = write_transaction::type_id::create("w_trans");
                start_item(w_trans,p_sequencer.w_seqr);
                w_trans.randomize with {
                   wrst == 1;
@@ -193,7 +193,7 @@ class sequence_3 extends my_sequence;
                   awlen == 9;
                   wstrb == 4'b1111;
                   unique{wdata};
-               }
+               };
                finish_item(w_trans);
             end
          end : WRITE_CHANNEL
@@ -204,7 +204,7 @@ class sequence_3 extends my_sequence;
                start_item(r_trans,p_sequencer.r_seqr);
                r_trans.randomize with {
                   rrst == 0;
-               }
+               };
                finish_item(r_trans);
             end
             #30;
@@ -213,10 +213,10 @@ class sequence_3 extends my_sequence;
                start_item(r_trans,p_sequencer.r_seqr);
                r_trans.randomize with {
                   rrst == 1;
-                  araddr == 16'b2000;
+                  araddr == 16'h2000;
                   arlen == 3;
                   arburst == 2'b00;
-               }
+               };
                finish_item(r_trans);
             end
          end : READ_CHANNEL
@@ -248,7 +248,7 @@ class sequence_4 extends my_sequence;
          start_item(w_trans,p_sequencer.w_seqr);
          w_trans.randomize with {
             wrst == 0;
-         }
+         };
          finish_item(w_trans);
       end
       #30;
@@ -262,7 +262,7 @@ class sequence_4 extends my_sequence;
             awburst == 2'b00;
             wstrb == 4'b1111;
             unique{wdata};
-         }
+         };
          finish_item(w_trans);
       end
       `uvm_info("SEQUENCE ENDED - 4","",UVM_HIGH);
@@ -292,7 +292,7 @@ class sequence_5 extends my_sequence;
          start_item(r_trans,p_sequencer.r_seqr);
          r_trans.randomize with {
             rrst == 0;
-         }
+         };
          finish_item(r_trans);
       end
       #30;
@@ -304,7 +304,7 @@ class sequence_5 extends my_sequence;
             arburst == 2'b00;
             araddr == 16'h2000;
             arlen == 20;
-         }
+         };
          finish_item(r_trans);
       end
       `uvm_info("SEQUENCE ENDED - 5","",UVM_HIGH);
@@ -336,7 +336,7 @@ class sequence_6 extends my_sequence;
                start_item(w_trans,p_sequencer.w_seqr);
                w_trans.randomize with {
                   wrst == 0;
-               }
+               };
                finish_item(w_trans);
             end
             #30;
@@ -345,10 +345,10 @@ class sequence_6 extends my_sequence;
                start_item(w_trans,p_sequencer.w_seqr);
                w_trans.randomize with {
                   wrst == 1;
-                  wtsrb == 4'b1111;
+                  wstrb == 4'b1111;
                   awburst == 2'b00;
                   awlen == 1;
-               }
+               };
                finish_item(w_trans);
             end
          end : WRITE_CHANNEL
@@ -358,7 +358,7 @@ class sequence_6 extends my_sequence;
                start_item(r_trans,p_sequencer.r_seqr);
                r_trans.randomize with {
                   rrst == 0;
-               }
+               };
                finish_item(r_trans);
             end
             #30;
@@ -369,7 +369,7 @@ class sequence_6 extends my_sequence;
                   rrst == 1;
                   arburst == 2'b00;
                   arlen == 1;
-               }
+               };
                finish_item(r_trans);
             end
          end : READ_CHANNEL         
@@ -387,8 +387,8 @@ class sequence_7 extends my_sequence;
    `uvm_component_utils(sequence_7);
       `uvm_declare_p_sequencer(virtual_sequencer);
 
-   function new(string name = "sequence_7", uvm_component parent = null);
-      super.new(name, parent);
+   function new(string name = "sequence_7");
+      super.new(name);
    endfunction
 
    task body();
@@ -401,7 +401,7 @@ class sequence_7 extends my_sequence;
                start_item(w_trans,p_sequencer.w_seqr);
                w_trans.randomize with {
                   wrst == 0;
-               }
+               };
                finish_item(w_trans);
             end
             #30;
@@ -413,7 +413,7 @@ class sequence_7 extends my_sequence;
                   awlen == 1;
                   awaddr[0] == 16'h2000;
                   wstrb == 4'b1111;
-               }
+               };
                finish_item(w_trans);
             end
          end : WRITE_CHANNEL
@@ -423,7 +423,7 @@ class sequence_7 extends my_sequence;
                start_item(r_trans,p_sequencer.r_seqr);
                r_trans.randomize with {
                   rrst == 0;
-               }
+               };
                finish_item(r_trans);
             end
             #30;
@@ -434,7 +434,7 @@ class sequence_7 extends my_sequence;
                   rrst == 1;
                   araddr == 16'h2000;
                   arlen == 1;
-               }
+               };
                finish_item(r_trans);
             end
          end : READ_CHANNEL          
@@ -455,8 +455,8 @@ class sequence_8 extends my_sequence;
    `uvm_component_utils(sequence_8);
    `uvm_declare_p_sequencer(virtual_sequencer);
 
-   function new(string name = "sequence_8", uvm_component parent = null);
-      super.new(name, parent);
+   function new(string name = "sequence_8");
+      super.new(name);
    endfunction
 
    task body();
@@ -485,7 +485,7 @@ class sequence_8 extends my_sequence;
                                  wdata.size==(awlen+1);
                                  unique{wdata};
                               };
-               finish_item(trans);
+               finish_item(w_trans);
             end   
          end : WRITE_CHANNEL
 
@@ -507,7 +507,7 @@ class sequence_8 extends my_sequence;
                   arlen == 1;
                   arburst == 2'b00;
                   araddr[0] == 16'h2000;
-               }
+               };
                finish_item(r_trans);
             end
          end : READ_CHANNEL

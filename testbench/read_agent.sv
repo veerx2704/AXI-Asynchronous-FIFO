@@ -25,6 +25,7 @@ class read_agent extends uvm_agent;
         super.connect_phase(phase);
         driver_h.seq_item_port.connect(sequencer_h.seq_item_export);
         monitor_h.monr2scor.connect(monr2scor);
+    endfunction
 
 endclass
 `endif

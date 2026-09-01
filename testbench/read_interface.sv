@@ -1,7 +1,7 @@
 `ifndef AXI_READ_INTERFACE
 `define AXI_READ_INTERFACE
 
-interface read_interface(input m_axi_rclk)
+interface read_interface(input m_axi_rclk);
 	parameter DATA_WIDTH = 32;
 	parameter ADDR_WIDTH = 16;
 	parameter BURST_LEN  = 8;

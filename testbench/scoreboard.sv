@@ -60,13 +60,13 @@ class scoreboard extends uvm_scoreboard;
                     end
                 end
                 else if (w_trans.bresp == `EXOKAY) begin
-                    `uvm_warning("*    SCOREBOARD    *","Cannot write to DUT, the buffer is / might become full",UVM_LOW);
+                    `uvm_warning("*    SCOREBOARD    *","Cannot write to DUT, the buffer is / might become full");
                 end
                 else if (w_trans.bresp == `SLVERR) begin
                     `uvm_error("*    SCOREBOARD    *","The DUT is erroring out");
                 end
                 else if (w_trans.bresp == `DECERR) begin
-                    `uvm_warning("*    SCOREBOARD    *","The transaction may not be intended for DUT, there is decoding error", UVM_MEDIUM);
+                    `uvm_warning("*    SCOREBOARD    *","The transaction may not be intended for DUT, there is decoding error");
                 end
             end
 
@@ -90,13 +90,13 @@ class scoreboard extends uvm_scoreboard;
                     end
                 end
                 else if (r_trans.rresp == `EXOKAY) begin
-                    `uvm_warning("*    SCOREBOARD    *","Cannot read from DUT, buffer is empty", UVM_LOW);
+                    `uvm_warning("*    SCOREBOARD    *","Cannot read from DUT, buffer is empty");
                 end
                 else if (r_trans.rresp == `SLVERR) begin
                     `uvm_error("*    SCOREBOARD    *","The DUT is erroring out");
                 end
                 else if (r_trans.rresp == `DECERR) begin
-                    `uvm_warning("*    SCOREBOARD    *","The transaction may not be intended for DUT, there is decoding error", UVM_MEDIUM);
+                    `uvm_warning("*    SCOREBOARD    *","The transaction may not be intended for DUT, there is decoding error");
                 end
             end
         join_none
