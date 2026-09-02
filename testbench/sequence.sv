@@ -144,7 +144,7 @@ class sequence_2 extends my_sequence;
                r_trans.randomize with {
                   rrst == 1;
                   arlen == 7;
-                  araddr == 16'h2000;
+                  araddr[0] == 16'h2000;
                   arburst == 2'b00;
                };
                finish_item(r_trans);
@@ -188,7 +188,7 @@ class sequence_3 extends my_sequence;
                start_item(w_trans);
                w_trans.randomize with {
                   wrst == 1;
-                  awaddr == 16'h2000;
+                  awaddr[0] == 16'h2000;
                   awburst == 2'b00;
                   awlen == 9;
                   wstrb == 4'b1111;
@@ -213,7 +213,7 @@ class sequence_3 extends my_sequence;
                start_item(r_trans);
                r_trans.randomize with {
                   rrst == 1;
-                  araddr == 16'h2000;
+                  araddr[0] == 16'h2000;
                   arlen == 3;
                   arburst == 2'b00;
                };
@@ -257,7 +257,7 @@ class sequence_4 extends my_sequence;
          start_item(w_trans);
          w_trans.randomize with {
             wrst == 1;
-            awaddr == 16'h2000;
+            awaddr[0] == 16'h2000;
             awlen == 20;
             awburst == 2'b00;
             wstrb == 4'b1111;
@@ -302,7 +302,7 @@ class sequence_5 extends my_sequence;
          r_trans.randomize with {
             rrst == 1;
             arburst == 2'b00;
-            araddr == 16'h2000;
+            araddr[0] == 16'h2000;
             arlen == 20;
          };
          finish_item(r_trans);
