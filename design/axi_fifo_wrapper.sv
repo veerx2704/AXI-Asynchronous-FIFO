@@ -244,7 +244,7 @@ adder #(.WIDTH($clog2(FIFO_DEPTH)+1)) LEN_AVAILABLE (.SrcA(total_capacity),
 										  .Sum(available_entries),
 										  .Cout(diff_borrow1));
 
-always_comb begin
+always @(*) begin
 	write_state_next = WRITE_STATE_IDLE;
 	fifo_wen = 1'b0;
 
@@ -338,7 +338,7 @@ always_comb begin
 end
 
 // Write channel register update
-always_ff @(posedge s_axi_wclk) begin
+always @(posedge s_axi_wclk) begin
 	if (!s_axi_wrst) begin
 		write_state_reg   <= WRITE_STATE_IDLE;
 		write_id_reg      <= '0;
@@ -369,7 +369,7 @@ end
 
 //READ CHANNEL CONTROL
 
-always_comb begin
+always @(*) begin
 	read_state_next = READ_STATE_IDLE;
 
 	fifo_ren = 1'b0;
@@ -447,7 +447,7 @@ always_comb begin
 end
 
 
-always_ff @(posedge m_axi_rclk) begin
+always @(posedge m_axi_rclk) begin
 	if (!m_axi_rrst) begin
 		read_state_reg <= READ_STATE_IDLE;
 
