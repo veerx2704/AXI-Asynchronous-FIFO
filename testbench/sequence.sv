@@ -44,7 +44,7 @@ class w_seq_fbel extends uvm_sequence #(write_transaction);
             wstrb == strb;
             awaddr[0] == addr;
             awburst == burst;
-         }
+         };
          finish_item(trans);
       end
    endtask
@@ -83,7 +83,7 @@ class r_seq_fbel extends uvm_sequence #(read_transaction);
             arlen == len;
             araddr[0] == addr;
             arburst == burst;
-         }
+         };
          finish_item(trans);
       end
    endtask
@@ -122,7 +122,7 @@ class w_seq_inca extends uvm_sequence #(write_transaction);
             awlen == len;
             wstrb == strb;
             awburst == burst;
-         }
+         };
          finish_item(trans);
       end
    endtask
@@ -161,7 +161,7 @@ class r_seq_inca extends uvm_sequence #(read_transaction);
             rrst == 1;
             arlen == len;
             arburst == burst;
-         }
+         };
          finish_item(trans);
       end
    endtask
@@ -201,7 +201,7 @@ class w_seq_nfb extends uvm_sequence #(write_transaction);
             awlen == len;
             wstrb == strb;
             awaddr[0] == addr;
-         }
+         };
          finish_item(trans);
       end
    endtask
@@ -241,7 +241,7 @@ class r_seq_nfb extends uvm_sequence #(read_transaction);
             rrst == 1;
             arlen == len;
             araddr[0] == addr;
-         }
+         };
          finish_item(trans);
       end
    endtask
