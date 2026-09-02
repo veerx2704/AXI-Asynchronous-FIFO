@@ -1,7 +1,7 @@
 `ifndef AXI_SEQUENCE
 `define AXI_SEQUENCE
 
-class my_sequence extends uvm_sequence#(write_transaction, read_transaction);
+class my_sequence extends uvm_sequence;
    `uvm_object_utils(my_sequence);
 
    function new(string name="my_sequence");
@@ -17,7 +17,7 @@ endclass
 //verification of fixed burst with equal length of write and read transaction 
 class sequence_1 extends my_sequence;
    `uvm_object_utils(sequence_1)
-      `uvm_declare_p_sequencer(virtual_sequencer);
+      
 
    
    function new(string name="sequence_1");
@@ -32,7 +32,7 @@ class sequence_1 extends my_sequence;
          begin : WRITE_CHANNEL
             repeat(1) begin
                w_trans=write_transaction::type_id::create("w_trans");
-               start_item(w_trans,p_sequencer.w_seqr);
+               start_item(w_trans);
                w_trans.randomize with { 
                                  wrst == 0;
                               };
@@ -41,7 +41,7 @@ class sequence_1 extends my_sequence;
             #30;
             repeat(1) begin
                w_trans=write_transaction::type_id::create("w_trans");
-               start_item(w_trans,p_sequencer.w_seqr);
+               start_item(w_trans);
                w_trans.randomize with {
                                  wrst==1;
                                  awburst == 2'b00;
@@ -58,7 +58,7 @@ class sequence_1 extends my_sequence;
          begin : READ_CHANNEL
             repeat(1) begin
                r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans,p_sequencer.r_seqr);
+               start_item(r_trans);
                r_trans.randomize with {
                   rrst == 0;
                };
@@ -67,7 +67,7 @@ class sequence_1 extends my_sequence;
 
             repeat(1) begin
                r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans,p_sequencer.r_seqr);
+               start_item(r_trans);
                r_trans.randomize with {
                   rrst == 1;
                   arlen == 6;
@@ -91,7 +91,7 @@ endclass
 //verification of fixed burst with different length of write and read transaction 
 class sequence_2 extends my_sequence;
    `uvm_object_utils(sequence_2)
-      `uvm_declare_p_sequencer(virtual_sequencer);
+      
 
    
    function new(string name="sequence_2");
@@ -106,7 +106,7 @@ class sequence_2 extends my_sequence;
          begin : WRITE_CHANNEL
             repeat(1) begin
                w_trans = write_transaction::type_id::create("w_trans");
-               start_item(w_trans,p_sequencer.w_seqr);
+               start_item(w_trans);
                w_trans.randomize with {
                   wrst == 0;
                };
@@ -115,7 +115,7 @@ class sequence_2 extends my_sequence;
             #30;
             repeat(1) begin
                w_trans = write_transaction::type_id::create("w_trans");
-               start_item(w_trans,p_sequencer.w_seqr);
+               start_item(w_trans);
                w_trans.randomize with {
                   wrst == 1;
                   awaddr[0] == 16'h2000;
@@ -131,7 +131,7 @@ class sequence_2 extends my_sequence;
          begin : READ_CHANNEL
             repeat(1) begin
                r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans,p_sequencer.r_seqr);
+               start_item(r_trans);
                r_trans.randomize with {
                   rrst == 0;
                };
@@ -140,7 +140,7 @@ class sequence_2 extends my_sequence;
             #30;
             repeat(1) begin
                r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans,p_sequencer.r_seqr);
+               start_item(r_trans);
                r_trans.randomize with {
                   rrst == 1;
                   arlen == 7;
@@ -161,7 +161,7 @@ endclass
 //verification of fixed burst with different read and write burst lengths
 class sequence_3 extends my_sequence;
    `uvm_object_utils(sequence_3)
-      `uvm_declare_p_sequencer(virtual_sequencer);
+      
 
    
    function new(string name="sequence_3");
@@ -176,7 +176,7 @@ class sequence_3 extends my_sequence;
          begin : WRITE_CHANNEL
             repeat(1) begin
                w_trans = write_transaction::type_id::create("w_trans");
-               start_item(w_trans,p_sequencer.w_seqr);
+               start_item(w_trans);
                w_trans.randomize with {
                   wrst == 0;
                };
@@ -185,7 +185,7 @@ class sequence_3 extends my_sequence;
             #30;
             repeat(1) begin
                w_trans = write_transaction::type_id::create("w_trans");
-               start_item(w_trans,p_sequencer.w_seqr);
+               start_item(w_trans);
                w_trans.randomize with {
                   wrst == 1;
                   awaddr == 16'h2000;
@@ -201,7 +201,7 @@ class sequence_3 extends my_sequence;
          begin : READ_CHANNEL
             repeat(1) begin
                r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans,p_sequencer.r_seqr);
+               start_item(r_trans);
                r_trans.randomize with {
                   rrst == 0;
                };
@@ -210,7 +210,7 @@ class sequence_3 extends my_sequence;
             #30;
             repeat(1) begin
                r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans,p_sequencer.r_seqr);
+               start_item(r_trans);
                r_trans.randomize with {
                   rrst == 1;
                   araddr == 16'h2000;
@@ -233,7 +233,7 @@ endclass
 //verification of fixed burst with write-only operation 
 class sequence_4 extends my_sequence;
    `uvm_object_utils(sequence_3)
-      `uvm_declare_p_sequencer(virtual_sequencer);
+      
 
    
    function new(string name="sequence_3");
@@ -245,7 +245,7 @@ class sequence_4 extends my_sequence;
       `uvm_info("SEQUENCE STARTED - 4","",UVM_HIGH);
       repeat(1) begin
          w_trans = write_transaction::type_id::create("w_trans");
-         start_item(w_trans,p_sequencer.w_seqr);
+         start_item(w_trans);
          w_trans.randomize with {
             wrst == 0;
          };
@@ -254,7 +254,7 @@ class sequence_4 extends my_sequence;
       #30;
       repeat(1) begin
          w_trans = write_transaction::type_id::create("w_trans");
-         start_item(w_trans,p_sequencer.w_seqr);
+         start_item(w_trans);
          w_trans.randomize with {
             wrst == 1;
             awaddr == 16'h2000;
@@ -277,7 +277,7 @@ endclass
 //verification of fixed burst with read-only operation
 class sequence_5 extends my_sequence;
    `uvm_object_utils(sequence_4)
-      `uvm_declare_p_sequencer(virtual_sequencer);
+      
 
    
    function new(string name="sequence_1");
@@ -289,7 +289,7 @@ class sequence_5 extends my_sequence;
       `uvm_info("SEQUENCE STARTED - 5","",UVM_HIGH);
       repeat(1) begin
          r_trans = read_transaction::type_id::create("r_trans");
-         start_item(r_trans,p_sequencer.r_seqr);
+         start_item(r_trans);
          r_trans.randomize with {
             rrst == 0;
          };
@@ -298,7 +298,7 @@ class sequence_5 extends my_sequence;
       #30;
       repeat(1) begin
          r_trans = read_transaction::type_id::create("r_trans");
-         start_item(r_trans,p_sequencer.r_seqr);
+         start_item(r_trans);
          r_trans.randomize with {
             rrst == 1;
             arburst == 2'b00;
@@ -318,7 +318,7 @@ endclass
 //verification of fixed burst with incorrect address 
 class sequence_6 extends my_sequence;
    `uvm_object_utils(sequence_5)
-      `uvm_declare_p_sequencer(virtual_sequencer);
+      
 
    
    function new(string name="sequence_5");
@@ -333,7 +333,7 @@ class sequence_6 extends my_sequence;
          begin : WRITE_CHANNEL
             repeat(1) begin
                w_trans = write_transaction::type_id::create("w_trans");
-               start_item(w_trans,p_sequencer.w_seqr);
+               start_item(w_trans);
                w_trans.randomize with {
                   wrst == 0;
                };
@@ -342,7 +342,7 @@ class sequence_6 extends my_sequence;
             #30;
             repeat(18) begin
                w_trans = write_transaction::type_id::create("w_trans");
-               start_item(w_trans,p_sequencer.w_seqr);
+               start_item(w_trans);
                w_trans.randomize with {
                   wrst == 1;
                   wstrb == 4'b1111;
@@ -355,7 +355,7 @@ class sequence_6 extends my_sequence;
          begin : READ_CHANNEL
             repeat(1) begin
                r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans,p_sequencer.r_seqr);
+               start_item(r_trans);
                r_trans.randomize with {
                   rrst == 0;
                };
@@ -364,7 +364,7 @@ class sequence_6 extends my_sequence;
             #30;
             repeat(18) begin
                r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans,p_sequencer.r_seqr);
+               start_item(r_trans);
                r_trans.randomize with {
                   rrst == 1;
                   arburst == 2'b00;
@@ -385,7 +385,7 @@ endclass
 
 class sequence_7 extends my_sequence;
    `uvm_object_utils(sequence_7);
-      `uvm_declare_p_sequencer(virtual_sequencer);
+      
 
    function new(string name = "sequence_7");
       super.new(name);
@@ -398,7 +398,7 @@ class sequence_7 extends my_sequence;
          begin : WRITE_CHANNEL
             repeat(1) begin
                w_trans = write_transaction::type_id::create("w_trans");
-               start_item(w_trans,p_sequencer.w_seqr);
+               start_item(w_trans);
                w_trans.randomize with {
                   wrst == 0;
                };
@@ -407,7 +407,7 @@ class sequence_7 extends my_sequence;
             #30;
             repeat(8) begin
                w_trans = write_transaction::type_id::create("w_trans");
-               start_item(w_trans,p_sequencer.w_seqr);
+               start_item(w_trans);
                w_trans.randomize with {
                   wrst == 1;
                   awlen == 1;
@@ -420,7 +420,7 @@ class sequence_7 extends my_sequence;
          begin : READ_CHANNEL
             repeat(1) begin
                r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans,p_sequencer.r_seqr);
+               start_item(r_trans);
                r_trans.randomize with {
                   rrst == 0;
                };
@@ -429,7 +429,7 @@ class sequence_7 extends my_sequence;
             #30;
             repeat(18) begin
                r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans,p_sequencer.r_seqr);
+               start_item(r_trans);
                r_trans.randomize with {
                   rrst == 1;
                   araddr == 16'h2000;
@@ -453,7 +453,7 @@ endclass
 
 class sequence_8 extends my_sequence;
    `uvm_object_utils(sequence_8);
-   `uvm_declare_p_sequencer(virtual_sequencer);
+   
 
    function new(string name = "sequence_8");
       super.new(name);
@@ -467,7 +467,7 @@ class sequence_8 extends my_sequence;
          begin : WRITE_CHANNEL
             repeat(1) begin
                w_trans=write_transaction::type_id::create("w_trans");
-               start_item(w_trans,p_sequencer.w_seqr);
+               start_item(w_trans);
                w_trans.randomize with { 
                                  wrst == 0;
                               };
@@ -476,7 +476,7 @@ class sequence_8 extends my_sequence;
             #30;
             repeat(25) begin
                w_trans=write_transaction::type_id::create("w_trans");
-               start_item(w_trans,p_sequencer.w_seqr);
+               start_item(w_trans);
                w_trans.randomize with {
                                  wrst==1;
                                  awburst == 2'b00;
@@ -492,7 +492,7 @@ class sequence_8 extends my_sequence;
          begin : READ_CHANNEL
             repeat(1) begin
                r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans,p_sequencer.r_seqr);
+               start_item(r_trans);
                r_trans.randomize with {
                   rrst == 0;
                };
@@ -501,7 +501,7 @@ class sequence_8 extends my_sequence;
 
             repeat(25) begin
                r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans,p_sequencer.r_seqr);
+               start_item(r_trans);
                r_trans.randomize with {
                   rrst == 1;
                   arlen == 1;
