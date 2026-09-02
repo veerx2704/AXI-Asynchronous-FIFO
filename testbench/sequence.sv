@@ -13,9 +13,13 @@ endclass
 class w_seq_fbel extends uvm_sequence #(write_transaction);
    `uvm_object_utils(w_seq_fbel);
 
+   function new (string name = "w_seq_fbel", uvm_component parent = null);
+      super.new(name,parent);
+   endfunction
+
    write_transaction trans;
 
-   bit rst;
+   
    bit [15:0] addr;
    bit [7:0] len;
    bit [3:0] strb;
@@ -49,10 +53,12 @@ endclass
 
 class r_seq_fbel extends uvm_sequence #(read_transaction);
    `uvm_object_utils(r_seq_fbel);
-
+   function new (string name = "r_seq_fbel", uvm_component parent = null);
+      super.new(name,parent);
+   endfunction
    read_transaction trans;
 
-   bit rst;
+   
    bit [15:0] addr;
    bit [7:0] len;
    bit [3:0] strb;
@@ -87,9 +93,12 @@ endclass
 class w_seq_inca extends uvm_sequence #(write_transaction);
    `uvm_object_utils(w_seq_inca);
 
+   function new (string name = "w_seq_inca", uvm_component parent = null);
+      super.new(name,parent);
+   endfunction
    write_transaction trans;
 
-   bit wrst;
+   
    bit [7:0] len;
    bit [3:0] strb;
    bit [1:0] burst;
@@ -123,9 +132,13 @@ endclass
 class r_seq_inca extends uvm_sequence #(read_transaction);
    `uvm_object_utils(r_seq_inca);
 
+   function new (string name = "r_seq_inca", uvm_component parent = null);
+      super.new(name,parent);
+   endfunction
+
    write_transaction trans;
 
-   bit rrst;
+   
    bit [7:0] len;
    bit [3:0] strb;
    bit [1:0] burst;
@@ -158,9 +171,13 @@ endclass
 class w_seq_nfb extends uvm_sequence #(write_transaction);
    `uvm_object_utils(w_seq_nfb);
 
+   function new (string name = "w_seq_nfb", uvm_component parent = null);
+      super.new(name,parent);
+   endfunction
+
    write_transaction trans;
 
-   bit wrst;
+   
    bit [7:0] len;
    bit [3:0] strb;
    bit [15:0] addr;
@@ -195,9 +212,13 @@ endclass
 class r_seq_nfb extends uvm_sequence #(read_transaction);
    `uvm_object_utils(r_seq_nfb);
 
+   function new (string name = "r_seq_nfb", uvm_component parent = null);
+      super.new(name,parent);
+   endfunction
+
    write_transaction trans;
 
-   bit rrst;
+   
    bit [7:0] len;
    bit [3:0] strb;
    bit [15:0] addr;
@@ -242,59 +263,30 @@ class sequence_1 extends my_sequence;
    endfunction
 
    task body();
-      write_transaction w_trans;
-      read_transaction r_trans;
+      w_seq_fbel w_seq;
+      r_seq_fbel r_seq;
+
+      w_seq = w_seq_fbel::type_id::create("w_seq");
+      r_seq = r_seq_fbel::type_id::create("r_seq");
+
+      w_seq.iteration = 1;
+      w_seq.len = 6;
+      w_seq.addr = 16'h2000;
+      w_seq.burst = 2'b00;
+      w_seq.strb = 4'b1111;
+
+      r_seq.iteration = 1;
+      r_seq.len = 6;
+      r_seq.addr = 16'h2000;
+      r_seq.burst = 2'b00;
+
+
       `uvm_info("SEQUENCE STARTED - 1","READ AND WRITE WITH SAME BURST LENGTH",UVM_HIGH);
       fork
-         begin : WRITE_CHANNEL
-            repeat(1) begin
-               w_trans=write_transaction::type_id::create("w_trans");
-               start_item(w_trans);
-               w_trans.randomize with { 
-                                 wrst == 0;
-                              };
-               finish_item(w_trans);
-            end  
-            #30;
-            repeat(1) begin
-               w_trans=write_transaction::type_id::create("w_trans");
-               start_item(w_trans);
-               w_trans.randomize with {
-                                 wrst==1;
-                                 awburst == 2'b00;
-                                 awlen==6;   //6 data entities to be sent
-                                 awaddr[0] == 16'h2000;
-                                 wstrb==4'b1111;
-                                 wdata.size==(awlen+1);
-                                 unique{wdata};
-                              };
-               finish_item(w_trans);
-            end   
-         end : WRITE_CHANNEL
-
-         begin : READ_CHANNEL
-            repeat(1) begin
-               r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans);
-               r_trans.randomize with {
-                  rrst == 0;
-               };
-               finish_item(r_trans);
-            end
-
-            repeat(1) begin
-               r_trans = read_transaction::type_id::create("r_trans");
-               start_item(r_trans);
-               r_trans.randomize with {
-                  rrst == 1;
-                  arlen == 6;
-                  arburst == 2'b00;
-                  araddr[0] == 16'h2000;
-               };
-               finish_item(r_trans);
-            end
-         end : READ_CHANNEL
+         w_seq.start(p_sequencer.w_seqr);
+         r_seq.start(p_sequencer.r_seqr);
       join_none
+      wait fork;
       `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
    endtask
 
