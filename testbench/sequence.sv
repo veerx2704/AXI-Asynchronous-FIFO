@@ -432,7 +432,7 @@ class sequence_7 extends my_sequence;
                start_item(r_trans);
                r_trans.randomize with {
                   rrst == 1;
-                  araddr == 16'h2000;
+                  araddr[0] == 16'h2000;
                   arlen == 1;
                };
                finish_item(r_trans);
