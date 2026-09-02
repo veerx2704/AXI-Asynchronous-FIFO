@@ -10,6 +10,223 @@ class my_sequence extends uvm_sequence;
 
 endclass
 
+class w_seq_fbel extends uvm_sequence #(write_transaction);
+   `uvm_object_utils(w_seq_fbel);
+
+   write_transaction trans;
+
+   bit rst;
+   bit [15:0] addr;
+   bit [7:0] len;
+   bit [3:0] strb;
+   bit [1:0] burst;
+   int iteration;
+
+   task body();
+      repeat(1) begin
+         trans = write_transaction::type_id::create("trans",this);
+         start_item(trans);
+         trans.randomize with {
+            wrst == 0;
+         };
+         finish_item{trans};
+      end
+      repeat(iteration) begin
+         trans = write_transaction::type_id::create("trans",this);
+         start_item(trans);
+         trans.randomize with {
+            wrst == 1;
+            awlen == len;
+            wstrb == strb;
+            awaddr[0] == addr;
+            awburst == burst;
+         }
+         finish_item(trans);
+      end
+   endtask
+
+endclass
+
+class r_seq_fbel extends uvm_sequence #(read_transaction);
+   `uvm_object_utils(r_seq_fbel);
+
+   read_transaction trans;
+
+   bit rst;
+   bit [15:0] addr;
+   bit [7:0] len;
+   bit [3:0] strb;
+   bit [1:0] burst;
+   int iteration
+
+
+   task body();
+      repeat(1) begin
+         trans = read_transaction::type_id::create("trans",this);
+         start_item(trans);
+         trans.randomize with {
+            rrst == 0;
+         };
+         finish_item{trans};
+      end
+      repeat(iteration) begin
+         trans = read_transaction::type_id::create("trans",this);
+         start_item(trans);
+         trans.randomize with {
+            rrst == 1;
+            arlen == len;
+            araddr[0] == addr;
+            arburst == burst;
+         }
+         finish_item(trans);
+      end
+   endtask
+
+endclass
+
+class w_seq_inca extends uvm_sequence #(write_transaction);
+   `uvm_object_utils(w_seq_inca);
+
+   write_transaction trans;
+
+   bit wrst;
+   bit [7:0] len;
+   bit [3:0] strb;
+   bit [1:0] burst;
+   int iteration;
+
+
+   task body();
+      repeat(1) begin
+         trans = write_transaction::type_id::create("trans",this);
+         start_item(trans);
+         trans.randomize with {
+            wrst == 0;
+         };
+         finish_item{trans};
+      end
+      repeat(iteration) begin
+         trans = write_transaction::type_id::create("trans",this);
+         start_item(trans);
+         trans.randomize with {
+            wrst == 1;
+            awlen == len;
+            wstrb == strb;
+            awburst == burst;
+         }
+         finish_item(trans);
+      end
+   endtask
+
+endclass
+
+class r_seq_inca extends uvm_sequence #(read_transaction);
+   `uvm_object_utils(r_seq_inca);
+
+   write_transaction trans;
+
+   bit rrst;
+   bit [7:0] len;
+   bit [3:0] strb;
+   bit [1:0] burst;
+   int iteration;
+
+
+   task body();
+      repeat(1) begin
+         trans = read_transaction::type_id::create("trans",this);
+         start_item(trans);
+         trans.randomize with {
+            rrst == 0;
+         };
+         finish_item{trans};
+      end
+      repeat(iteration) begin
+         trans = read_transaction::type_id::create("trans",this);
+         start_item(trans);
+         trans.randomize with {
+            rrst == 1;
+            arlen == len;
+            arburst == burst;
+         }
+         finish_item(trans);
+      end
+   endtask
+
+endclass
+
+class w_seq_nfb extends uvm_sequence #(write_transaction);
+   `uvm_object_utils(w_seq_nfb);
+
+   write_transaction trans;
+
+   bit wrst;
+   bit [7:0] len;
+   bit [3:0] strb;
+   bit [15:0] addr;
+   int iteration;
+
+
+   task body();
+      repeat(1) begin
+         trans = write_transaction::type_id::create("trans",this);
+         start_item(trans);
+         trans.randomize with {
+            wrst == 0;
+         };
+         finish_item{trans};
+      end
+      repeat(iteration) begin
+         trans = write_transaction::type_id::create("trans",this);
+         start_item(trans);
+         trans.randomize with {
+            wrst == 1;
+            awlen == len;
+            wstrb == strb;
+            awaddr[0] == addr;
+         }
+         finish_item(trans);
+      end
+   endtask
+
+endclass
+
+
+class r_seq_nfb extends uvm_sequence #(read_transaction);
+   `uvm_object_utils(r_seq_nfb);
+
+   write_transaction trans;
+
+   bit rrst;
+   bit [7:0] len;
+   bit [3:0] strb;
+   bit [15:0] addr;
+   int iteration;
+
+
+   task body();
+      repeat(1) begin
+         trans = read_transaction::type_id::create("trans",this);
+         start_item(trans);
+         trans.randomize with {
+            rrst == 0;
+         };
+         finish_item{trans};
+      end
+      repeat(iteration) begin
+         trans = read_transaction::type_id::create("trans",this);
+         start_item(trans);
+         trans.randomize with {
+            rrst == 1;
+            arlen == len;
+            araddr[0] == addr;
+         }
+         finish_item(trans);
+      end
+   endtask
+
+endclass
+
 
 //-------------------------------------------------------------//
 //----------------------- SEQUENCE 1 --------------------------//
