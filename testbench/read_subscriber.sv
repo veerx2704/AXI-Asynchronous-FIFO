@@ -1,7 +1,7 @@
 `ifndef AXI_READ_SUBSCRIBER
 `define AXI_READ_SUBSCRIBER
 
-class read_subscriber extends uvm_subscriber;
+class read_subscriber extends uvm_subscriber#(read_transaction);
     `uvm_component_utils(read_subscriber);
 
     read_transaction r_trans;
