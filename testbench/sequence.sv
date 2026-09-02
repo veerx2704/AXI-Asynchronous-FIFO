@@ -232,7 +232,7 @@ endclass
 //-------------------------------------------------------------//
 //verification of fixed burst with write-only operation 
 class sequence_4 extends my_sequence;
-   `uvm_object_utils(sequence_3)
+   `uvm_object_utils(sequence_4)
       
 
    
@@ -276,7 +276,7 @@ endclass
 //-------------------------------------------------------------//
 //verification of fixed burst with read-only operation
 class sequence_5 extends my_sequence;
-   `uvm_object_utils(sequence_4)
+   `uvm_object_utils(sequence_5)
       
 
    
@@ -317,7 +317,7 @@ endclass
 //-------------------------------------------------------------//
 //verification of fixed burst with incorrect address 
 class sequence_6 extends my_sequence;
-   `uvm_object_utils(sequence_5)
+   `uvm_object_utils(sequence_6)
       
 
    

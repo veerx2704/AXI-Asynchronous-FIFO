@@ -19,7 +19,7 @@ class read_subscriber extends uvm_subscriber;
     endfunction
 
 
-    function void write(read_transaction r);
+    function void write(T t);
         axi_r_cg.sample();
     endfunction
     int rdata_count;
@@ -87,7 +87,7 @@ bit             rready;
 
     function void check_phase(uvm_phase phase);
         $display("---------------------------------------------------------------");
-        `uvm_info("*    COVERAGE    *",$sformatf("Read Channel Coverage %0d \%",axi_r_cg.get_coverage()),UVM_NONE);
+        `uvm_info("*    COVERAGE    *",$sformatf("Read Channel Coverage %0d ",axi_r_cg.get_coverage()),UVM_NONE);
         $display("---------------------------------------------------------------");
     endfunction
 

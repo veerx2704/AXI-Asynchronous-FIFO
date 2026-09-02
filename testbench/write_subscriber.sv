@@ -18,7 +18,7 @@ class write_subscriber extends uvm_subscriber#(write_transaction);
         monw2scor = new("monw2scor",this);
     endfunction
 
-    function void write(write_transaction t);
+    function void write(T t);
         axi_w_cg.sample();
     endfunction
 
@@ -99,7 +99,7 @@ bit         bready;
 
     function void check_phase(uvm_phase phase);
         $display("---------------------------------------------------------------");
-        `uvm_info("*    COVERAGE    *",$sformatf("Write Channel Coverage %0d \%",axi_w_cg.get_coverage()),UVM_NONE);
+        `uvm_info("*    COVERAGE    *",$sformatf("Write Channel Coverage %0d ",axi_w_cg.get_coverage()),UVM_NONE);
         $display("---------------------------------------------------------------");
     endfunction
 
