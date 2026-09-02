@@ -151,6 +151,7 @@ class sequence_2 extends my_sequence;
             end
          end : READ_CHANNEL
       join_none
+      wait fork;
       `uvm_info("SEQUENCE ENDED - 2","",UVM_HIGH);
    endtask
 
@@ -221,6 +222,7 @@ class sequence_3 extends my_sequence;
             end
          end : READ_CHANNEL
       join_none
+      wait fork;
       `uvm_info("SEQUENCE ENDED - 3","",UVM_HIGH);
    endtask
 
@@ -374,6 +376,7 @@ class sequence_6 extends my_sequence;
             end
          end : READ_CHANNEL         
       join_none
+      wait fork;
    endtask
 
 endclass
@@ -439,6 +442,7 @@ class sequence_7 extends my_sequence;
             end
          end : READ_CHANNEL          
       join_none
+      wait fork;
       `uvm_info("SEQUENCE ENDED - 7", "", UVM_HIGH);
    endtask
 
@@ -512,6 +516,7 @@ class sequence_8 extends my_sequence;
             end
          end : READ_CHANNEL
       join_none
+      wait fork;
       `uvm_info("SEQUENCE ENDED - 8","",UVM_HIGH);
    endtask
    
