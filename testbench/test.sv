@@ -54,10 +54,10 @@ class test_case_1 extends base_test;
    endfunction
 
    task run_phase(uvm_phase phase);
-      sequence_1 sequence_h;
+      sequence_1 sequence_h_1;
       phase.raise_objection(this);
-      sequence_h=sequence_1::type_id::create("sequence_h",this);
-      sequence_h.start(environment_h.v_seqr);
+      sequence_h_1=sequence_1::type_id::create("sequence_h_1",this);
+      sequence_h_1.start(environment_h.v_seqr);
       #100;
       phase.drop_objection(this);
    endtask
@@ -80,10 +80,10 @@ class test_case_2 extends base_test;
    endfunction
 
    task run_phase(uvm_phase phase);
-      sequence_2 sequence_h;
+      sequence_2 sequence_h_2;
       phase.raise_objection(this);
-      sequence_h=sequence_2::type_id::create("sequence_h",this);
-      sequence_h.start(environment_h.v_seqr);
+      sequence_h_2=sequence_2::type_id::create("sequence_h_2",this);
+      sequence_h_2.start(environment_h.v_seqr);
       #100;
       phase.drop_objection(this);
    endtask
@@ -106,10 +106,10 @@ class test_case_3 extends base_test;
    endfunction
 
    task run_phase(uvm_phase phase);
-      sequence_3 sequence_h;
+      sequence_3 sequence_h_3;
       phase.raise_objection(this);
-      sequence_h=sequence_3::type_id::create("sequence_h",this);
-      sequence_h.start(environment_h.v_seqr);
+      sequence_h_3=sequence_3::type_id::create("sequence_h_3",this);
+      sequence_h_3.start(environment_h.v_seqr);
       #100;
       phase.drop_objection(this);
    endtask
@@ -132,10 +132,10 @@ class test_case_4 extends base_test;
    endfunction
 
    task run_phase(uvm_phase phase);
-      sequence_4 sequence_h;
+      sequence_4 sequence_h_4;
       phase.raise_objection(this);
-      sequence_h=sequence_4::type_id::create("sequence_h",this);
-      sequence_h.start(environment_h.v_seqr);
+      sequence_h_4=sequence_4::type_id::create("sequence_h_4",this);
+      sequence_h_4.start(environment_h.v_seqr);
       #100;
       phase.drop_objection(this);
    endtask
@@ -157,10 +157,10 @@ class test_case_5 extends base_test;
    endfunction
 
    task run_phase(uvm_phase phase);
-      sequence_5 sequence_h;
+      sequence_5 sequence_h_5;
       phase.raise_objection(this);
-      sequence_h=sequence_5::type_id::create("sequence_h",this);
-      sequence_h.start(environment_h.v_seqr);
+      sequence_h_5=sequence_5::type_id::create("sequence_h_5",this);
+      sequence_h_5.start(environment_h.v_seqr);
       #100;
       phase.drop_objection(this);
    endtask
@@ -182,10 +182,10 @@ class test_case_6 extends base_test;
    endfunction
 
    task run_phase(uvm_phase phase);
-      sequence_6 sequence_h;
+      sequence_6 sequence_h_6;
       phase.raise_objection(this);
-      sequence_h=sequence_6::type_id::create("sequence_h",this);
-      sequence_h.start(environment_h.v_seqr);
+      sequence_h_6=sequence_6::type_id::create("sequence_h_6",this);
+      sequence_h_6.start(environment_h.v_seqr);
       #100;
       phase.drop_objection(this);
    endtask
@@ -207,10 +207,10 @@ class test_case_7 extends base_test;
    endfunction
 
    task run_phase(uvm_phase phase);
-      sequence_7 sequence_h;
+      sequence_7 sequence_h_7;
       phase.raise_objection(this);
-      sequence_h=sequence_7::type_id::create("sequence_h",this);
-      sequence_h.start(environment_h.v_seqr);
+      sequence_h_7=sequence_7::type_id::create("sequence_h_7",this);
+      sequence_h_7.start(environment_h.v_seqr);
       #100;
       phase.drop_objection(this);
    endtask
@@ -232,10 +232,10 @@ class test_case_8 extends base_test;
    endfunction
 
    task run_phase(uvm_phase phase);
-      sequence_8 sequence_h;
+      sequence_8 sequence_h_8;
       phase.raise_objection(this);
-      sequence_h=sequence_8::type_id::create("sequence_h",this);
-      sequence_h.start(environment_h.v_seqr);
+      sequence_h_8=sequence_8::type_id::create("sequence_h_8",this);
+      sequence_h_8.start(environment_h.v_seqr);
       #100;
       phase.drop_objection(this);
    endtask
