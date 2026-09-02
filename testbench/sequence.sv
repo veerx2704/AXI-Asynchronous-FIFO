@@ -33,7 +33,7 @@ class w_seq_fbel extends uvm_sequence #(write_transaction);
          trans.randomize with {
             wrst == 0;
          };
-         finish_item{trans};
+         finish_item(trans);
       end
       repeat(iteration) begin
          trans = write_transaction::type_id::create("trans",this);
@@ -73,7 +73,7 @@ class r_seq_fbel extends uvm_sequence #(read_transaction);
          trans.randomize with {
             rrst == 0;
          };
-         finish_item{trans};
+         finish_item(trans);
       end
       repeat(iteration) begin
          trans = read_transaction::type_id::create("trans",this);
@@ -112,7 +112,7 @@ class w_seq_inca extends uvm_sequence #(write_transaction);
          trans.randomize with {
             wrst == 0;
          };
-         finish_item{trans};
+         finish_item(trans);
       end
       repeat(iteration) begin
          trans = write_transaction::type_id::create("trans",this);
@@ -152,7 +152,7 @@ class r_seq_inca extends uvm_sequence #(read_transaction);
          trans.randomize with {
             rrst == 0;
          };
-         finish_item{trans};
+         finish_item(trans);
       end
       repeat(iteration) begin
          trans = read_transaction::type_id::create("trans",this);
@@ -191,7 +191,7 @@ class w_seq_nfb extends uvm_sequence #(write_transaction);
          trans.randomize with {
             wrst == 0;
          };
-         finish_item{trans};
+         finish_item(trans);
       end
       repeat(iteration) begin
          trans = write_transaction::type_id::create("trans",this);
@@ -232,7 +232,7 @@ class r_seq_nfb extends uvm_sequence #(read_transaction);
          trans.randomize with {
             rrst == 0;
          };
-         finish_item{trans};
+         finish_item(trans);
       end
       repeat(iteration) begin
          trans = read_transaction::type_id::create("trans",this);
