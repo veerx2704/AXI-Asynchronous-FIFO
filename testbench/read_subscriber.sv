@@ -64,7 +64,7 @@ bit             rready;
                 rvalid = r_trans.rvalid;
                 
                 rdata_count++;
-                r_write(r_trans);
+                write(r_trans);
             end
         end
 
