@@ -12,6 +12,7 @@ class read_agent extends uvm_agent;
 
     function new(string name = "read_agent", uvm_component parent = null);
         super.new(name,parent);
+        monr2scor = new("monr2scor",this);
     endfunction
 
     function void build_phase(uvm_phase phase);
