@@ -47,7 +47,7 @@ class read_driver extends uvm_driver #(read_transaction);
     endtask
 
     task read_data(read_transaction trans);
-        repeat (trans.rdata.size()) begin
+        repeat (trans.arlen + 1) begin
             @(posedge v_rintf.m_axi_rclk);
             `uvm_info("DRIVER - READ DATA CHANNEL","",UVM_HIGH);
             while (`r_vifd.rvalid == 0) begin

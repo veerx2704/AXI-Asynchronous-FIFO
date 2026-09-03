@@ -55,7 +55,7 @@ class read_monitor extends uvm_monitor#(read_transaction);
                     begin : READ_DATA_CHANNEL
                         @(posedge v_rintf.m_axi_rclk);
                         rdata_count = 0;
-                        repeat(v_rintf.rdata.size()) begin
+                        repeat(trans.arlen) begin
                             while (v_rintf.rvalid == 0 || v_rintf.rready == 0) begin
                                 @(posedge v_rintf.m_axi_rclk);
                             end

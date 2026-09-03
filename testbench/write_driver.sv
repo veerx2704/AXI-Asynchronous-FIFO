@@ -36,7 +36,9 @@ class write_driver extends uvm_driver#(write_transaction);
         `w_vifd.awcache    <= trans.awcache;
         `w_vifd.awprot     <= trans.awprot;
         `w_vifd.awvalid    <= trans.awvalid;
-        wait(v_wintf.awready==1);
+        
+        while (!v_wintf.awready)
+            @(posedge v_wintf.s_axi_wclk);
 
         @(posedge v_wintf.s_axi_wclk);
         `w_vifd.awaddr     <= '0;
@@ -47,7 +49,7 @@ class write_driver extends uvm_driver#(write_transaction);
     int wdata_count;
     task write_data(write_transaction trans);
         wdata_count <= '0;
-        repeat (trans.wdata.size()) begin
+        repeat (trans.awlen + 1) begin
             @(posedge v_wintf.s_axi_wclk);
             `uvm_info("DRIVER - WRITE DATA CHANNEL","",UVM_HIGH);
             `w_vifd.wdata <= trans.wdata[wdata_count];

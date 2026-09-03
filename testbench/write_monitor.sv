@@ -55,7 +55,7 @@ class write_monitor extends uvm_monitor#(write_transaction);
                     begin : WRITE_DATA_CHANNEL
                         @(posedge v_wintf.s_axi_wclk);
                         wdata_count = 0;
-                        repeat(v_wintf.wdata.size()) begin
+                        repeat(trans.awlen+1) begin
                             while(v_wintf.wvalid == 0 || v_wintf.wready == 0) begin
                                 @(posedge v_wintf.s_axi_wclk);
                             end
