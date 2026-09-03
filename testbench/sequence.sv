@@ -13,8 +13,8 @@ endclass
 class w_seq_fbel extends uvm_sequence #(write_transaction);
    `uvm_object_utils(w_seq_fbel);
 
-   function new (string name = "w_seq_fbel", uvm_component parent = null);
-      super.new(name,parent);
+   function new (string name = "w_seq_fbel");
+      super.new(name);
    endfunction
 
    write_transaction trans;
@@ -53,8 +53,8 @@ endclass
 
 class r_seq_fbel extends uvm_sequence #(read_transaction);
    `uvm_object_utils(r_seq_fbel);
-   function new (string name = "r_seq_fbel", uvm_component parent = null);
-      super.new(name,parent);
+   function new (string name = "r_seq_fbel");
+      super.new(name);
    endfunction
    read_transaction trans;
 
@@ -63,7 +63,7 @@ class r_seq_fbel extends uvm_sequence #(read_transaction);
    bit [7:0] len;
    bit [3:0] strb;
    bit [1:0] burst;
-   int iteration
+   int iteration;
 
 
    task body();
@@ -93,8 +93,8 @@ endclass
 class w_seq_inca extends uvm_sequence #(write_transaction);
    `uvm_object_utils(w_seq_inca);
 
-   function new (string name = "w_seq_inca", uvm_component parent = null);
-      super.new(name,parent);
+   function new (string name = "w_seq_inca");
+      super.new(name);
    endfunction
    write_transaction trans;
 
@@ -132,8 +132,8 @@ endclass
 class r_seq_inca extends uvm_sequence #(read_transaction);
    `uvm_object_utils(r_seq_inca);
 
-   function new (string name = "r_seq_inca", uvm_component parent = null);
-      super.new(name,parent);
+   function new (string name = "r_seq_inca");
+      super.new(name);
    endfunction
 
    write_transaction trans;
@@ -171,8 +171,8 @@ endclass
 class w_seq_nfb extends uvm_sequence #(write_transaction);
    `uvm_object_utils(w_seq_nfb);
 
-   function new (string name = "w_seq_nfb", uvm_component parent = null);
-      super.new(name,parent);
+   function new (string name = "w_seq_nfb");
+      super.new(name);
    endfunction
 
    write_transaction trans;
@@ -212,8 +212,8 @@ endclass
 class r_seq_nfb extends uvm_sequence #(read_transaction);
    `uvm_object_utils(r_seq_nfb);
 
-   function new (string name = "r_seq_nfb", uvm_component parent = null);
-      super.new(name,parent);
+   function new (string name = "r_seq_nfb");
+      super.new(name);
    endfunction
 
    write_transaction trans;

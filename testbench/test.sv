@@ -54,10 +54,33 @@ class test_case_1 extends base_test;
    endfunction
 
    task run_phase(uvm_phase phase);
-      sequence_1 sequence_h_1;
+      w_seq_fbel w_seq;
+      r_seq_fbel r_seq;
+      
       phase.raise_objection(this);
-      sequence_h_1=sequence_1::type_id::create("sequence_h_1",this);
-      sequence_h_1.start(environment_h.v_seqr);
+
+      w_seq = w_seq_fbel::type_id::create("w_seq");
+      r_seq = r_seq_fbel::type_id::create("r_seq");
+
+      w_seq.iteration = 1;
+      w_seq.len = 6;
+      w_seq.addr = 16'h2000;
+      w_seq.burst = 2'b00;
+      w_seq.strb = 4'b1111;
+
+      r_seq.iteration = 1;
+      r_seq.len = 6;
+      r_seq.addr = 16'h2000;
+      r_seq.burst = 2'b00;
+
+
+      `uvm_info("SEQUENCE STARTED - 1","READ AND WRITE WITH SAME BURST LENGTH",UVM_HIGH);
+      fork
+         w_seq.start(p_sequencer.w_seqr);
+         r_seq.start(p_sequencer.r_seqr);
+      join_none
+      wait fork;
+      `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
       #100;
       phase.drop_objection(this);
    endtask
