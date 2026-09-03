@@ -31,7 +31,7 @@ constraint size_val {arsize==2;}
 constraint valid_handshake {arvalid==1;}
 constraint ready_when {soft rready == 1;}
 constraint address {araddr.size() == 1; araddr[0] inside {[0:16'hffff]};}
-constraint read_depth {rdata.size() == arlen + 1;}
+//constraint read_depth {rdata.size() == arlen + 1;}
 
 `uvm_object_utils_begin(read_transaction)
 
