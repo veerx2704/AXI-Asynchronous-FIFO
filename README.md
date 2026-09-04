@@ -46,6 +46,7 @@ The file structure is as follows:
 ## Specifications
 This project implements the standard AXI-4 bus protocol. It supports the main operations and signals of all 5 channels, with extensive verification through a UVM based testbench. The testbench uses constrained random stimulus with SystemVerilog Assertions.
 
+
 ## DESIGN
 
 The design was synthesized using AMD Vivado 2024.2, and is on par with the baseline model with a frequency of 200MHz. The total power consumption for Kintex FPGA comes out to be 99mW. The design is lint-free and is CDC-safe has the following features:
