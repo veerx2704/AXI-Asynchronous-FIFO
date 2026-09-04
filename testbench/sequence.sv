@@ -249,350 +249,350 @@ class r_seq_nfb extends uvm_sequence #(read_transaction);
 endclass
 
 
-//-------------------------------------------------------------//
-//----------------------- SEQUENCE 1 --------------------------//
-//-------------------------------------------------------------//
-verification of fixed burst with equal length of write and read transaction 
-class sequence_1 extends my_sequence;
-   `uvm_object_utils(sequence_1)
+// //-------------------------------------------------------------//
+// //----------------------- SEQUENCE 1 --------------------------//
+// //-------------------------------------------------------------//
+// verification of fixed burst with equal length of write and read transaction 
+// class sequence_1 extends my_sequence;
+//    `uvm_object_utils(sequence_1)
       
 
    
-   function new(string name="sequence_1");
-      super.new(name);
-   endfunction
+//    function new(string name="sequence_1");
+//       super.new(name);
+//    endfunction
 
-   task body();
-      w_seq_fbel w_seq;
-      r_seq_fbel r_seq;
+//    task body();
+//       w_seq_fbel w_seq;
+//       r_seq_fbel r_seq;
 
-      w_seq = w_seq_fbel::type_id::create("w_seq");
-      r_seq = r_seq_fbel::type_id::create("r_seq");
+//       w_seq = w_seq_fbel::type_id::create("w_seq");
+//       r_seq = r_seq_fbel::type_id::create("r_seq");
 
-      w_seq.iteration = 1;
-      w_seq.len = 6;
-      w_seq.addr = 16'h2000;
-      w_seq.burst = 2'b00;
-      w_seq.strb = 4'b1111;
+//       w_seq.iteration = 1;
+//       w_seq.len = 6;
+//       w_seq.addr = 16'h2000;
+//       w_seq.burst = 2'b00;
+//       w_seq.strb = 4'b1111;
 
-      r_seq.iteration = 1;
-      r_seq.len = 6;
-      r_seq.addr = 16'h2000;
-      r_seq.burst = 2'b00;
-
-
-      `uvm_info("SEQUENCE STARTED - 1","READ AND WRITE WITH SAME BURST LENGTH",UVM_HIGH);
-      fork
-         w_seq.start(p_sequencer.w_seqr);
-         r_seq.start(p_sequencer.r_seqr);
-      join_none
-      wait fork;
-      `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
-   endtask
-
-endclass
+//       r_seq.iteration = 1;
+//       r_seq.len = 6;
+//       r_seq.addr = 16'h2000;
+//       r_seq.burst = 2'b00;
 
 
+//       `uvm_info("SEQUENCE STARTED - 1","READ AND WRITE WITH SAME BURST LENGTH",UVM_HIGH);
+//       fork
+//          w_seq.start(p_sequencer.w_seqr);
+//          r_seq.start(p_sequencer.r_seqr);
+//       join_none
+//       wait fork;
+//       `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
+//    endtask
 
-// -------------------------------------------------------------//
-// ----------------------- SEQUENCE 2 --------------------------//
-// -------------------------------------------------------------//
-// verification of fixed burst with different length of write and read transaction 
-class sequence_2 extends my_sequence;
-   `uvm_object_utils(sequence_2)
+// endclass
+
+
+
+// // -------------------------------------------------------------//
+// // ----------------------- SEQUENCE 2 --------------------------//
+// // -------------------------------------------------------------//
+// // verification of fixed burst with different length of write and read transaction 
+// class sequence_2 extends my_sequence;
+//    `uvm_object_utils(sequence_2)
       
 
    
-   function new(string name="sequence_2");
-      super.new(name);
-   endfunction
+//    function new(string name="sequence_2");
+//       super.new(name);
+//    endfunction
 
-   task body();
-      w_seq_fbel w_seq;
-      r_seq_fbel r_seq;
+//    task body();
+//       w_seq_fbel w_seq;
+//       r_seq_fbel r_seq;
 
-      w_seq = w_seq_fbel::type_id::create("w_seq");
-      r_seq = r_seq_fbel::type_id::create("r_seq");
+//       w_seq = w_seq_fbel::type_id::create("w_seq");
+//       r_seq = r_seq_fbel::type_id::create("r_seq");
 
-      w_seq.iteration = 1;
-      w_seq.len = 4;
-      w_seq.addr = 16'h2000;
-      w_seq.burst = 2'b00;
-      w_seq.strb = 4'b1111;
+//       w_seq.iteration = 1;
+//       w_seq.len = 4;
+//       w_seq.addr = 16'h2000;
+//       w_seq.burst = 2'b00;
+//       w_seq.strb = 4'b1111;
 
-      r_seq.iteration = 1;
-      r_seq.len = 9;
-      r_seq.addr = 16'h2000;
-      r_seq.burst = 2'b00;
+//       r_seq.iteration = 1;
+//       r_seq.len = 9;
+//       r_seq.addr = 16'h2000;
+//       r_seq.burst = 2'b00;
 
 
-      `uvm_info("SEQUENCE STARTED - 2","READ AND WRITE WITH DIFFERENT BURST LENGTH",UVM_HIGH);
-      fork
-         w_seq.start(p_sequencer.w_seqr);
-         r_seq.start(p_sequencer.r_seqr);
-      join_none
-      wait fork;
-      `uvm_info("SEQUENCE ENDED - 2","",UVM_HIGH);
-   endtask
+//       `uvm_info("SEQUENCE STARTED - 2","READ AND WRITE WITH DIFFERENT BURST LENGTH",UVM_HIGH);
+//       fork
+//          w_seq.start(p_sequencer.w_seqr);
+//          r_seq.start(p_sequencer.r_seqr);
+//       join_none
+//       wait fork;
+//       `uvm_info("SEQUENCE ENDED - 2","",UVM_HIGH);
+//    endtask
 
-endclass
-//-------------------------------------------------------------//
-//----------------------- SEQUENCE 3 --------------------------//
-//-------------------------------------------------------------//
-//verification of fixed burst with different read and write burst lengths
-class sequence_3 extends my_sequence;
-   `uvm_object_utils(sequence_3)
+// endclass
+// //-------------------------------------------------------------//
+// //----------------------- SEQUENCE 3 --------------------------//
+// //-------------------------------------------------------------//
+// //verification of fixed burst with different read and write burst lengths
+// class sequence_3 extends my_sequence;
+//    `uvm_object_utils(sequence_3)
       
 
    
-   function new(string name="sequence_3");
-      super.new(name);
-   endfunction
+//    function new(string name="sequence_3");
+//       super.new(name);
+//    endfunction
 
-   task body();
-      w_seq_fbel w_seq;
-      r_seq_fbel r_seq;
+//    task body();
+//       w_seq_fbel w_seq;
+//       r_seq_fbel r_seq;
 
-      w_seq = w_seq_fbel::type_id::create("w_seq");
-      r_seq = r_seq_fbel::type_id::create("r_seq");
+//       w_seq = w_seq_fbel::type_id::create("w_seq");
+//       r_seq = r_seq_fbel::type_id::create("r_seq");
 
-      w_seq.iteration = 1;
-      w_seq.len = 9;
-      w_seq.addr = 16'h2000;
-      w_seq.burst = 2'b00;
-      w_seq.strb = 4'b1111;
+//       w_seq.iteration = 1;
+//       w_seq.len = 9;
+//       w_seq.addr = 16'h2000;
+//       w_seq.burst = 2'b00;
+//       w_seq.strb = 4'b1111;
 
-      r_seq.iteration = 1;
-      r_seq.len = 4;
-      r_seq.addr = 16'h2000;
-      r_seq.burst = 2'b00;
-
-
-      `uvm_info("SEQUENCE STARTED - 3","READ AND WRITE WITH DIFFERENT BURST LENGTH",UVM_HIGH);
-      fork
-         w_seq.start(p_sequencer.w_seqr);
-         r_seq.start(p_sequencer.r_seqr);
-      join_none
-      wait fork;
-      `uvm_info("SEQUENCE ENDED - 3","",UVM_HIGH);
-   endtask
-
-endclass
+//       r_seq.iteration = 1;
+//       r_seq.len = 4;
+//       r_seq.addr = 16'h2000;
+//       r_seq.burst = 2'b00;
 
 
-//-------------------------------------------------------------//
-//----------------------- SEQUENCE 4 --------------------------//
-//-------------------------------------------------------------//
-//verification of fixed burst with write-only operation 
-class sequence_4 extends my_sequence;
-   `uvm_object_utils(sequence_4)
+//       `uvm_info("SEQUENCE STARTED - 3","READ AND WRITE WITH DIFFERENT BURST LENGTH",UVM_HIGH);
+//       fork
+//          w_seq.start(p_sequencer.w_seqr);
+//          r_seq.start(p_sequencer.r_seqr);
+//       join_none
+//       wait fork;
+//       `uvm_info("SEQUENCE ENDED - 3","",UVM_HIGH);
+//    endtask
+
+// endclass
+
+
+// //-------------------------------------------------------------//
+// //----------------------- SEQUENCE 4 --------------------------//
+// //-------------------------------------------------------------//
+// //verification of fixed burst with write-only operation 
+// class sequence_4 extends my_sequence;
+//    `uvm_object_utils(sequence_4)
       
 
    
-   function new(string name="sequence_3");
-      super.new(name);
-   endfunction
+//    function new(string name="sequence_3");
+//       super.new(name);
+//    endfunction
 
-   task body();
-      w_seq_fbel w_seq;
-      r_seq_fbel r_seq;
+//    task body();
+//       w_seq_fbel w_seq;
+//       r_seq_fbel r_seq;
 
-      w_seq = w_seq_fbel::type_id::create("w_seq");
-      //r_seq = r_seq_fbel::type_id::create("r_seq");
+//       w_seq = w_seq_fbel::type_id::create("w_seq");
+//       //r_seq = r_seq_fbel::type_id::create("r_seq");
 
-      w_seq.iteration = 1;
-      w_seq.len = 18;
-      w_seq.addr = 16'h2000;
-      w_seq.burst = 2'b00;
-      w_seq.strb = 4'b1111;
+//       w_seq.iteration = 1;
+//       w_seq.len = 18;
+//       w_seq.addr = 16'h2000;
+//       w_seq.burst = 2'b00;
+//       w_seq.strb = 4'b1111;
 
-      // r_seq.iteration = 1;
-      // r_seq.len = 6;
-      // r_seq.addr = 16'h2000;
-      // r_seq.burst = 2'b00;
-
-
-      `uvm_info("SEQUENCE STARTED - 4","WRITE-ONLY OPERATION",UVM_HIGH);
-//      fork
-         w_seq.start(p_sequencer.w_seqr);
-//         r_seq.start(p_sequencer.r_seqr);
-//      join_none
-//      wait fork;
-      `uvm_info("SEQUENCE ENDED - 4","",UVM_HIGH);
-   endtask
-
-endclass
+//       // r_seq.iteration = 1;
+//       // r_seq.len = 6;
+//       // r_seq.addr = 16'h2000;
+//       // r_seq.burst = 2'b00;
 
 
-//-------------------------------------------------------------//
-//----------------------- SEQUENCE 5 --------------------------//
-//-------------------------------------------------------------//
-//verification of fixed burst with read-only operation
-class sequence_5 extends my_sequence;
-   `uvm_object_utils(sequence_5)
+//       `uvm_info("SEQUENCE STARTED - 4","WRITE-ONLY OPERATION",UVM_HIGH);
+// //      fork
+//          w_seq.start(p_sequencer.w_seqr);
+// //         r_seq.start(p_sequencer.r_seqr);
+// //      join_none
+// //      wait fork;
+//       `uvm_info("SEQUENCE ENDED - 4","",UVM_HIGH);
+//    endtask
+
+// endclass
+
+
+// //-------------------------------------------------------------//
+// //----------------------- SEQUENCE 5 --------------------------//
+// //-------------------------------------------------------------//
+// //verification of fixed burst with read-only operation
+// class sequence_5 extends my_sequence;
+//    `uvm_object_utils(sequence_5)
       
 
    
-   function new(string name="sequence_1");
-      super.new(name);
-   endfunction
+//    function new(string name="sequence_1");
+//       super.new(name);
+//    endfunction
 
-   task body();
-      w_seq_fbel w_seq;
-      r_seq_fbel r_seq;
+//    task body();
+//       w_seq_fbel w_seq;
+//       r_seq_fbel r_seq;
 
-//      w_seq = w_seq_fbel::type_id::create("w_seq");
-      r_seq = r_seq_fbel::type_id::create("r_seq");
+// //      w_seq = w_seq_fbel::type_id::create("w_seq");
+//       r_seq = r_seq_fbel::type_id::create("r_seq");
 
-      // w_seq.iteration = 1;
-      // w_seq.len = 6;
-      // w_seq.addr = 16'h2000;
-      // w_seq.burst = 2'b00;
-      // w_seq.strb = 4'b1111;
+//       // w_seq.iteration = 1;
+//       // w_seq.len = 6;
+//       // w_seq.addr = 16'h2000;
+//       // w_seq.burst = 2'b00;
+//       // w_seq.strb = 4'b1111;
 
-      r_seq.iteration = 1;
-      r_seq.len = 6;
-      r_seq.addr = 16'h2000;
-      r_seq.burst = 2'b00;
+//       r_seq.iteration = 1;
+//       r_seq.len = 6;
+//       r_seq.addr = 16'h2000;
+//       r_seq.burst = 2'b00;
 
 
-      `uvm_info("SEQUENCE STARTED - 5","READ-ONLY OPERATION",UVM_HIGH);
-      // fork
-      //    w_seq.start(p_sequencer.w_seqr);
-          r_seq.start(p_sequencer.r_seqr);
-      // join_none
-      // wait fork;
-      `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
-   endtask
+//       `uvm_info("SEQUENCE STARTED - 5","READ-ONLY OPERATION",UVM_HIGH);
+//       // fork
+//       //    w_seq.start(p_sequencer.w_seqr);
+//           r_seq.start(p_sequencer.r_seqr);
+//       // join_none
+//       // wait fork;
+//       `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
+//    endtask
 
-endclass
+// endclass
 
-//-------------------------------------------------------------//
-//----------------------- SEQUENCE 6 --------------------------//
-//-------------------------------------------------------------//
-//verification of fixed burst with incorrect address 
-class sequence_6 extends my_sequence;
-   `uvm_object_utils(sequence_6)
+// //-------------------------------------------------------------//
+// //----------------------- SEQUENCE 6 --------------------------//
+// //-------------------------------------------------------------//
+// //verification of fixed burst with incorrect address 
+// class sequence_6 extends my_sequence;
+//    `uvm_object_utils(sequence_6)
       
 
    
-   function new(string name="sequence_5");
-      super.new(name);
-   endfunction
+//    function new(string name="sequence_5");
+//       super.new(name);
+//    endfunction
 
-   task body();
-      w_seq_inca w_seq;
-      r_seq_inca r_seq;
+//    task body();
+//       w_seq_inca w_seq;
+//       r_seq_inca r_seq;
 
-      w_seq = w_seq_inca::type_id::create("w_seq");
-      r_seq = r_seq_inca::type_id::create("r_seq");
+//       w_seq = w_seq_inca::type_id::create("w_seq");
+//       r_seq = r_seq_inca::type_id::create("r_seq");
 
-      w_seq.iteration = 1;
-      w_seq.len = 6;
-      w_seq.burst = 2'b00;
-      w_seq.strb = 4'b1111;
+//       w_seq.iteration = 1;
+//       w_seq.len = 6;
+//       w_seq.burst = 2'b00;
+//       w_seq.strb = 4'b1111;
 
-      r_seq.iteration = 1;
-      r_seq.len = 6;
-      r_seq.burst = 2'b00;
+//       r_seq.iteration = 1;
+//       r_seq.len = 6;
+//       r_seq.burst = 2'b00;
 
 
-      `uvm_info("SEQUENCE STARTED - 6","INCORRECT ADDRESS",UVM_HIGH);
-      fork
-         w_seq.start(p_sequencer.w_seqr);
-         r_seq.start(p_sequencer.r_seqr);
-      join_none
-      wait fork;
-      `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
-   endtask
+//       `uvm_info("SEQUENCE STARTED - 6","INCORRECT ADDRESS",UVM_HIGH);
+//       fork
+//          w_seq.start(p_sequencer.w_seqr);
+//          r_seq.start(p_sequencer.r_seqr);
+//       join_none
+//       wait fork;
+//       `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
+//    endtask
 
-endclass
+// endclass
 
-//-------------------------------------------------------------//
-//----------------------- SEQUENCE 7 --------------------------//
-//-------------------------------------------------------------//
-//verification of non-fixed burst with correct address
+// //-------------------------------------------------------------//
+// //----------------------- SEQUENCE 7 --------------------------//
+// //-------------------------------------------------------------//
+// //verification of non-fixed burst with correct address
 
-class sequence_7 extends my_sequence;
-   `uvm_object_utils(sequence_7);
+// class sequence_7 extends my_sequence;
+//    `uvm_object_utils(sequence_7);
       
 
-   function new(string name = "sequence_7");
-      super.new(name);
-   endfunction
+//    function new(string name = "sequence_7");
+//       super.new(name);
+//    endfunction
 
-   task body();
-      w_seq_nfb w_seq;
-      r_seq_nfb r_seq;
+//    task body();
+//       w_seq_nfb w_seq;
+//       r_seq_nfb r_seq;
 
-      w_seq = w_seq_nfb::type_id::create("w_seq");
-      r_seq = r_seq_nfb::type_id::create("r_seq");
+//       w_seq = w_seq_nfb::type_id::create("w_seq");
+//       r_seq = r_seq_nfb::type_id::create("r_seq");
 
-      w_seq.iteration = 1;
-      w_seq.len = 6;
-      w_seq.addr = 16'h2000;
-      w_seq.strb = 4'b1111;
+//       w_seq.iteration = 1;
+//       w_seq.len = 6;
+//       w_seq.addr = 16'h2000;
+//       w_seq.strb = 4'b1111;
 
-      r_seq.iteration = 1;
-      r_seq.len = 6;
-      r_seq.addr = 16'h2000;
-
-
-      `uvm_info("SEQUENCE STARTED - 7","NON-FIXED BURST",UVM_HIGH);
-      fork
-         w_seq.start(p_sequencer.w_seqr);
-         r_seq.start(p_sequencer.r_seqr);
-      join_none
-      wait fork;
-      `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
-   endtask
+//       r_seq.iteration = 1;
+//       r_seq.len = 6;
+//       r_seq.addr = 16'h2000;
 
 
-endclass
+//       `uvm_info("SEQUENCE STARTED - 7","NON-FIXED BURST",UVM_HIGH);
+//       fork
+//          w_seq.start(p_sequencer.w_seqr);
+//          r_seq.start(p_sequencer.r_seqr);
+//       join_none
+//       wait fork;
+//       `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
+//    endtask
 
 
-//-------------------------------------------------------------//
-//----------------------- SEQUENCE 8 --------------------------//
-//-------------------------------------------------------------//
-//verification of fixed burst with singular long singular read/write bursts with different
+// endclass
 
-class sequence_8 extends my_sequence;
-   `uvm_object_utils(sequence_8);
+
+// //-------------------------------------------------------------//
+// //----------------------- SEQUENCE 8 --------------------------//
+// //-------------------------------------------------------------//
+// //verification of fixed burst with singular long singular read/write bursts with different
+
+// class sequence_8 extends my_sequence;
+//    `uvm_object_utils(sequence_8);
    
 
-   function new(string name = "sequence_8");
-      super.new(name);
-   endfunction
+//    function new(string name = "sequence_8");
+//       super.new(name);
+//    endfunction
 
-   task body();
-      w_seq_fbel w_seq;
-      r_seq_fbel r_seq;
+//    task body();
+//       w_seq_fbel w_seq;
+//       r_seq_fbel r_seq;
 
-      w_seq = w_seq_fbel::type_id::create("w_seq");
-      r_seq = r_seq_fbel::type_id::create("r_seq");
+//       w_seq = w_seq_fbel::type_id::create("w_seq");
+//       r_seq = r_seq_fbel::type_id::create("r_seq");
 
-      w_seq.iteration = 14;
-      w_seq.len = 1;
-      w_seq.addr = 16'h2000;
-      w_seq.burst = 2'b00;
-      w_seq.strb = 4'b1111;
+//       w_seq.iteration = 14;
+//       w_seq.len = 1;
+//       w_seq.addr = 16'h2000;
+//       w_seq.burst = 2'b00;
+//       w_seq.strb = 4'b1111;
 
-      r_seq.iteration = 14;
-      r_seq.len = 1;
-      r_seq.addr = 16'h2000;
-      r_seq.burst = 2'b00;
+//       r_seq.iteration = 14;
+//       r_seq.len = 1;
+//       r_seq.addr = 16'h2000;
+//       r_seq.burst = 2'b00;
 
 
-      `uvm_info("SEQUENCE STARTED - 8","MULTIPLE SINGLE BURSTS",UVM_HIGH);
-      fork
-         w_seq.start(p_sequencer.w_seqr);
-         r_seq.start(p_sequencer.r_seqr);
-      join_none
-      wait fork;
-      `uvm_info("SEQUENCE ENDED - 8","",UVM_HIGH);
-   endtask
+//       `uvm_info("SEQUENCE STARTED - 8","MULTIPLE SINGLE BURSTS",UVM_HIGH);
+//       fork
+//          w_seq.start(p_sequencer.w_seqr);
+//          r_seq.start(p_sequencer.r_seqr);
+//       join_none
+//       wait fork;
+//       `uvm_info("SEQUENCE ENDED - 8","",UVM_HIGH);
+//    endtask
    
 
-endclass
+// endclass
 
 `endif
