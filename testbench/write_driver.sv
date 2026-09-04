@@ -64,12 +64,12 @@ class write_driver extends uvm_driver#(write_transaction);
             while (v_wintf.wready == 0) begin
                 @(posedge v_wintf.s_axi_wclk);
             end
-            wdata_count++;
             @(posedge v_wintf.s_axi_wclk);
             `w_vifd.wvalid <= '0;
-            trans.wstrb <= 4'b1111;
+            `w_vifd.wstrb <= 4'b1111;
+            wdata_count++;
         end
-        `w_vifd.wdata <= 0;    
+        `w_vifd.wdata = 0;    
     endtask
 
     task write_response(write_transaction trans);
