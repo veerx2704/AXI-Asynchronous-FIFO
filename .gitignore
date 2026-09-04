@@ -1,5 +1,5 @@
 synth.ys
 async_fifo_sta.tcl
-results/axi_fifo_netlist.v
+results/*
 axi_wrapper.sv
 yosys_flow.sh
