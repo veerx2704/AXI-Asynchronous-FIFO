@@ -70,7 +70,7 @@ interface write_interface(input s_axi_wclk);
     modport monitor_mp_w(clocking monitor_cb_w, input s_axi_wclk, wrst);
 
     property awready_awvalid;
-        @(posedge s_axi_wclk) disable iff(wrst==0) awvalid |-> ##[0:2] awready;
+      @(posedge s_axi_wclk) disable iff(wrst==0) awvalid |-> ##[0:4] awready;
     endproperty
 
     assertion1: assert property (awready_awvalid) begin
@@ -81,7 +81,7 @@ interface write_interface(input s_axi_wclk);
     end
 
     property wready_wvalid;
-        @(posedge s_axi_wclk) disable iff(wrst==0) wvalid |-> ##[0:2] wready;
+      @(posedge s_axi_wclk) disable iff(wrst==0) wvalid |-> ##[0:4] wready;
     endproperty
 
     assertion2: assert property (wready_wvalid) begin
@@ -92,7 +92,7 @@ interface write_interface(input s_axi_wclk);
     end
 
     property bready_bvalid;
-        @(posedge s_axi_wclk) disable iff(wrst==0) bvalid |-> ##[0:2] bready;
+      @(posedge s_axi_wclk) disable iff(wrst==0) bvalid |-> ##[0:20] bready;
     endproperty
 
     assertion3: assert property (bready_bvalid) begin

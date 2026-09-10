@@ -44,6 +44,7 @@ endclass
 //===================================================//
 class test_case_1 extends base_test;
    `uvm_component_utils(test_case_1)
+  
    function new(string name="test_case_1",uvm_component parent=null);
       super.new(name,parent);
    endfunction
@@ -75,8 +76,16 @@ class test_case_1 extends base_test;
 
       `uvm_info("SEQUENCE STARTED - 1","READ AND WRITE WITH SAME BURST LENGTH",UVM_HIGH);
       fork
-         w_seq.start(environment_h.v_seqr.w_seqr);
-         r_seq.start(environment_h.v_seqr.r_seqr);
+        begin
+           `uvm_info("TEST","Starting write sequence",UVM_NONE);
+    		w_seq.start(environment_h.v_seqr.w_seqr);
+    		`uvm_info("TEST","Write sequence finished",UVM_NONE);
+        end
+        begin
+    		`uvm_info("TEST","Starting read sequence",UVM_NONE);
+    		r_seq.start(environment_h.v_seqr.r_seqr);
+    		`uvm_info("TEST","Read sequence finished",UVM_NONE);
+        end
       join_none
       wait fork;
       `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);

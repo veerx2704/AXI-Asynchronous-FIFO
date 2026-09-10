@@ -37,7 +37,7 @@ class write_monitor extends uvm_monitor#(write_transaction);
         forever begin
             if (v_wintf.wrst == 1) begin
                 trans = write_transaction::type_id::create("trans",this);
-                fork
+                //fork
                     begin : WRITE_ADDRESS_CHANNEL
                         @(posedge v_wintf.s_axi_wclk)
                         while (v_wintf.awvalid == 0 || v_wintf.awready == 0) begin
@@ -49,13 +49,15 @@ class write_monitor extends uvm_monitor#(write_transaction);
                         trans.awaddr    =   new[1];
                         trans.awaddr[0] =   `w_vifm.awaddr;
                         trans.wdata     =   new[trans.awlen+1];
-                        sema.put(1);
+                        //sema.put(1);
+                      	//-> aw_done;
                     end : WRITE_ADDRESS_CHANNEL
 
                     begin : WRITE_DATA_CHANNEL
                         @(posedge v_wintf.s_axi_wclk);
                         wdata_count = 0;
-                        repeat(trans.awlen+1) begin
+                        //@aw_done;
+                      	repeat(trans.awlen+1) begin
                             while(v_wintf.wvalid == 0 || v_wintf.wready == 0) begin
                                 @(posedge v_wintf.s_axi_wclk);
                             end
@@ -66,7 +68,7 @@ class write_monitor extends uvm_monitor#(write_transaction);
                             wdata_count++;
                             @(posedge v_wintf.s_axi_wclk);
                         end
-                        sema.put(1);
+                        //sema.put(1);
                     end : WRITE_DATA_CHANNEL
 
                     begin : WRITE_RESPONSE_CHANNEL
@@ -76,17 +78,23 @@ class write_monitor extends uvm_monitor#(write_transaction);
                         trans.bresp = `w_vifm.bresp;
                         trans.bready = `w_vifm.bready;
                         trans.bvalid = `w_vifm.bvalid;
-                        sema.put(1);
+                        //sema.put(1);
                     end : WRITE_RESPONSE_CHANNEL
 
                     begin : MONITOR_WRITE_SCOREBOARD
-                        sema.get(3);
+                        //sema.get(3);
                         monw2scor.write(trans);
                         `uvm_info(" (WRITE) MONITOR PACKETS SENT",$sformatf("%0s", trans.sprint),UVM_HIGH);
                         `uvm_info("DATA CHECK: ",$sformatf("\n\n wdata == %p \n wsize == %0d",trans.wdata,trans.wdata.size),UVM_NONE);
+                      $display("%0t AWVALID=%0b AWREADY=%0b WVALID=%0b WREADY=%0b",
+         $time,
+         v_wintf.awvalid,
+         v_wintf.awready,
+         v_wintf.wvalid,
+         v_wintf.wready);
                     end : MONITOR_WRITE_SCOREBOARD
-                join_none
-                wait fork;
+                //join_none
+                //wait fork;
             end
             else begin
                 @(posedge v_wintf.s_axi_wclk);
