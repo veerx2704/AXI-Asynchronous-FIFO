@@ -37,22 +37,38 @@ class read_driver extends uvm_driver #(read_transaction);
         `r_vifd.arcache <= trans.arcache;
         `r_vifd.arprot <= trans.arprot;
         `r_vifd.arvalid <= trans.arvalid;
-        while (trans.arready == 0) begin
+      while (!(v_rintf.arready || v_rintf.arvalid)) begin
             @(posedge v_rintf.m_axi_rclk);
-        end
+        $display("ARREADY not asserted yet");
+           	  `uvm_info("DRV",
+                        $sformatf("  ARREADY=%0b ARVALID=%0b RREADY=%0b RVALID=%0b",
+            v_rintf.arready,
+            v_rintf.arvalid,
+            v_rintf.rready,
+            v_rintf.rvalid),
+        UVM_LOW);
+      end
         @(posedge v_rintf.m_axi_rclk);
         `r_vifd.arid <= '0;
         `r_vifd.araddr <= '0;
-        `r_vifd.arvalid <= '0;
+        //`r_vifd.arvalid <= '0;
     endtask
 
     task read_data(read_transaction trans);
         repeat (trans.arlen + 1) begin
             @(posedge v_rintf.m_axi_rclk);
             `uvm_info("DRIVER - READ DATA CHANNEL","",UVM_HIGH);
-            while (`r_vifd.rvalid == 0) begin
+          while (!(v_rintf.rvalid || v_rintf.rready)) begin
                 @(posedge v_rintf.m_axi_rclk);
-            end
+            $display("RVALID not asserted yet");
+           	  `uvm_info("DRV",
+                        $sformatf("  ARREADY=%0b ARVALID=%0b RREADY=%0b RVALID=%0b",
+            v_rintf.arready,
+            v_rintf.arvalid,
+            v_rintf.rready,
+            v_rintf.rvalid),
+        UVM_LOW);
+          end
             `r_vifd.rready <= trans.rready;
             @(posedge v_rintf.m_axi_rclk);
             `r_vifd.rready <= '0;
@@ -60,12 +76,18 @@ class read_driver extends uvm_driver #(read_transaction);
     endtask
 
     task read_reset_logic;
+//      `uvm_info("222222222222222222222222222222222222222222222222","",UVM_NONE);
+
         `r_vifd.arvalid <= '0;
         `r_vifd.rready <= '0;
     endtask
 
     task read_driver_logic(read_transaction trans);
+//                `uvm_info("000000000000000000000000000000000000000000","",UVM_NONE);
+
         read_address(trans);
+                //`uvm_info("000000000000000000000000000000000000000000","",UVM_NONE);
+
         read_data(trans);
     endtask
 
@@ -81,6 +103,7 @@ class read_driver extends uvm_driver #(read_transaction);
                 v_rintf.rrst <= '1;
                 read_driver_logic(trans);
             end
+//          `uvm_info("111111111111111111111111111111111111111111","",UVM_NONE);
             seq_item_port.item_done();
             `uvm_info(" (READ) DRIVER - TRANSACTION NUMBER","",UVM_NONE);
         end

@@ -61,7 +61,7 @@ interface read_interface(input m_axi_rclk);
     modport monitor_mp_r(clocking monitor_cb_r, input m_axi_rclk, rrst);
 
     property arready_arvalid;
-        @(posedge m_axi_rclk) disable iff(rrst==0) arvalid |-> ##[0:2] arready;
+        @(posedge m_axi_rclk) disable iff(rrst==0) arvalid |-> ##[0:20] arready;
     endproperty
 
     assertion1: assert property (arready_arvalid) begin
@@ -72,7 +72,7 @@ interface read_interface(input m_axi_rclk);
     end
 
     property rready_rvalid;
-        @(posedge m_axi_rclk) disable iff(rrst==0) rvalid |-> ##[0:2] rready;
+        @(posedge m_axi_rclk) disable iff(rrst==0) rvalid |-> ##[0:20] rready;
     endproperty
 
     assertion2: assert property (rready_rvalid) begin

@@ -37,10 +37,10 @@ class read_monitor extends uvm_monitor#(read_transaction);
         forever begin
             if (v_rintf.rrst == 1) begin
                 trans = read_transaction::type_id::create("trans",this);
-                fork
+//                fork
                     begin : READ_ADDRESS_CHANNEL
                         @(posedge v_rintf.m_axi_rclk);
-                        while (v_rintf.arvalid == 0 || v_rintf.arready == 0) begin
+                      while (!(v_rintf.arvalid || v_rintf.arready )) begin
                             @(posedge v_rintf.m_axi_rclk);
                         end
                         trans.arvalid = `r_vifm.arvalid;
@@ -49,14 +49,14 @@ class read_monitor extends uvm_monitor#(read_transaction);
                         trans.araddr = new[1];
                         trans.araddr[0] = `r_vifm.araddr;
                         trans.rdata = new[trans.arlen + 1];
-                        sema.put(1);
+                        //sema.put(1);
                     end : READ_ADDRESS_CHANNEL
 
                     begin : READ_DATA_CHANNEL
                         @(posedge v_rintf.m_axi_rclk);
                         rdata_count = 0;
-                        repeat(trans.arlen) begin
-                            while (v_rintf.rvalid == 0 || v_rintf.rready == 0) begin
+                      repeat(trans.arlen+1) begin
+                          while (!(v_rintf.rvalid || v_rintf.rready)) begin
                                 @(posedge v_rintf.m_axi_rclk);
                             end
                             trans.rvalid = `r_vifm.rvalid;
@@ -65,22 +65,23 @@ class read_monitor extends uvm_monitor#(read_transaction);
                             rdata_count++;
                             @(posedge v_rintf.m_axi_rclk);
                         end
-                        sema.put(1);
+                        //sema.put(1);
                     end : READ_DATA_CHANNEL
 
                     begin : MONITOR_WRITE_SCOREBOARD
-                        sema.get(2);
+                        //sema.get(2);
                         monr2scor.write(trans);
                         `uvm_info(" (READ) MONITOR PACKETS SENT", $sformatf("%0s",trans.sprint),UVM_HIGH);
                         `uvm_info(" DATA CHECK: ", $sformatf("\n\n rdata == %p \n rsize == %0d",trans.rdata,trans.rdata.size),UVM_NONE);
                     end : MONITOR_WRITE_SCOREBOARD
                 
+//                  `uvm_info("4444444444444444444444444444444444444444","",UVM_NONE);
 
-                join_none
-                wait fork;
+//                join
             end
             else begin
                 @(posedge v_rintf.m_axi_rclk);
+//              `uvm_info("33333333333333333333333333333333333333333333","",UVM_NONE);
                 trans = read_transaction::type_id::create("trans",this);
                 trans.rrst = v_rintf.rrst;
                 monr2scor.write(trans);
