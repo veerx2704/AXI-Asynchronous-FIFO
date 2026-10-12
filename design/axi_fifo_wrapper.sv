@@ -1,9 +1,3 @@
-// Code your design here
-`include "adder.sv"
-`include "async_fifo.sv"
-`include "fifo_memory.sv"
-`include "operation_control.sv"
-`include "single_flop.sv"
 
 module axi_fifo_wrapper #(
 	parameter DATA_WIDTH = 32,
