@@ -43,24 +43,24 @@ axi_fifo_wrapper inst(
    .s_axi_bready  (wintf.bready),
    
    //READ ADDRESS BUS
-   .s_axi_arid    (rintf.arid),
-   .s_axi_araddr  (rintf.araddr),
-   .s_axi_arlen   (rintf.arlen),
-   .s_axi_arsize  (rintf.arsize),
-   .s_axi_arburst (rintf.arburst),
-   .s_axi_arlock  (rintf.arlock),
-   .s_axi_arcache (rintf.arcache),
-   .s_axi_arprot  (rintf.arprot),
-   .s_axi_arvalid (rintf.arvalid),
-   .s_axi_arready (rintf.arready),
+   .m_axi_arid    (rintf.arid),
+   .m_axi_araddr  (rintf.araddr),
+   .m_axi_arlen   (rintf.arlen),
+   .m_axi_arsize  (rintf.arsize),
+   .m_axi_arburst (rintf.arburst),
+   .m_axi_arlock  (rintf.arlock),
+   .m_axi_arcache (rintf.arcache),
+   .m_axi_arprot  (rintf.arprot),
+   .m_axi_arvalid (rintf.arvalid),
+   .m_axi_arready (rintf.arready),
    
    //READ DATA BUS
-   .s_axi_rid     (rintf.rid),
-   .s_axi_rdata   (rintf.rdata),
-   .s_axi_rresp   (rintf.rresp),
-   .s_axi_rlast   (rintf.rlast),
-   .s_axi_rvalid  (rintf.rvalid),
-   .s_axi_rready  (rintf.rready)
+   .m_axi_rid     (rintf.rid),
+   .m_axi_rdata   (rintf.rdata),
+   .m_axi_rresp   (rintf.rresp),
+   .m_axi_rlast   (rintf.rlast),
+   .m_axi_rvalid  (rintf.rvalid),
+   .m_axi_rready  (rintf.rready)
 );
 
 initial begin

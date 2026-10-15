@@ -1,5 +1,2 @@
-synth.ys
-async_fifo_sta.tcl
 results/*
 axi_wrapper.sv
-yosys_flow.sh

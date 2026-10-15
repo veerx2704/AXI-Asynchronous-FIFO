@@ -1,0 +1,157 @@
+Warning: There are 56 output ports missing set_output_delay.
+Warning: There are 2 unclocked register/latch pins.
+Warning: There are 131 unconstrained endpoints.
+Startpoint: FIFO_INST.W_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xnor3_1_B_X_sky130_fd_sc_hd__nand3_1_C_B_sky130_fd_sc_hd__lpflow_isobufsrc_1_SLEEP_X_sky130_fd_sc_hd__dfxtp_1_D
+            (rising edge-triggered flip-flop clocked by rclk)
+Endpoint: FIFO_INST.W_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xnor3_1_B_X_sky130_fd_sc_hd__nand3_1_C_Y_sky130_fd_sc_hd__nor4_1_D_Y_sky130_fd_sc_hd__dfxtp_1_D
+          (rising edge-triggered flip-flop clocked by rclk)
+Path Group: rclk
+Path Type: max
+
+    Delay      Time   Description
+-------------------------------------------------------------
+   0.0000    0.0000   clock rclk (rise edge)
+   0.0000    0.0000   clock network delay (ideal)
+   0.0000    0.0000 ^ FIFO_INST.W_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xnor3_1_B_X_sky130_fd_sc_hd__nand3_1_C_B_sky130_fd_sc_hd__lpflow_isobufsrc_1_SLEEP_X_sky130_fd_sc_hd__dfxtp_1_D/CLK (sky130_fd_sc_hd__dfxtp_1)
+   0.4385    0.4385 ^ FIFO_INST.W_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xnor3_1_B_X_sky130_fd_sc_hd__nand3_1_C_B_sky130_fd_sc_hd__lpflow_isobufsrc_1_SLEEP_X_sky130_fd_sc_hd__dfxtp_1_D/Q (sky130_fd_sc_hd__dfxtp_1)
+   0.1362    0.5747 v FIFO_INST.rptr_0_sky130_fd_sc_hd__dfxtp_1_Q_D_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__clkinv_1_Y/Y (sky130_fd_sc_hd__clkinv_1)
+   0.3677    0.9424 v FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A1_sky130_fd_sc_hd__a21oi_1_Y_A2_sky130_fd_sc_hd__o21ai_0_Y_A2_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__xor2_1_X_A_sky130_fd_sc_hd__maj3_1_C/X (sky130_fd_sc_hd__maj3_1)
+   0.2057    1.1482 ^ FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A1_sky130_fd_sc_hd__a21oi_1_Y_A2_sky130_fd_sc_hd__o21ai_0_Y_A2_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__xor2_1_X_A_sky130_fd_sc_hd__maj3_1_C_X_sky130_fd_sc_hd__a21oi_1_A1/Y (sky130_fd_sc_hd__a21oi_1)
+   0.2184    1.3665 ^ FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A1_sky130_fd_sc_hd__a21oi_1_Y_A2_sky130_fd_sc_hd__o21ai_0_Y_A2_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__xor2_1_X_A_sky130_fd_sc_hd__maj3_1_C_X_sky130_fd_sc_hd__a21oi_1_A1_Y_sky130_fd_sc_hd__maj3_1_C/X (sky130_fd_sc_hd__maj3_1)
+   0.1038    1.4703 v FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A1_sky130_fd_sc_hd__a21oi_1_Y_A2_sky130_fd_sc_hd__o21ai_0_Y_A2_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__xor2_1_X_A_sky130_fd_sc_hd__maj3_1_C_X_sky130_fd_sc_hd__a21oi_1_A1_Y_sky130_fd_sc_hd__maj3_1_C_X_sky130_fd_sc_hd__xnor2_1_A/Y (sky130_fd_sc_hd__xnor2_1)
+   0.1624    1.6328 ^ FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A1_sky130_fd_sc_hd__a21oi_1_Y_A2_sky130_fd_sc_hd__o21ai_0_Y_A2_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__o21ai_0_A2_Y_sky130_fd_sc_hd__maj3_1_C_X_sky130_fd_sc_hd__o221ai_1_B2/Y (sky130_fd_sc_hd__o221ai_1)
+   0.2478    1.8806 ^ FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A1_sky130_fd_sc_hd__a21oi_1_Y_A2_sky130_fd_sc_hd__o21ai_0_Y_A2_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__o21ai_0_A2_Y_sky130_fd_sc_hd__maj3_1_C_X_sky130_fd_sc_hd__o221ai_1_B2_Y_sky130_fd_sc_hd__and3_1_A/X (sky130_fd_sc_hd__and3_1)
+   0.1058    1.9864 v FIFO_INST.read_handler.fifo_status_reg_sky130_fd_sc_hd__nor3b_1_A_B_sky130_fd_sc_hd__nand4_1_Y/Y (sky130_fd_sc_hd__nand4_1)
+   0.4272    2.4136 ^ FIFO_INST.read_handler.fifo_status_reg_sky130_fd_sc_hd__nor3b_1_A/Y (sky130_fd_sc_hd__nor3b_1)
+   0.1523    2.5659 v FIFO_INST.W_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xnor3_1_B_X_sky130_fd_sc_hd__nand3_1_C_Y_sky130_fd_sc_hd__nor4_1_D_A_sky130_fd_sc_hd__xnor2_1_Y_B_sky130_fd_sc_hd__nand3_1_Y/Y (sky130_fd_sc_hd__nand3_1)
+   0.1518    2.7177 v FIFO_INST.W_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xnor3_1_B_X_sky130_fd_sc_hd__nand3_1_C_Y_sky130_fd_sc_hd__nor4_1_D_A_sky130_fd_sc_hd__xnor2_1_Y/Y (sky130_fd_sc_hd__xnor2_1)
+   0.2362    2.9539 ^ FIFO_INST.W_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xnor3_1_B_X_sky130_fd_sc_hd__nand3_1_C_Y_sky130_fd_sc_hd__nor4_1_D/Y (sky130_fd_sc_hd__nor4_1)
+   0.0000    2.9539 ^ FIFO_INST.W_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xnor3_1_B_X_sky130_fd_sc_hd__nand3_1_C_Y_sky130_fd_sc_hd__nor4_1_D_Y_sky130_fd_sc_hd__dfxtp_1_D/D (sky130_fd_sc_hd__dfxtp_1)
+             2.9539   data arrival time
+
+   3.5000    3.5000   clock rclk (rise edge)
+   0.0000    3.5000   clock network delay (ideal)
+   0.0000    3.5000   clock reconvergence pessimism
+             3.5000 ^ FIFO_INST.W_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xnor3_1_B_X_sky130_fd_sc_hd__nand3_1_C_Y_sky130_fd_sc_hd__nor4_1_D_Y_sky130_fd_sc_hd__dfxtp_1_D/CLK (sky130_fd_sc_hd__dfxtp_1)
+  -0.0919    3.4081   library setup time
+             3.4081   data required time
+-------------------------------------------------------------
+             3.4081   data required time
+            -2.9539   data arrival time
+-------------------------------------------------------------
+             0.4542   slack (MET)
+
+
+Startpoint: FIFO_INST.R_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xor2_1_A_B_sky130_fd_sc_hd__nor2_1_Y_B_sky130_fd_sc_hd__nor3_1_C_Y_sky130_fd_sc_hd__dfxtp_1_D
+            (rising edge-triggered flip-flop clocked by wclk)
+Endpoint: FIFO_INST.R_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xor2_1_A_X_sky130_fd_sc_hd__nor4_1_C_Y_sky130_fd_sc_hd__dfxtp_1_D
+          (rising edge-triggered flip-flop clocked by wclk)
+Path Group: wclk
+Path Type: max
+
+    Delay      Time   Description
+-------------------------------------------------------------
+   0.0000    0.0000   clock wclk (rise edge)
+   0.0000    0.0000   clock network delay (ideal)
+   0.0000    0.0000 ^ FIFO_INST.R_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xor2_1_A_B_sky130_fd_sc_hd__nor2_1_Y_B_sky130_fd_sc_hd__nor3_1_C_Y_sky130_fd_sc_hd__dfxtp_1_D/CLK (sky130_fd_sc_hd__dfxtp_1)
+   0.3337    0.3337 v FIFO_INST.R_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xor2_1_A_B_sky130_fd_sc_hd__nor2_1_Y_B_sky130_fd_sc_hd__nor3_1_C_Y_sky130_fd_sc_hd__dfxtp_1_D/Q (sky130_fd_sc_hd__dfxtp_1)
+   0.1836    0.5173 v FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A1_sky130_fd_sc_hd__a21oi_1_Y_A2_sky130_fd_sc_hd__o21ai_0_Y_A2_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__xor2_1_X_A_sky130_fd_sc_hd__nand2b_1_Y/Y (sky130_fd_sc_hd__nand2b_1)
+   0.3841    0.9014 v FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A1_sky130_fd_sc_hd__a21oi_1_Y_A2_sky130_fd_sc_hd__o21ai_0_Y_A2_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__xor2_1_X_A_sky130_fd_sc_hd__maj3_1_C/X (sky130_fd_sc_hd__maj3_1)
+   0.2057    1.1071 ^ FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A1_sky130_fd_sc_hd__a21oi_1_Y_A2_sky130_fd_sc_hd__o21ai_0_Y_A2_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__xor2_1_X_A_sky130_fd_sc_hd__maj3_1_C_X_sky130_fd_sc_hd__a21oi_1_A1/Y (sky130_fd_sc_hd__a21oi_1)
+   0.2451    1.3522 ^ FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A1_sky130_fd_sc_hd__a21oi_1_Y_A2_sky130_fd_sc_hd__o21ai_0_Y_A2_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__xor2_1_X_A_sky130_fd_sc_hd__maj3_1_C_X_sky130_fd_sc_hd__a21oi_1_A1_Y_sky130_fd_sc_hd__xnor2_1_A/Y (sky130_fd_sc_hd__xnor2_1)
+   0.3747    1.7269 v FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A1_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__nor3_1_Y_C_sky130_fd_sc_hd__xnor3_1_X/X (sky130_fd_sc_hd__xnor3_1)
+   0.1752    1.9021 ^ FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A1_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__nor3_1_Y/Y (sky130_fd_sc_hd__nor3_1)
+   0.1561    2.0582 ^ FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y_A2_sky130_fd_sc_hd__o2bb2ai_1_Y/Y (sky130_fd_sc_hd__o2bb2ai_1)
+   0.1216    2.1798 v FIFO_INST.write_handler.fifo_status_reg_sky130_fd_sc_hd__nor3_1_A_B_sky130_fd_sc_hd__o211ai_1_Y/Y (sky130_fd_sc_hd__o211ai_1)
+   0.3470    2.5268 ^ s_axi_wready_reg_sky130_fd_sc_hd__dfxtp_1_Q_D_sky130_fd_sc_hd__a21oi_1_Y_A1_sky130_fd_sc_hd__and4b_1_D/X (sky130_fd_sc_hd__and4b_1)
+   0.1821    2.7089 ^ FIFO_INST.R_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xor2_1_A_X_sky130_fd_sc_hd__nor4_1_C_A_sky130_fd_sc_hd__o21ai_0_Y_A2_sky130_fd_sc_hd__and3_1_X/X (sky130_fd_sc_hd__and3_1)
+   0.0875    2.7964 v FIFO_INST.R_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xor2_1_A_X_sky130_fd_sc_hd__nor4_1_C_A_sky130_fd_sc_hd__o21ai_0_Y/Y (sky130_fd_sc_hd__o21ai_0)
+   0.2452    3.0416 ^ FIFO_INST.R_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xor2_1_A_X_sky130_fd_sc_hd__nor4_1_C/Y (sky130_fd_sc_hd__nor4_1)
+   0.0000    3.0416 ^ FIFO_INST.R_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xor2_1_A_X_sky130_fd_sc_hd__nor4_1_C_Y_sky130_fd_sc_hd__dfxtp_1_D/D (sky130_fd_sc_hd__dfxtp_1)
+             3.0416   data arrival time
+
+   3.5000    3.5000   clock wclk (rise edge)
+   0.0000    3.5000   clock network delay (ideal)
+   0.0000    3.5000   clock reconvergence pessimism
+             3.5000 ^ FIFO_INST.R_CROSSED_0.d_out_reg1_sky130_fd_sc_hd__xor2_1_A_X_sky130_fd_sc_hd__nor4_1_C_Y_sky130_fd_sc_hd__dfxtp_1_D/CLK (sky130_fd_sc_hd__dfxtp_1)
+  -0.0919    3.4081   library setup time
+             3.4081   data required time
+-------------------------------------------------------------
+             3.4081   data required time
+            -3.0416   data arrival time
+-------------------------------------------------------------
+             0.3665   slack (MET)
+
+
+Startpoint: m_axi_arvalid (input port clocked by rclk)
+Endpoint: m_axi_arvalid_sky130_fd_sc_hd__nor2_1_B_Y_sky130_fd_sc_hd__nor2_1_B_Y_sky130_fd_sc_hd__dfxtp_1_D
+          (rising edge-triggered flip-flop clocked by rclk)
+Path Group: rclk
+Path Type: min
+
+    Delay      Time   Description
+-------------------------------------------------------------
+   0.0000    0.0000   clock rclk (rise edge)
+   0.0000    0.0000   clock network delay (ideal)
+   0.0000    0.0000 ^ input external delay
+   0.0000    0.0000 ^ m_axi_arvalid (in)
+   0.0178    0.0178 v m_axi_arvalid_sky130_fd_sc_hd__nor2_1_B/Y (sky130_fd_sc_hd__nor2_1)
+   0.0578    0.0756 ^ m_axi_arvalid_sky130_fd_sc_hd__nor2_1_B_Y_sky130_fd_sc_hd__nor2_1_B/Y (sky130_fd_sc_hd__nor2_1)
+   0.0000    0.0756 ^ m_axi_arvalid_sky130_fd_sc_hd__nor2_1_B_Y_sky130_fd_sc_hd__nor2_1_B_Y_sky130_fd_sc_hd__dfxtp_1_D/D (sky130_fd_sc_hd__dfxtp_1)
+             0.0756   data arrival time
+
+   0.0000    0.0000   clock rclk (rise edge)
+   0.0000    0.0000   clock network delay (ideal)
+   0.0000    0.0000   clock reconvergence pessimism
+             0.0000 ^ m_axi_arvalid_sky130_fd_sc_hd__nor2_1_B_Y_sky130_fd_sc_hd__nor2_1_B_Y_sky130_fd_sc_hd__dfxtp_1_D/CLK (sky130_fd_sc_hd__dfxtp_1)
+  -0.0402   -0.0402   library hold time
+            -0.0402   data required time
+-------------------------------------------------------------
+            -0.0402   data required time
+            -0.0756   data arrival time
+-------------------------------------------------------------
+             0.1158   slack (MET)
+
+
+Startpoint: s_axi_wrst (input port clocked by wclk)
+Endpoint: s_axi_awready_reg_sky130_fd_sc_hd__dfxtp_1_Q
+          (rising edge-triggered flip-flop clocked by wclk)
+Path Group: wclk
+Path Type: min
+
+    Delay      Time   Description
+-------------------------------------------------------------
+   0.0000    0.0000   clock wclk (rise edge)
+   0.0000    0.0000   clock network delay (ideal)
+   0.0000    0.0000 ^ input external delay
+   0.0000    0.0000 ^ s_axi_wrst (in)
+   0.0558    0.0558 ^ s_axi_awready_reg_sky130_fd_sc_hd__dfxtp_1_Q_D_sky130_fd_sc_hd__buf_1_X/X (sky130_fd_sc_hd__buf_1)
+   0.0000    0.0558 ^ s_axi_awready_reg_sky130_fd_sc_hd__dfxtp_1_Q/D (sky130_fd_sc_hd__dfxtp_1)
+             0.0558   data arrival time
+
+   0.0000    0.0000   clock wclk (rise edge)
+   0.0000    0.0000   clock network delay (ideal)
+   0.0000    0.0000   clock reconvergence pessimism
+             0.0000 ^ s_axi_awready_reg_sky130_fd_sc_hd__dfxtp_1_Q/CLK (sky130_fd_sc_hd__dfxtp_1)
+  -0.0347   -0.0347   library hold time
+            -0.0347   data required time
+-------------------------------------------------------------
+            -0.0347   data required time
+            -0.0558   data arrival time
+-------------------------------------------------------------
+             0.0904   slack (MET)
+
+
+wns max 0.00
+tns max 0.00
+Group                  Internal  Switching    Leakage      Total
+                          Power      Power      Power      Power (Watts)
+----------------------------------------------------------------
+Sequential             1.93e-03   3.46e-05   1.30e-09   1.96e-03  73.7%
+Combinational          6.79e-05   7.47e-05   5.84e-10   1.43e-04   5.4%
+Clock                  0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+Macro                  5.48e-04   0.00e+00   9.52e-06   5.57e-04  20.9%
+Pad                    0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+----------------------------------------------------------------
+Total                  2.54e-03   1.09e-04   9.52e-06   2.66e-03 100.0%
+                          95.5%       4.1%       0.4%

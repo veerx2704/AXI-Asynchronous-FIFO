@@ -40,26 +40,26 @@ module axi_fifo_wrapper #(
 	input wire			s_axi_bready,
 	
 	//Read address channel
-	input wire [ID_WIDTH - 1:0]	s_axi_arid,
-	input wire [ADDR_WIDTH - 1:0]	s_axi_araddr,
-	input wire [7:0]		s_axi_arlen,
-	input wire [2:0]		s_axi_arsize,
-	input wire [1:0]		s_axi_arburst,
-	input wire 			s_axi_arlock,
-	input wire [3:0]		s_axi_arcache,
-	input wire [2:0]		s_axi_arprot,
-	input wire			s_axi_arvalid,
+	input wire [ID_WIDTH - 1:0]	m_axi_arid,
+	input wire [ADDR_WIDTH - 1:0]	m_axi_araddr,
+	input wire [7:0]		m_axi_arlen,
+	input wire [2:0]		m_axi_arsize,
+	input wire [1:0]		m_axi_arburst,
+	input wire 			m_axi_arlock,
+	input wire [3:0]		m_axi_arcache,
+	input wire [2:0]		m_axi_arprot,
+	input wire			m_axi_arvalid,
 	
-	output wire			s_axi_arready,
+	output wire			m_axi_arready,
 	
 	//Read Data channel
-	output wire [ID_WIDTH - 1:0]	s_axi_rid,
-	output wire [DATA_WIDTH - 1:0]	s_axi_rdata,
-	output wire [1:0]		s_axi_rresp,
-	output wire 			s_axi_rlast,
-	output wire 			s_axi_rvalid,
+	output wire [ID_WIDTH - 1:0]	m_axi_rid,
+	output wire [DATA_WIDTH - 1:0]	m_axi_rdata,
+	output wire [1:0]		m_axi_rresp,
+	output wire 			m_axi_rlast,
+	output wire 			m_axi_rvalid,
 	
-	input wire			s_axi_rready
+	input wire			m_axi_rready
 );
 parameter VALID_ADDR_WIDTH = ADDR_WIDTH - $clog2(STRB_WIDTH);
 parameter WORD_WIDTH = STRB_WIDTH;
@@ -94,8 +94,8 @@ wire s_axi_wvalid_temp;
 wire s_axi_awvalid_temp;
 wire handshake_est;
 wire r_handshake_est;
-wire s_axi_rready_temp;
-wire s_axi_arvalid_temp;
+wire m_axi_rready_temp;
+wire m_axi_arvalid_temp;
   
   
 reg read_state_reg = READ_STATE_IDLE, read_state_next;
@@ -114,32 +114,32 @@ reg [2:0] read_size_reg = 3'd0, read_size_next;
 
 reg [1:0] read_burst_reg = 2'd0, read_burst_next;
 
-reg s_axi_arready_reg = 1'b0, s_axi_arready_next;
+reg m_axi_arready_reg = 1'b0, m_axi_arready_next;
   
-reg s_axi_arvalid_reg;
+reg m_axi_arvalid_reg;
 
 
 //READ DATA CHANNEL REG SIGNALs
 
-reg [ID_WIDTH - 1:0] s_axi_rid_reg = {ID_WIDTH{1'b0}}, s_axi_rid_next;
+reg [ID_WIDTH - 1:0] m_axi_rid_reg = {ID_WIDTH{1'b0}}, m_axi_rid_next;
 
-reg [DATA_WIDTH - 1:0] s_axi_rdata_reg = {DATA_WIDTH{1'b0}}, s_axi_rdata_next;
+reg [DATA_WIDTH - 1:0] m_axi_rdata_reg = {DATA_WIDTH{1'b0}}, m_axi_rdata_next;
 
-reg s_axi_rlast_reg = 1'b0, s_axi_rlast_next;
+reg m_axi_rlast_reg = 1'b0, m_axi_rlast_next;
 
-reg s_axi_rvalid_reg = 1'b0, s_axi_rvalid_next;
+reg m_axi_rvalid_reg = 1'b0, m_axi_rvalid_next;
 
-reg [ID_WIDTH - 1:0] s_axi_rid_pipe_reg = {ID_WIDTH{1'b0}};
+reg [ID_WIDTH - 1:0] m_axi_rid_pipe_reg = {ID_WIDTH{1'b0}};
 
-reg [DATA_WIDTH - 1:0] s_axi_rdata_pipe_reg = {DATA_WIDTH{1'b0}};
+reg [DATA_WIDTH - 1:0] m_axi_rdata_pipe_reg = {DATA_WIDTH{1'b0}};
 
-reg s_axi_rlast_pipe_reg = 1'b0;
+reg m_axi_rlast_pipe_reg = 1'b0;
 
-reg s_axi_rvalid_pipe_reg = 1'b0;
+reg m_axi_rvalid_pipe_reg = 1'b0;
 
 reg [1:0] rresp_reg = OKAY, rresp_next;
   
-reg s_axi_rready_reg;
+reg m_axi_rready_reg;
   
 reg r_handshake_est_reg;
 
@@ -183,26 +183,26 @@ reg handshake_est_reg;
 
 //READ ADDRESS CHANNEL WIRE SIGNALS
 
-assign s_axi_arready = s_axi_arready_reg;
+assign m_axi_arready = m_axi_arready_reg;
   
-assign s_axi_arvalid_temp = r_handshake_est ? 1'b0 : 1'b1;
+assign m_axi_arvalid_temp = r_handshake_est ? 1'b0 : 1'b1;
 
 
 //READ DATA CHANNEL WIRE SIGNALS
 
-assign s_axi_rid = PIPELINE_OUTPUT ? s_axi_rid_pipe_reg : s_axi_rid_reg;
+assign m_axi_rid = PIPELINE_OUTPUT ? m_axi_rid_pipe_reg : m_axi_rid_reg;
 
-assign s_axi_rdata = PIPELINE_OUTPUT ? s_axi_rdata_pipe_reg : s_axi_rdata_reg;
+assign m_axi_rdata = PIPELINE_OUTPUT ? m_axi_rdata_pipe_reg : m_axi_rdata_reg;
 
-assign s_axi_rresp = rresp_reg;
+assign m_axi_rresp = rresp_reg;
 
-assign s_axi_rlast = PIPELINE_OUTPUT ? s_axi_rlast_pipe_reg : s_axi_rlast_reg;
+assign m_axi_rlast = PIPELINE_OUTPUT ? m_axi_rlast_pipe_reg : m_axi_rlast_reg;
 
-assign s_axi_rvalid = PIPELINE_OUTPUT ? s_axi_rvalid_pipe_reg : s_axi_rvalid_reg;
+assign m_axi_rvalid = PIPELINE_OUTPUT ? m_axi_rvalid_pipe_reg : m_axi_rvalid_reg;
 
-assign s_axi_rready_temp = r_handshake_est ? 1'b0 : s_axi_rready;
+assign m_axi_rready_temp = r_handshake_est ? 1'b0 : m_axi_rready;
   
-assign r_handshake_est = s_axi_rvalid_reg ? 1'b0 : s_axi_arvalid_reg && s_axi_arready_reg;
+assign r_handshake_est = m_axi_rvalid_reg ? 1'b0 : m_axi_arvalid_reg && m_axi_arready_reg;
 
 //WRITE ADDRESS CHANNEL WIRE SIGNALS
 
@@ -256,7 +256,7 @@ async_fifo #(.data_width(DATA_WIDTH), .N(FIFO_DEPTH)) FIFO_INST(.wdata(s_axi_wda
 														  .rclk(m_axi_rclk),
 														  .ren(fifo_ren),
 														  .rptr_out(fifo_rptr_out),
-														  .rdata(s_axi_rdata_next),
+														  .rdata(m_axi_rdata_next),
 														  .fifo_full(fifo_full),
 														  .fifo_empty(fifo_empty));
 
@@ -434,9 +434,9 @@ end
 
 	fifo_ren = 1'b0;
 
-	s_axi_rid_next    = s_axi_rid_reg;
-	s_axi_rlast_next  = s_axi_rlast_reg;
-	s_axi_rvalid_next = s_axi_arready_reg && s_axi_arvalid;
+	m_axi_rid_next    = m_axi_rid_reg;
+	m_axi_rlast_next  = m_axi_rlast_reg;
+	m_axi_rvalid_next = m_axi_arready_reg && m_axi_arvalid;
 
 	read_id_next    = read_id_reg;
 	read_addr_next  = read_addr_reg;
@@ -445,20 +445,20 @@ end
 	read_burst_next = read_burst_reg;
 	rresp_next      = OKAY;
 
-	s_axi_arready_next = 1'b0;
+	m_axi_arready_next = 1'b0;
 
 	case(read_state_reg)
 		READ_STATE_IDLE: begin
-			s_axi_arready_next = 1'b1;												//Ready to read data if fifo is not already empty
-			if(s_axi_arready && s_axi_arvalid) begin
-				//if (filled_entries > s_axi_arlen || filled_entries == s_axi_arlen ) begin				//Proceed to Reading only if there is data filled in the fifo
-					read_id_next    = s_axi_arid;
-					read_addr_next  = s_axi_araddr;
-					read_count_next = s_axi_arlen;														
-					read_size_next  = s_axi_arsize < $clog2(STRB_WIDTH) ? s_axi_arsize : $clog2(STRB_WIDTH);
-					read_burst_next = s_axi_arburst;
+			m_axi_arready_next = 1'b1;												//Ready to read data if fifo is not already empty
+			if(m_axi_arready && m_axi_arvalid) begin
+				//if (filled_entries > m_axi_arlen || filled_entries == m_axi_arlen ) begin				//Proceed to Reading only if there is data filled in the fifo
+					read_id_next    = m_axi_arid;
+					read_addr_next  = m_axi_araddr;
+					read_count_next = m_axi_arlen;														
+					read_size_next  = m_axi_arsize < $clog2(STRB_WIDTH) ? m_axi_arsize : $clog2(STRB_WIDTH);
+					read_burst_next = m_axi_arburst;
 
-					s_axi_arready_next = 1'b0;
+					m_axi_arready_next = 1'b0;
 					read_state_next = READ_STATE_BURST;
 				//end
 			end
@@ -468,12 +468,12 @@ end
 		end
 		READ_STATE_BURST: begin
 			if (read_addr_next == FIFO_ADDRESS) begin
-              if(r_handshake_est_reg) s_axi_rvalid_next = 1'b1;
-              if (s_axi_rready && s_axi_rvalid_reg) begin
-					if(!(filled_entries < s_axi_arlen)) begin
+              if(r_handshake_est_reg) m_axi_rvalid_next = 1'b1;
+              if (m_axi_rready && m_axi_rvalid_reg) begin
+					if(!(filled_entries < m_axi_arlen)) begin
 						fifo_ren = fifo_empty ? 1'b0 : 1'b1;
-						s_axi_rid_next = read_id_reg;
-						s_axi_rlast_next = read_count_reg == 0;
+						m_axi_rid_next = read_id_reg;
+						m_axi_rlast_next = read_count_reg == 0;
 						if(read_burst_reg != 2'b00) begin
 							rresp_next = DECERR;					// The burst type should be 2'b00 for accessing FIFO
 							read_state_next = READ_STATE_IDLE;
@@ -483,17 +483,17 @@ end
 							read_state_next = READ_STATE_BURST;
 						end
 						else begin
-							s_axi_arready_next = 1'b1;
+							m_axi_arready_next = 1'b1;
 							read_state_next = READ_STATE_IDLE;
 						end
 					end
 					else begin
 						fifo_ren = 1'b0;
 						rresp_next = EXOKAY;						// The requested operation cannot be performed as there are not enough entries in FIFO as requested
-						s_axi_rvalid_next = 1'b0;
-						s_axi_rid_next = read_id_reg;
-						s_axi_rlast_next = 1'b0;
-						s_axi_arready_next = 1'b1;
+						m_axi_rvalid_next = 1'b0;
+						m_axi_rid_next = read_id_reg;
+						m_axi_rlast_next = 1'b0;
+						m_axi_arready_next = 1'b1;
 						read_state_next = READ_STATE_IDLE;
 					end	
 				end
@@ -511,10 +511,10 @@ always @(posedge m_axi_rclk) begin
 	if (!m_axi_rrst) begin
 		read_state_reg <= READ_STATE_IDLE;
 
-		s_axi_arready_reg     <= 1'b0;
-		s_axi_rvalid_reg      <= 1'b0;
-		s_axi_rvalid_pipe_reg <= 1'b0;
-		s_axi_rdata_reg 	  <= '0;
+		m_axi_arready_reg     <= 1'b0;
+		m_axi_rvalid_reg      <= 1'b0;
+		m_axi_rvalid_pipe_reg <= 1'b0;
+		m_axi_rdata_reg 	  <= '0;
 		rresp_reg <= rresp_next;
 
 		read_id_reg <= '0;
@@ -522,10 +522,10 @@ always @(posedge m_axi_rclk) begin
 		read_size_reg <= '0;
 		read_burst_reg <= '0;
 
-		s_axi_rid_pipe_reg 	   <= '0;
-		s_axi_rdata_pipe_reg   <= '0;
-		s_axi_rlast_pipe_reg   <= '0;
-		s_axi_rvalid_pipe_reg  <= '0;
+		m_axi_rid_pipe_reg 	   <= '0;
+		m_axi_rdata_pipe_reg   <= '0;
+		m_axi_rlast_pipe_reg   <= '0;
+		m_axi_rvalid_pipe_reg  <= '0;
 	end
 		read_state_reg <= read_state_next;
 
@@ -536,32 +536,32 @@ always @(posedge m_axi_rclk) begin
 		read_burst_reg <= read_burst_next;
 		rresp_reg <= rresp_next;
 
-		s_axi_arready_reg <= s_axi_arready_next;
-		s_axi_rid_reg <= s_axi_rid_next;
-		s_axi_rlast_reg <= s_axi_rlast_next;
-		s_axi_rvalid_reg <= s_axi_rvalid_next;
-		s_axi_rdata_reg <= s_axi_rdata_next;
+		m_axi_arready_reg <= m_axi_arready_next;
+		m_axi_rid_reg <= m_axi_rid_next;
+		m_axi_rlast_reg <= m_axi_rlast_next;
+		m_axi_rvalid_reg <= m_axi_rvalid_next;
+		m_axi_rdata_reg <= m_axi_rdata_next;
 
-		if (!s_axi_rvalid_pipe_reg || s_axi_rready) begin
-			s_axi_rid_pipe_reg <= s_axi_rid_reg;
-			s_axi_rdata_pipe_reg <= s_axi_rdata_reg;
-			s_axi_rlast_pipe_reg <= s_axi_rlast_reg;
-			s_axi_rvalid_pipe_reg <= s_axi_rvalid_reg;
+		if (!m_axi_rvalid_pipe_reg || m_axi_rready) begin
+			m_axi_rid_pipe_reg <= m_axi_rid_reg;
+			m_axi_rdata_pipe_reg <= m_axi_rdata_reg;
+			m_axi_rlast_pipe_reg <= m_axi_rlast_reg;
+			m_axi_rvalid_pipe_reg <= m_axi_rvalid_reg;
 		end
 end
   
   always @(posedge m_axi_rclk) begin
     if(r_handshake_est) begin
-      s_axi_arvalid_reg <= '0;
+      m_axi_arvalid_reg <= '0;
     end
     else begin
-      if(s_axi_arvalid)
-        s_axi_arvalid_reg <= s_axi_arvalid;
+      if(m_axi_arvalid)
+        m_axi_arvalid_reg <= m_axi_arvalid;
     end
   end
 
   always @(posedge m_axi_rclk) begin
-    if(s_axi_rvalid)
+    if(m_axi_rvalid)
       r_handshake_est_reg <= '0;
     else
       r_handshake_est_reg <= r_handshake_est;
