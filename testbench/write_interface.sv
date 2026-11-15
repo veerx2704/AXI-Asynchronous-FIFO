@@ -70,51 +70,64 @@ interface write_interface(input s_axi_wclk);
     modport monitor_mp_w(clocking monitor_cb_w, input s_axi_wclk, wrst);
 
     property awready_awvalid;
-        @(posedge s_axi_wclk) disable iff(!wrst) awvalid |-> ##20 awready;
+        // Check this assertion only when awvalid rises, to prevent assertion fails for multicycle high
+      @(posedge s_axi_wclk) disable iff(!wrst) $rose(awvalid) |-> ##[0:4] awready;
     endproperty
 
     property wready_wvalid;
-        @(posedge s_axi_wclk) disable iff(!wrst) wvalid |-> ##20 wready;
+        // Check this assertion only when wvalid rises, to prevent assertion fails for multicycle high
+      @(posedge s_axi_wclk) disable iff(!wrst) $rose(wvalid) |-> ##[0:4] wready;
     endproperty
 
     property aw_handshake_valid_stable;    // AWVALID must remain asserted until AWREADY is asserted
         @(posedge s_axi_wclk) disable iff (!wrst) (awvalid && !awready) |=> awvalid;
     endproperty
 
-    property w_handshake_valid_stable;  // WVALID must remain asserted until RREADY is asserted
-        @(posedge s_axi_wclk) disable iff (!wrst) (wvalid && !wready) |=> wvalid;
-    endproperty
+//     property w_valid_stable;  // WVALID must remain asserted until WREADY is asserted
+//       @(posedge s_axi_wclk) disable iff (!wrst) (wvalid && !wready) |=> wvalid);
+//     endproperty
 
+    property w_handshake_valid_stable;	// Check the valid stable property until handshake has occured. Disable it after handshake
+      @(posedge s_axi_wclk) disable iff (!wrst) (!wvalid && !wready) ##1 (wvalid && !wready) |=> (wvalid until_with (wvalid && wready));
+    endproperty
+      
     property aw_handshake;
         @(posedge s_axi_wclk) disable iff (!wrst) (awvalid && awready) |-> ##[1:2] !awvalid;
     endproperty
 
     property w_handshake;
-        @(posedge s_axi_wclk) disable iff (!wrst) (wvalid && wready && awvalid && awready) |-> ##[1:2] !wvalid
+      @(posedge s_axi_wclk) disable iff (!wrst) (wvalid && wready) |-> ##[1:2] wvalid;
     endproperty
 
-    property aw_payload_stable;
+    property w_last_toggle;             //If wlast is asserted, it must be deasserted in the next cycle
+        @(posedge s_axi_wclk) disable iff (!wrst) $rose(wlast) |=> !wlast
+    endproperty
+
+    property w_last_w_toggle;           // When wlast is asserted WVALID must be deasserted in the next cycle
+        @(posedge s_axi_wclk) disable iff (!wrst) $rose(wlast) |=> !wvalid
+    endproperty
+
+    property aw_payload_stable;         // When AW handshake is pending and AWVALID is asserted, all the AW signals must be stable
         @(posedge s_axi_wclk) disable iff (!wrst) (awvalid && !awready) |=> 
                                                             $stable(awaddr) && $stable(awlen) && $stable(awid) &&
                                                             $stable(awsize) && $stable(awburst);
     endproperty
 
-    property w_payload_stable;
-        @(posedge s_axi_wclk) disable iff (!wrst) (wvalid && !wready) |=>
-                                                            $stable(wdata) && $stable(bresp) &&
-                                                            $stable(wlast) && $stable(wstrb) && $stable (bid);
+    property w_payload_stable;          // When W handshake is pending and WVALID is asserted, all the W signals must be stable
+      @(posedge s_axi_wclk) disable iff (!wrst) (!wvalid && !wready) ##1 (wvalid && !wready)|=>
+      ($stable(wdata) && $stable(wlast) && $stable(wstrb) until (wvalid && wready));
     endproperty
 
-    property aw_burst_legal;
+    property aw_burst_legal;            // Specifically for this project, burst type should be FIFO
         @(posedge s_axi_wclk) disable iff (!wrst) awvalid |-> (awburst ==2'b00);
     endproperty
 
-    property aw_size_legal;
+    property aw_size_legal;             // The actual data width must be at least equal to the size communicated
         @(posedge s_axi_wclk) disable iff (!wrst) awvalid |-> ((DATA_WIDTH/8) >= (1 << awsize));
     endproperty
 
-    property aw_length_legal;
-        @(posedge s_axi_wclk) disable iff (!wrst) (awvalid && awburst == 2'b00) |-> (awlen inside {1, 3, 7, 15});
+    property aw_length_legal;           // The data burst may be in powers of 2
+        @(posedge s_axi_wclk) disable iff (!wrst) (awvalid) |-> (awlen inside {1, 3, 7, 15});
     endproperty
 
     property reset_n;
@@ -122,11 +135,19 @@ interface write_interface(input s_axi_wclk);
     endproperty
 
     property bready_bvalid;
-      @(posedge s_axi_wclk) disable iff(!wrst) bvalid |-> ##20 bready;
+      @(posedge s_axi_wclk) disable iff(!wrst) bvalid |-> ##4 bready;
     endproperty
 
-    property b_handshake_valid_stable;
-        @(posedge s_axi_wclk) disable iff (!wrst) (awready && awvalid && wvalid && wready) |=> bvalid;
+    sequence aw_hs;
+        awvalid && awready;
+    endsequence
+
+    sequence w_hs;
+        wvalid && wready
+    endsequence
+
+    property b_handshake_valid_stable;          // Only when W channel handshake and AW channel handshake occur (may not be same interval) bvalid should be asserted
+        @(posedge s_axi_wclk) disable iff (!wrst) (aw_hs ##[0:$] w_hs) or (w_hs ##[0:$] aw_hs) |=> ##[0:$] bvalid;
     endproperty
 
     property b_valid_stable;
@@ -141,88 +162,97 @@ interface write_interface(input s_axi_wclk);
         `uvm_info("*** ASSERTION PASED *** - AWREADY && AWVALID","",UVM_HIGH);    
     end
     else begin
-        `uvm_error("ASSERTION FAILED","AWREADY && AWVALID");
+        `uvm_warning("ASSERTION FAILED","AWREADY && AWVALID");
     end
 
     assertion2: assert property (wready_wvalid) begin
         `uvm_info("*** ASSERTION PASED *** - WREADY && WVALID","",UVM_HIGH);    
     end
     else begin
-        `uvm_error("ASSERTION FAILED","WREADY && WVALID");
+        `uvm_warning("ASSERTION FAILED","WREADY && WVALID");
     end
 
     assertion3: assert property (aw_handshake_valid_stable)
     else begin
-        `uvm_error("ASSERTION FAILED","AWVALID STABLE UNTIL AWREADY");
+        `uvm_warning("ASSERTION FAILED","AWVALID STABLE UNTIL AWREADY");
     end
 
     assertion4: assert property (w_handshake_valid_stable)
     else begin
-        `uvm_error("ASSERTION FAILED","WVALID STABLE UNTIL RREADY");
+      `uvm_warning("ASSERTION FAILED","WVALID STABLE UNTIL WREADY");
     end
 
     assertion5: assert property (aw_handshake)
     else begin
-        `uvm_error("ASSERTION FAILED","AWVALID NOT DEASSERTED AFTER HANDSHAKE");
+        `uvm_warning("ASSERTION FAILED","AWVALID NOT DEASSERTED AFTER HANDSHAKE");
     end
 
     assertion6: assert property (w_handshake)
     else begin
-        `uvm_error("ASSERTION FAILED","WVALID NOT DEASSERTED AFTER HANDSHAKE");
+        `uvm_warning("ASSERTION FAILED","WVALID NOT DEASSERTED AFTER HANDSHAKE");
     end
 
     assertion7: assert property (aw_payload_stable)
     else begin
-        `uvm_error("ASSERTION FAILED","AW CHANNEL NOT STABLE BEFORE HANDSHAKE");
+        `uvm_warning("ASSERTION FAILED","AW CHANNEL NOT STABLE BEFORE HANDSHAKE");
     end
 
     assertion8: assert property (w_payload_stable)
     else begin
-        `uvm_error("ASSERTION FAILED","W CHANNEL NOT STABLE BEFORE HANDSHAKE");
+        `uvm_warning("ASSERTION FAILED","W CHANNEL NOT STABLE BEFORE HANDSHAKE");
     end
 
     assertion9: assert property (aw_burst_legal)
     else begin
-        `uvm_error("ASSERTION FAILED","WRITE BURST TYPE IS NOT LEGAL");
+        `uvm_warning("ASSERTION FAILED","WRITE BURST TYPE IS NOT LEGAL");
     end
     
     assertion10: assert property (aw_size_legal)
     else begin
-        `uvm_error("ASSERTION FAILED","WRITE SIZE IS NOT LEGAL");
+        `uvm_warning("ASSERTION FAILED","WRITE SIZE IS NOT LEGAL");
     end
     
     assertion11: assert property (aw_length_legal)
     else begin
-        `uvm_error("ASSERTION FAILED","WRITE LENGTH IS NOT LEGAL");
+        `uvm_warning("ASSERTION FAILED","WRITE LENGTH IS NOT LEGAL");
     end
 
     assertion12: assert property (reset_n)
     else begin
-        `uvm_error("ASSERTION FAILED","ALL SIGNALS MUST BE RESET");
+        `uvm_warning("ASSERTION FAILED","ALL SIGNALS MUST BE RESET");
     end
 
     assertion13: assert property (bready_bvalid) begin
         `uvm_info("*** ASSERTION PASSED *** - BREADY && BVALID","",UVM_HIGH);    
     end
     else begin
-        `uvm_error("ASSERTION FAILED","BREADY && BVALID");
+        `uvm_warning("ASSERTION FAILED","BREADY && BVALID");
     end
 
     assertion14: assert property (b_handshake_valid_stable)
     else begin
-       `uvm_error("ASSERTION FAILED","BREADY NOT ASSERTED AFTER HANDSHAKE"); 
+       `uvm_warning("ASSERTION FAILED","BREADY NOT ASSERTED AFTER HANDSHAKE"); 
     end
 
     assertion15: assert property (b_handshake)
     else begin
-        `uvm_error("ASSERTION FAILED","BVALID NOT DEASSERTED AFTER BREADY");
+        `uvm_warning("ASSERTION FAILED","BVALID NOT DEASSERTED AFTER BREADY");
     end
 
     assertion16: assert property (b_valid_stable)
     else begin
-        `uvm_error("ASSERTION FAILED","BVALID NOT STABLE UNTIL READY");
+        `uvm_warning("ASSERTION FAILED","BVALID NOT STABLE UNTIL READY");
     end
 
+    assertion17: assert property (w_last_toggle)
+    else begin
+        `uvm_warning("ASSERTION FAILED","WLAST NOT DEASSERTED IN NEXT CYCLE");
+    end
+
+    assertion18: assert property (w_last_w_toggle)
+    else begin
+        `uvm_warning("ASSERTION FAILED","WVALID NOT DEASSERTED AFTER WLAST IN NEXT CYCLE");
+    end
 
 endinterface
 

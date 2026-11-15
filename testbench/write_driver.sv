@@ -38,7 +38,7 @@ class write_driver extends uvm_driver#(write_transaction);
         `w_vifd.awprot     <= trans.awprot;
         `w_vifd.awvalid    <= trans.awvalid;
         
-      while (!(v_wintf.awready || v_wintf.awvalid)) begin
+      while ((v_wintf.awready && v_wintf.awvalid) && v_wintf.wrst) begin
                 @(posedge v_wintf.s_axi_wclk);
         $display("\t\t\tAWREADY not asserted yet");
            	  `uvm_info("DRV",
@@ -57,42 +57,56 @@ class write_driver extends uvm_driver#(write_transaction);
     endtask
 
     int wdata_count;
+  	bit w_handshake;
     task write_data(write_transaction trans);
         wdata_count <= '0;
-        repeat (trans.awlen + 1) begin
-            @(posedge v_wintf.s_axi_wclk);
+      	w_handshake <= 0;
+                  @(posedge v_wintf.s_axi_wclk);
+
+                    repeat (trans.awlen + 1) begin
+//             @(posedge v_wintf.s_axi_wclk);
             `uvm_info("DRIVER - WRITE DATA CHANNEL","",UVM_HIGH);
             `w_vifd.wdata <= trans.wdata[wdata_count];
             `w_vifd.wstrb <= trans.wstrb;
-            `w_vifd.wvalid <= 1;
-            if (wdata_count == trans.awlen) begin
-                `w_vifd.wlast <= '1;
-            end
-            else begin
-                `w_vifd.wlast <= '0;
-            end
-          while (!(v_wintf.wready || v_wintf.wvalid)) begin
+            `w_vifd.wvalid <= trans.wvalid;
+          if (v_wintf.wready && v_wintf.wvalid) w_handshake <= 1;
+                      while ((v_wintf.wready && v_wintf.wvalid)) begin
                 @(posedge v_wintf.s_axi_wclk);
-              $display("WREADY not asserted yet");
+            $display("WREADY not asserted yet.\tW_HANDSHAKE=%b\t WDATA_COUNT=%h",w_handshake,wdata_count);
            	  `uvm_info("DRV",
-                        $sformatf("  AWREADY=%0b AWVALID=%0b WREADY=%0b WVALID=%0b",
+                        $sformatf("  AWREADY=%b AWVALID=%b WREADY=%b WVALID=%b",
             v_wintf.awready,
             v_wintf.awvalid,
             v_wintf.wready,
             v_wintf.wvalid),
         UVM_LOW);
             end
+                      if (wdata_count == trans.awlen - 1) begin
+                `w_vifd.wlast <= '1;
+              $display($time,"\tWDATA_COUNT_X = %h\tWLAST = %b",wdata_count,v_wintf.wlast);
+            end
+            else begin
+                `w_vifd.wlast <= '0;
+              $display($time,"\tWDATA_COUNT = %h\tWLAST = %b",wdata_count,v_wintf.wlast);
+            end
+          
             wdata_count++;
-            @(posedge v_wintf.s_axi_wclk);
+        if (v_wintf.wlast == 1) begin
+//           @(posedge v_wintf.s_axi_wclk);
             `w_vifd.wvalid <= '0;
+          	`w_vifd.wlast <= '0;
+          $display($time,"\tWDATA_COUNT_Y = %h\tWLAST = %b",wdata_count,v_wintf.wlast);
         end
+            @(posedge v_wintf.s_axi_wclk);
+        end
+
         `w_vifd.wdata <= 0;    
     endtask
 
     task write_response(write_transaction trans);
         `uvm_info("DRIVER - WRITE RESPONSE CHANNEL","",UVM_HIGH);
         `w_vifd.bready <= 1;
-      while(!(v_wintf.bvalid || v_wintf.bready)) begin
+      while((v_wintf.bvalid && v_wintf.bready)) begin
             @(posedge v_wintf.s_axi_wclk);
           $display("BVALID not asserted yet");
            	  `uvm_info("DRV",
@@ -106,6 +120,7 @@ class write_driver extends uvm_driver#(write_transaction);
             v_wintf.bvalid),
         UVM_LOW);          
         end
+      
     endtask
 
     task write_reset_logic;
@@ -129,6 +144,7 @@ class write_driver extends uvm_driver#(write_transaction);
             if(trans.wrst == 0) begin
                 v_wintf.wrst <= 0;
                 write_reset_logic();
+              repeat(1) @(posedge v_wintf.s_axi_wclk);
             end
             else if (trans.wrst == 1) begin
                 v_wintf.wrst = 1;

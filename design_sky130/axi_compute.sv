@@ -85,6 +85,8 @@ parameter    WRITE_IDLE = 2'b00;
 parameter    WRITE_BURST = 2'b01;
 parameter    WRITE_RESPONSE = 2'b11;
 
+localparam FIFO_DEPTH = 16;
+
 logic [1:0] r_state, r_state_next;
 logic [1:0] w_state, w_state_next;
 
@@ -200,7 +202,6 @@ logic wlast_reg;
 
 logic [DATA_WIDTH - 1:0] rdata_from_fifo;
 
-localparam FIFO_DEPTH = 16;
 
 logic fifo_wen;
 logic fifo_ren;

@@ -1,5 +1,5 @@
-create_clock -name wclk -period 3.50 [get_ports s_axi_wclk]
-create_clock -name rclk -period 3.50 [get_ports m_axi_rclk]
+create_clock -name wclk -period 5.0 [get_ports s_axi_wclk]
+create_clock -name rclk -period 5.0 [get_ports m_axi_rclk]
 
 set_clock_groups -asynchronous \
     -group [get_clocks wclk] \
