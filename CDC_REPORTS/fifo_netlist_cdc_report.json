@@ -5,8 +5,8 @@
   },
   "module": "axi_fifo_wrapper",
   "summary": {
-    "ports": 39,
-    "cells": 2166,
+    "ports": 33,
+    "cells": 2021,
     "flops": 0,
     "crossings": 0,
     "async_crossings": 0,

@@ -63,13 +63,13 @@ class test_case_1 extends base_test;
       r_seq = r_seq_fbel::type_id::create("r_seq");
 
       w_seq.iteration = 1;
-      w_seq.len = 6;
+      w_seq.len = 7;
       w_seq.addr = 16'h2000;
       w_seq.burst = 2'b00;
       w_seq.strb = 4'b1111;
 
       r_seq.iteration = 1;
-      r_seq.len = 6;
+      r_seq.len = 7;
       r_seq.addr = 16'h2000;
       r_seq.burst = 2'b00;
 

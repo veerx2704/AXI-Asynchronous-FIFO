@@ -28,5 +28,6 @@ clean
 
 autoname
 write_verilog -norename -noattr -noexpr results/fifo_netlist.v
+write_json results/fifo_netlist.json
 
 stat -liberty /home/veer_mukadam/open-pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
