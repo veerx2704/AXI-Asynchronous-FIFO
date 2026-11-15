@@ -27,7 +27,7 @@ class read_driver extends uvm_driver #(read_transaction);
     endfunction
 
     task read_address(read_transaction trans);
-        `uvm_info("DRIVER - READ ADDRESS CHANNEL","",UVM_HIGH);
+        `uvm_info("DRIVER - READ ADDRESS CHANNEL","",UVM_NONE);
         `r_vifd.arid <= trans.arid;
         `r_vifd.araddr <= trans.araddr[0];
         `r_vifd.arlen <= trans.arlen;
@@ -37,7 +37,7 @@ class read_driver extends uvm_driver #(read_transaction);
         `r_vifd.arcache <= trans.arcache;
         `r_vifd.arprot <= trans.arprot;
         `r_vifd.arvalid <= trans.arvalid;
-      while (!(v_rintf.arready || v_rintf.arvalid)) begin
+      while ((v_rintf.arready && v_rintf.arvalid)) begin
             @(posedge v_rintf.m_axi_rclk);
         $display("ARREADY not asserted yet");
            	  `uvm_info("DRV",
@@ -51,14 +51,15 @@ class read_driver extends uvm_driver #(read_transaction);
         @(posedge v_rintf.m_axi_rclk);
         `r_vifd.arid <= '0;
         `r_vifd.araddr <= '0;
-        //`r_vifd.arvalid <= '0;
+        `r_vifd.arvalid <= '0;
     endtask
 
     task read_data(read_transaction trans);
         repeat (trans.arlen + 1) begin
             @(posedge v_rintf.m_axi_rclk);
-            `uvm_info("DRIVER - READ DATA CHANNEL","",UVM_HIGH);
-          while (!(v_rintf.rvalid || v_rintf.rready)) begin
+            `uvm_info("DRIVER - READ DATA CHANNEL","",UVM_NONE);
+                      `r_vifd.rready <= trans.rready;
+          while ((v_rintf.rvalid && v_rintf.rready)) begin
                 @(posedge v_rintf.m_axi_rclk);
             $display("RVALID not asserted yet");
            	  `uvm_info("DRV",
@@ -69,7 +70,6 @@ class read_driver extends uvm_driver #(read_transaction);
             v_rintf.rvalid),
         UVM_LOW);
           end
-            `r_vifd.rready <= trans.rready;
             @(posedge v_rintf.m_axi_rclk);
             `r_vifd.rready <= '0;
         end
@@ -98,6 +98,7 @@ class read_driver extends uvm_driver #(read_transaction);
             if(trans.rrst == 0) begin
                 v_rintf.rrst <= '0;
                 read_reset_logic();
+              repeat(2) @(posedge v_rintf.m_axi_rclk);
             end
             else begin
                 v_rintf.rrst <= '1;

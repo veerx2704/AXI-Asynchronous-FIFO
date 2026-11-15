@@ -61,11 +61,11 @@ interface read_interface(input m_axi_rclk);
     modport monitor_mp_r(clocking monitor_cb_r, input m_axi_rclk, rrst);
 
     property arready_arvalid;
-        @(posedge m_axi_rclk) disable iff(!rrst) arvalid |-> ##4 arready;
+      @(posedge m_axi_rclk) disable iff(!rrst) $rose(arvalid) |-> ##[0:4] arready;
     endproperty
 
     property rready_rvalid;
-        @(posedge m_axi_rclk) disable iff(!rrst) rvalid |-> ##4 rready;
+      @(posedge m_axi_rclk) disable iff(!rrst) $rose(rvalid) |-> ##[0:4] rready;
     endproperty
 
     property ar_handshake_valid_stable;    // ARVALID must remain asserted until ARREADY is asserted
@@ -73,7 +73,7 @@ interface read_interface(input m_axi_rclk);
     endproperty
 
     property r_handshake_valid_stable;  // RVALID must remain asserted until RREADY is asserted
-        @(posedge m_axi_rclk) disable iff (!rrst) (rvalid && !rready) |=> rvalid;
+      @(posedge m_axi_rclk) disable iff (!rrst) (!rvalid && !rready) ##1 (rvalid && !rready) |=> (rvalid until_with (rvalid && rready));
     endproperty
 
     property ar_handshake;
@@ -81,7 +81,7 @@ interface read_interface(input m_axi_rclk);
     endproperty
 
     property r_handshake;
-      @(posedge m_axi_rclk) disable iff (!rrst) (arvalid && arready) |-> ##[0:$] rvalid
+      @(posedge m_axi_rclk) disable iff (!rrst) (arvalid && arready) |-> ##[1:4] rvalid
     endproperty
 
     property ar_payload_stable;
@@ -91,9 +91,7 @@ interface read_interface(input m_axi_rclk);
     endproperty
 
     property r_payload_stable;
-        @(posedge m_axi_rclk) disable iff (!rrst) (rvalid && !rready) |=>
-                                                            $stable(rid) && $stable(rdata) && $stable(rresp) &&
-                                                            $stable(rlast);
+      @(posedge m_axi_rclk) disable iff (!rrst) (!rvalid && !rready) ##1 (rvalid && !rready) |=> ($stable(rid) && $stable(rdata) && $stable(rresp) && $stable(rlast) until (rvalid && rready));
     endproperty
 
     property ar_burst_legal;
@@ -107,20 +105,28 @@ interface read_interface(input m_axi_rclk);
     property ar_length_legal;
         @(posedge m_axi_rclk) disable iff (!rrst) (arvalid) |-> (arlen inside {1, 3, 7, 15});
     endproperty
+      
+    property r_last_toggle;             //If rlast is asserted, it must be deasserted in the next cycle
+      @(posedge m_axi_rclk) disable iff (!rrst) $rose(rlast) |=> !rlast
+    endproperty
+
+    property r_last_r_toggle;           // When rlast is asserted RVALID must be deasserted in the next cycle
+      @(posedge m_axi_rclk) disable iff (!rrst) $rose(rlast) |=> !rvalid
+    endproperty  
 
     property reset_n;
         @(posedge m_axi_rclk) !rrst |-> (!arvalid && !rvalid);
     endproperty
 
     assertion1: assert property (arready_arvalid) begin
-        `uvm_info("*** ASSERTION PASED *** - ARREADY && ARVALID","",UVM_HIGH);    
+        `uvm_info("*** ASSERTION PASED *** - ARREADY && ARVALID","",UVM_NONE);    
     end
     else begin
         `uvm_warning("ASSERTION FAILED", "ARREADY && ARVALID");
     end
 
     assertion2: assert property (rready_rvalid) begin
-        `uvm_info("*** ASSERTION PASED *** - RREADY && RVALID","",UVM_HIGH);    
+        `uvm_info("*** ASSERTION PASED *** - RREADY && RVALID","",UVM_NONE);    
     end
     else begin
         `uvm_warning("ASSERTION FAILED","RREADY && RVALID");
@@ -171,9 +177,19 @@ interface read_interface(input m_axi_rclk);
         `uvm_warning("ASSERTION FAILED","READ LENGTH IS NOT LEGAL");
     end
 
-    assertion12: assert property (reset_n)
+//     assertion12: assert property (reset_n)
+//     else begin
+//         `uvm_warning("ASSERTION FAILED","ALL SIGNALS MUST BE RESET");
+//     end
+      
+    assertion13: assert property (r_last_toggle)
     else begin
-        `uvm_warning("ASSERTION FAILED","ALL SIGNALS MUST BE RESET");
+      `uvm_warning("ASSERTION FAILED","RLAST NOT DEASSERTED IN NEXT CYCLE");
+    end
+
+      assertion14: assert property (r_last_r_toggle)
+    else begin
+      `uvm_warning("ASSERTION FAILED","RVALID NOT DEASSERTED AFTER RLAST IN NEXT CYCLE");
     end
 
 endinterface

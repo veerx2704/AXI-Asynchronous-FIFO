@@ -32,14 +32,28 @@ class w_seq_fbel extends uvm_sequence #(write_transaction);
          start_item(trans);
          trans.randomize with {
             wrst == 0;
-         };
+//            @(posedge w_intf.s_axi_wclk);
+         };	
          finish_item(trans);
       end
+     
+     repeat(2) begin
+       trans = write_transaction::type_id::create("trans");
+       start_item(trans);
+       trans.randomize with {
+         	wrst == 1;
+         	awvalid == 0;
+         	wvalid == 0;
+       };
+       finish_item(trans);
+     end
       repeat(iteration) begin
          trans = write_transaction::type_id::create("trans");
          start_item(trans);
          trans.randomize with {
             wrst == 1;
+            awvalid == 1;
+            wvalid == 1;
             awlen == len;
             wstrb == strb;
             awaddr[0] == addr;
@@ -75,11 +89,23 @@ class r_seq_fbel extends uvm_sequence #(read_transaction);
          };
          finish_item(trans);
       end
+      repeat(2) begin
+        trans = read_transaction::type_id::create("trans");
+        start_item(trans);
+        trans.randomize with {
+          rrst == 1;
+          arvalid == 0;
+          rready == 0;
+        };
+        finish_item(trans);
+      end
       repeat(iteration) begin
          trans = read_transaction::type_id::create("trans");
          start_item(trans);
          trans.randomize with {
             rrst == 1;
+            arvalid == 1;
+            rready == 1;
             arlen == len;
             araddr[0] == addr;
             arburst == burst;
@@ -249,10 +275,10 @@ class r_seq_nfb extends uvm_sequence #(read_transaction);
 endclass
 
 
-// //-------------------------------------------------------------//
-// //----------------------- SEQUENCE 1 --------------------------//
-// //-------------------------------------------------------------//
-// verification of fixed burst with equal length of write and read transaction 
+//-------------------------------------------------------------//
+//----------------------- SEQUENCE 1 --------------------------//
+//-------------------------------------------------------------//
+//verification of fixed burst with equal length of write and read transaction 
 // class sequence_1 extends my_sequence;
 //    `uvm_object_utils(sequence_1)
       
@@ -281,23 +307,23 @@ endclass
 //       r_seq.burst = 2'b00;
 
 
-//       `uvm_info("SEQUENCE STARTED - 1","READ AND WRITE WITH SAME BURST LENGTH",UVM_HIGH);
+//       `uvm_info("SEQUENCE STARTED - 1","READ AND WRITE WITH SAME BURST LENGTH",UVM_NONE);
 //       fork
 //          w_seq.start(p_sequencer.w_seqr);
 //          r_seq.start(p_sequencer.r_seqr);
 //       join_none
 //       wait fork;
-//       `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
+//       `uvm_info("SEQUENCE ENDED - 1","",UVM_NONE);
 //    endtask
 
 // endclass
 
 
 
-// // -------------------------------------------------------------//
-// // ----------------------- SEQUENCE 2 --------------------------//
-// // -------------------------------------------------------------//
-// // verification of fixed burst with different length of write and read transaction 
+//-------------------------------------------------------------//
+//----------------------- SEQUENCE 2 --------------------------//
+//-------------------------------------------------------------//
+//verification of fixed burst with different length of write and read transaction 
 // class sequence_2 extends my_sequence;
 //    `uvm_object_utils(sequence_2)
       
@@ -308,31 +334,60 @@ endclass
 //    endfunction
 
 //    task body();
-//       w_seq_fbel w_seq;
-//       r_seq_fbel r_seq;
-
-//       w_seq = w_seq_fbel::type_id::create("w_seq");
-//       r_seq = r_seq_fbel::type_id::create("r_seq");
-
-//       w_seq.iteration = 1;
-//       w_seq.len = 4;
-//       w_seq.addr = 16'h2000;
-//       w_seq.burst = 2'b00;
-//       w_seq.strb = 4'b1111;
-
-//       r_seq.iteration = 1;
-//       r_seq.len = 9;
-//       r_seq.addr = 16'h2000;
-//       r_seq.burst = 2'b00;
-
-
-//       `uvm_info("SEQUENCE STARTED - 2","READ AND WRITE WITH DIFFERENT BURST LENGTH",UVM_HIGH);
+//       write_transaction w_trans;
+//       read_transaction r_trans;
+//       `uvm_info("SEQUENCE STARTED - 2","LESS WRITE BURST MORE READ BURST",UVM_NONE);
 //       fork
-//          w_seq.start(p_sequencer.w_seqr);
-//          r_seq.start(p_sequencer.r_seqr);
+//          begin : WRITE_CHANNEL
+//             repeat(1) begin
+//                w_trans = write_transaction::type_id::create("w_trans");
+//                start_item(w_trans);
+//                w_trans.randomize with {
+//                   wrst == 0;
+//                };
+//                finish_item(w_trans);
+//             end
+//             #30;
+//             repeat(1) begin
+//                w_trans = write_transaction::type_id::create("w_trans");
+//                start_item(w_trans);
+//                w_trans.randomize with {
+//                   wrst == 1;
+//                   awaddr[0] == 16'h2000;
+//                   awlen == 4;
+//                   wstrb == 4'b1111;
+//                   awburst == 2'b00;
+//                   unique{wdata};
+//                };
+//                finish_item(w_trans);
+//             end
+//          end : WRITE_CHANNEL
+
+//          begin : READ_CHANNEL
+//             repeat(1) begin
+//                r_trans = read_transaction::type_id::create("r_trans");
+//                start_item(r_trans);
+//                r_trans.randomize with {
+//                   rrst == 0;
+//                };
+//                finish_item(r_trans);
+//             end
+//             #30;
+//             repeat(1) begin
+//                r_trans = read_transaction::type_id::create("r_trans");
+//                start_item(r_trans);
+//                r_trans.randomize with {
+//                   rrst == 1;
+//                   arlen == 7;
+//                   araddr[0] == 16'h2000;
+//                   arburst == 2'b00;
+//                };
+//                finish_item(r_trans);
+//             end
+//          end : READ_CHANNEL
 //       join_none
 //       wait fork;
-//       `uvm_info("SEQUENCE ENDED - 2","",UVM_HIGH);
+//       `uvm_info("SEQUENCE ENDED - 2","",UVM_NONE);
 //    endtask
 
 // endclass
@@ -350,31 +405,60 @@ endclass
 //    endfunction
 
 //    task body();
-//       w_seq_fbel w_seq;
-//       r_seq_fbel r_seq;
-
-//       w_seq = w_seq_fbel::type_id::create("w_seq");
-//       r_seq = r_seq_fbel::type_id::create("r_seq");
-
-//       w_seq.iteration = 1;
-//       w_seq.len = 9;
-//       w_seq.addr = 16'h2000;
-//       w_seq.burst = 2'b00;
-//       w_seq.strb = 4'b1111;
-
-//       r_seq.iteration = 1;
-//       r_seq.len = 4;
-//       r_seq.addr = 16'h2000;
-//       r_seq.burst = 2'b00;
-
-
-//       `uvm_info("SEQUENCE STARTED - 3","READ AND WRITE WITH DIFFERENT BURST LENGTH",UVM_HIGH);
+//       write_transaction w_trans;
+//       read_transaction r_trans;
+//       `uvm_info("SEQUENCE STARTED - 3","LESS READ BURST MORE WRITE BURST",UVM_NONE);
 //       fork
-//          w_seq.start(p_sequencer.w_seqr);
-//          r_seq.start(p_sequencer.r_seqr);
+//          begin : WRITE_CHANNEL
+//             repeat(1) begin
+//                w_trans = write_transaction::type_id::create("w_trans");
+//                start_item(w_trans);
+//                w_trans.randomize with {
+//                   wrst == 0;
+//                };
+//                finish_item(w_trans);
+//             end
+//             #30;
+//             repeat(1) begin
+//                w_trans = write_transaction::type_id::create("w_trans");
+//                start_item(w_trans);
+//                w_trans.randomize with {
+//                   wrst == 1;
+//                   awaddr[0] == 16'h2000;
+//                   awburst == 2'b00;
+//                   awlen == 9;
+//                   wstrb == 4'b1111;
+//                   unique{wdata};
+//                };
+//                finish_item(w_trans);
+//             end
+//          end : WRITE_CHANNEL
+
+//          begin : READ_CHANNEL
+//             repeat(1) begin
+//                r_trans = read_transaction::type_id::create("r_trans");
+//                start_item(r_trans);
+//                r_trans.randomize with {
+//                   rrst == 0;
+//                };
+//                finish_item(r_trans);
+//             end
+//             #30;
+//             repeat(1) begin
+//                r_trans = read_transaction::type_id::create("r_trans");
+//                start_item(r_trans);
+//                r_trans.randomize with {
+//                   rrst == 1;
+//                   araddr[0] == 16'h2000;
+//                   arlen == 3;
+//                   arburst == 2'b00;
+//                };
+//                finish_item(r_trans);
+//             end
+//          end : READ_CHANNEL
 //       join_none
 //       wait fork;
-//       `uvm_info("SEQUENCE ENDED - 3","",UVM_HIGH);
+//       `uvm_info("SEQUENCE ENDED - 3","",UVM_NONE);
 //    endtask
 
 // endclass
@@ -394,31 +478,31 @@ endclass
 //    endfunction
 
 //    task body();
-//       w_seq_fbel w_seq;
-//       r_seq_fbel r_seq;
-
-//       w_seq = w_seq_fbel::type_id::create("w_seq");
-//       //r_seq = r_seq_fbel::type_id::create("r_seq");
-
-//       w_seq.iteration = 1;
-//       w_seq.len = 18;
-//       w_seq.addr = 16'h2000;
-//       w_seq.burst = 2'b00;
-//       w_seq.strb = 4'b1111;
-
-//       // r_seq.iteration = 1;
-//       // r_seq.len = 6;
-//       // r_seq.addr = 16'h2000;
-//       // r_seq.burst = 2'b00;
-
-
-//       `uvm_info("SEQUENCE STARTED - 4","WRITE-ONLY OPERATION",UVM_HIGH);
-// //      fork
-//          w_seq.start(p_sequencer.w_seqr);
-// //         r_seq.start(p_sequencer.r_seqr);
-// //      join_none
-// //      wait fork;
-//       `uvm_info("SEQUENCE ENDED - 4","",UVM_HIGH);
+//       write_transaction w_trans;
+//       `uvm_info("SEQUENCE STARTED - 4","",UVM_NONE);
+//       repeat(1) begin
+//          w_trans = write_transaction::type_id::create("w_trans");
+//          start_item(w_trans);
+//          w_trans.randomize with {
+//             wrst == 0;
+//          };
+//          finish_item(w_trans);
+//       end
+//       #30;
+//       repeat(1) begin
+//          w_trans = write_transaction::type_id::create("w_trans");
+//          start_item(w_trans);
+//          w_trans.randomize with {
+//             wrst == 1;
+//             awaddr[0] == 16'h2000;
+//             awlen == 20;
+//             awburst == 2'b00;
+//             wstrb == 4'b1111;
+//             unique{wdata};
+//          };
+//          finish_item(w_trans);
+//       end
+//       `uvm_info("SEQUENCE ENDED - 4","",UVM_NONE);
 //    endtask
 
 // endclass
@@ -438,31 +522,29 @@ endclass
 //    endfunction
 
 //    task body();
-//       w_seq_fbel w_seq;
-//       r_seq_fbel r_seq;
-
-// //      w_seq = w_seq_fbel::type_id::create("w_seq");
-//       r_seq = r_seq_fbel::type_id::create("r_seq");
-
-//       // w_seq.iteration = 1;
-//       // w_seq.len = 6;
-//       // w_seq.addr = 16'h2000;
-//       // w_seq.burst = 2'b00;
-//       // w_seq.strb = 4'b1111;
-
-//       r_seq.iteration = 1;
-//       r_seq.len = 6;
-//       r_seq.addr = 16'h2000;
-//       r_seq.burst = 2'b00;
-
-
-//       `uvm_info("SEQUENCE STARTED - 5","READ-ONLY OPERATION",UVM_HIGH);
-//       // fork
-//       //    w_seq.start(p_sequencer.w_seqr);
-//           r_seq.start(p_sequencer.r_seqr);
-//       // join_none
-//       // wait fork;
-//       `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
+//       read_transaction r_trans;
+//       `uvm_info("SEQUENCE STARTED - 5","",UVM_NONE);
+//       repeat(1) begin
+//          r_trans = read_transaction::type_id::create("r_trans");
+//          start_item(r_trans);
+//          r_trans.randomize with {
+//             rrst == 0;
+//          };
+//          finish_item(r_trans);
+//       end
+//       #30;
+//       repeat(1) begin
+//          r_trans = read_transaction::type_id::create("r_trans");
+//          start_item(r_trans);
+//          r_trans.randomize with {
+//             rrst == 1;
+//             arburst == 2'b00;
+//             araddr[0] == 16'h2000;
+//             arlen == 20;
+//          };
+//          finish_item(r_trans);
+//       end
+//       `uvm_info("SEQUENCE ENDED - 5","",UVM_NONE);
 //    endtask
 
 // endclass
@@ -481,29 +563,55 @@ endclass
 //    endfunction
 
 //    task body();
-//       w_seq_inca w_seq;
-//       r_seq_inca r_seq;
-
-//       w_seq = w_seq_inca::type_id::create("w_seq");
-//       r_seq = r_seq_inca::type_id::create("r_seq");
-
-//       w_seq.iteration = 1;
-//       w_seq.len = 6;
-//       w_seq.burst = 2'b00;
-//       w_seq.strb = 4'b1111;
-
-//       r_seq.iteration = 1;
-//       r_seq.len = 6;
-//       r_seq.burst = 2'b00;
-
-
-//       `uvm_info("SEQUENCE STARTED - 6","INCORRECT ADDRESS",UVM_HIGH);
+//       write_transaction w_trans;
+//       read_transaction r_trans;
+//       `uvm_info("SEQUENCE STARTED - 6","INCORRECT ADDRESSING",UVM_NONE);
 //       fork
-//          w_seq.start(p_sequencer.w_seqr);
-//          r_seq.start(p_sequencer.r_seqr);
+//          begin : WRITE_CHANNEL
+//             repeat(1) begin
+//                w_trans = write_transaction::type_id::create("w_trans");
+//                start_item(w_trans);
+//                w_trans.randomize with {
+//                   wrst == 0;
+//                };
+//                finish_item(w_trans);
+//             end
+//             #30;
+//             repeat(18) begin
+//                w_trans = write_transaction::type_id::create("w_trans");
+//                start_item(w_trans);
+//                w_trans.randomize with {
+//                   wrst == 1;
+//                   wstrb == 4'b1111;
+//                   awburst == 2'b00;
+//                   awlen == 1;
+//                };
+//                finish_item(w_trans);
+//             end
+//          end : WRITE_CHANNEL
+//          begin : READ_CHANNEL
+//             repeat(1) begin
+//                r_trans = read_transaction::type_id::create("r_trans");
+//                start_item(r_trans);
+//                r_trans.randomize with {
+//                   rrst == 0;
+//                };
+//                finish_item(r_trans);
+//             end
+//             #30;
+//             repeat(18) begin
+//                r_trans = read_transaction::type_id::create("r_trans");
+//                start_item(r_trans);
+//                r_trans.randomize with {
+//                   rrst == 1;
+//                   arburst == 2'b00;
+//                   arlen == 1;
+//                };
+//                finish_item(r_trans);
+//             end
+//          end : READ_CHANNEL         
 //       join_none
 //       wait fork;
-//       `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
 //    endtask
 
 // endclass
@@ -522,29 +630,55 @@ endclass
 //    endfunction
 
 //    task body();
-//       w_seq_nfb w_seq;
-//       r_seq_nfb r_seq;
-
-//       w_seq = w_seq_nfb::type_id::create("w_seq");
-//       r_seq = r_seq_nfb::type_id::create("r_seq");
-
-//       w_seq.iteration = 1;
-//       w_seq.len = 6;
-//       w_seq.addr = 16'h2000;
-//       w_seq.strb = 4'b1111;
-
-//       r_seq.iteration = 1;
-//       r_seq.len = 6;
-//       r_seq.addr = 16'h2000;
-
-
-//       `uvm_info("SEQUENCE STARTED - 7","NON-FIXED BURST",UVM_HIGH);
+//       write_transaction w_trans;
+//       read_transaction r_trans;
 //       fork
-//          w_seq.start(p_sequencer.w_seqr);
-//          r_seq.start(p_sequencer.r_seqr);
+//          begin : WRITE_CHANNEL
+//             repeat(1) begin
+//                w_trans = write_transaction::type_id::create("w_trans");
+//                start_item(w_trans);
+//                w_trans.randomize with {
+//                   wrst == 0;
+//                };
+//                finish_item(w_trans);
+//             end
+//             #30;
+//             repeat(8) begin
+//                w_trans = write_transaction::type_id::create("w_trans");
+//                start_item(w_trans);
+//                w_trans.randomize with {
+//                   wrst == 1;
+//                   awlen == 1;
+//                   awaddr[0] == 16'h2000;
+//                   wstrb == 4'b1111;
+//                };
+//                finish_item(w_trans);
+//             end
+//          end : WRITE_CHANNEL
+//          begin : READ_CHANNEL
+//             repeat(1) begin
+//                r_trans = read_transaction::type_id::create("r_trans");
+//                start_item(r_trans);
+//                r_trans.randomize with {
+//                   rrst == 0;
+//                };
+//                finish_item(r_trans);
+//             end
+//             #30;
+//             repeat(18) begin
+//                r_trans = read_transaction::type_id::create("r_trans");
+//                start_item(r_trans);
+//                r_trans.randomize with {
+//                   rrst == 1;
+//                   araddr[0] == 16'h2000;
+//                   arlen == 1;
+//                };
+//                finish_item(r_trans);
+//             end
+//          end : READ_CHANNEL          
 //       join_none
 //       wait fork;
-//       `uvm_info("SEQUENCE ENDED - 1","",UVM_HIGH);
+//       `uvm_info("SEQUENCE ENDED - 7", "", UVM_NONE);
 //    endtask
 
 
@@ -565,31 +699,60 @@ endclass
 //    endfunction
 
 //    task body();
-//       w_seq_fbel w_seq;
-//       r_seq_fbel r_seq;
-
-//       w_seq = w_seq_fbel::type_id::create("w_seq");
-//       r_seq = r_seq_fbel::type_id::create("r_seq");
-
-//       w_seq.iteration = 14;
-//       w_seq.len = 1;
-//       w_seq.addr = 16'h2000;
-//       w_seq.burst = 2'b00;
-//       w_seq.strb = 4'b1111;
-
-//       r_seq.iteration = 14;
-//       r_seq.len = 1;
-//       r_seq.addr = 16'h2000;
-//       r_seq.burst = 2'b00;
-
-
-//       `uvm_info("SEQUENCE STARTED - 8","MULTIPLE SINGLE BURSTS",UVM_HIGH);
+//       write_transaction w_trans;
+//       read_transaction r_trans;
+//       `uvm_info("SEQUENCE STARTED - 8","READ AND WRITE WITH SINGULAR BURST LENGTHS BUT DIFFERENT STROBES",UVM_NONE);
 //       fork
-//          w_seq.start(p_sequencer.w_seqr);
-//          r_seq.start(p_sequencer.r_seqr);
+//          begin : WRITE_CHANNEL
+//             repeat(1) begin
+//                w_trans=write_transaction::type_id::create("w_trans");
+//                start_item(w_trans);
+//                w_trans.randomize with { 
+//                                  wrst == 0;
+//                               };
+//                finish_item(w_trans);
+//             end  
+//             #30;
+//             repeat(25) begin
+//                w_trans=write_transaction::type_id::create("w_trans");
+//                start_item(w_trans);
+//                w_trans.randomize with {
+//                                  wrst==1;
+//                                  awburst == 2'b00;
+//                                  awlen==1;
+//                                  awaddr[0] == 16'h2000;
+//                                  wdata.size==(awlen+1);
+//                                  unique{wdata};
+//                               };
+//                finish_item(w_trans);
+//             end   
+//          end : WRITE_CHANNEL
+
+//          begin : READ_CHANNEL
+//             repeat(1) begin
+//                r_trans = read_transaction::type_id::create("r_trans");
+//                start_item(r_trans);
+//                r_trans.randomize with {
+//                   rrst == 0;
+//                };
+//                finish_item(r_trans);
+//             end
+
+//             repeat(25) begin
+//                r_trans = read_transaction::type_id::create("r_trans");
+//                start_item(r_trans);
+//                r_trans.randomize with {
+//                   rrst == 1;
+//                   arlen == 1;
+//                   arburst == 2'b00;
+//                   araddr[0] == 16'h2000;
+//                };
+//                finish_item(r_trans);
+//             end
+//          end : READ_CHANNEL
 //       join_none
 //       wait fork;
-//       `uvm_info("SEQUENCE ENDED - 8","",UVM_HIGH);
+//       `uvm_info("SEQUENCE ENDED - 8","",UVM_NONE);
 //    endtask
    
 

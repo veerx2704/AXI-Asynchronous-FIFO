@@ -38,11 +38,17 @@ constraint burst_type {awburst inside {[0:2'b10]};}
 constraint length_range{awlen inside {[0:15]};}
 constraint strobe_type {wstrb inside {4'b0001, 4'b0011, 4'b0111, 4'b1111};}      //strobe should be coherent with byte selects
 constraint size_val {awsize == 2'b10;}                                                 //fixed 32-bit size
-constraint valid_aw {awvalid == 1'b1;}
-constraint valid_w {wvalid == 1'b1;}
-constraint ready_when {bready == 1;}
-  constraint address {awaddr.size() == 1; awaddr[0] inside {[0:16'hffff]};}
+// constraint valid_aw {awvalid == 1'b1;}
+// constraint valid_w {wvalid == 1'b1;}
+// constraint ready_when {bready == 1;}
+  constraint address {awaddr.size() == 1; awaddr[0] inside {[16'h10ff:16'h20ff]};}
 constraint write_depth {wdata.size() == awlen + 1;}
+  constraint wdata_randomization { 
+    foreach(wdata[i]) {
+      if(wvalid == 1) wdata[i] inside {[32'h2ffffff:32'hbfffffff]};
+      else wdata[i] == 32'h0;
+    }
+  }
 
 `uvm_object_utils_begin(write_transaction)
 

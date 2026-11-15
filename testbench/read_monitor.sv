@@ -23,7 +23,7 @@ class read_monitor extends uvm_monitor#(read_transaction);
             `uvm_fatal("*   (READ) MONITOR CONNECTION FAILED    *","");
         end
         else begin
-            `uvm_info("*    (READ) MONITOR CONNECTED SUCCESSFULLY   *","",UVM_HIGH);
+          `uvm_info("*    (READ) MONITOR CONNECTED SUCCESSFULLY   *","",UVM_NONE);
         end
     endfunction
 
@@ -32,46 +32,50 @@ class read_monitor extends uvm_monitor#(read_transaction);
     endfunction
 
     int rdata_count;
+  	logic ar_handshake;
+  	logic r_handshake;
     task run_phase(uvm_phase phase);
         read_transaction trans;
+//       	ar_handshake = 0;
+//       	r_handshake = 0;
         forever begin
             if (v_rintf.rrst == 1) begin
                 trans = read_transaction::type_id::create("trans",this);
 //                fork
                     begin : READ_ADDRESS_CHANNEL
                         @(posedge v_rintf.m_axi_rclk);
-                      while (!(v_rintf.arvalid || v_rintf.arready )) begin
+                      if (ar_handshake) ar_handshake = 1;
+                      if (v_rintf.arvalid && v_rintf.arready ) ar_handshake = 1;
+                      while (!ar_handshake) begin
                             @(posedge v_rintf.m_axi_rclk);
                         end
                         trans.arvalid = `r_vifm.arvalid;
                         trans.arready = `r_vifm.arready;
                         trans.arlen = `r_vifm.arlen;
                         trans.araddr = new[1];
-                        trans.araddr[0] = `r_vifm.araddr;
+                      trans.araddr[0] = `r_vifm.araddr;
                         trans.rdata = new[trans.arlen + 1];
-                        //sema.put(1);
                     end : READ_ADDRESS_CHANNEL
 
                     begin : READ_DATA_CHANNEL
-                        @(posedge v_rintf.m_axi_rclk);
-                        rdata_count = 0;
+                        rdata_count = 0;@(posedge v_rintf.m_axi_rclk);
                       repeat(trans.arlen+1) begin
-                          while (!(v_rintf.rvalid || v_rintf.rready)) begin
+//                         @(posedge v_rintf.m_axi_rclk);
+                        if (r_handshake) r_handshake = 1;
+                        if (v_rintf.rvalid && v_rintf.rready) r_handshake = 1;
+                        while (!r_handshake) begin
                                 @(posedge v_rintf.m_axi_rclk);
                             end
                             trans.rvalid = `r_vifm.rvalid;
-                            trans.rready = `r_vifm.rready;
-                            trans.rdata[rdata_count] = `r_vifm.rdata;
-                            rdata_count++;
-                            @(posedge v_rintf.m_axi_rclk);
+//                             trans.rready = `r_vifm.rready;
+                        trans.rdata[rdata_count] = `r_vifm.rdata;
+                            rdata_count++;@(posedge v_rintf.m_axi_rclk);
                         end
-                        //sema.put(1);
                     end : READ_DATA_CHANNEL
 
                     begin : MONITOR_WRITE_SCOREBOARD
-                        //sema.get(2);
                         monr2scor.write(trans);
-                        `uvm_info(" (READ) MONITOR PACKETS SENT", $sformatf("%0s",trans.sprint),UVM_HIGH);
+                        `uvm_info(" (READ) MONITOR PACKETS SENT", $sformatf("%0s",trans.sprint),UVM_NONE);
                         `uvm_info(" DATA CHECK: ", $sformatf("\n\n rdata == %p \n rsize == %0d",trans.rdata,trans.rdata.size),UVM_NONE);
                     end : MONITOR_WRITE_SCOREBOARD
                 

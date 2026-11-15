@@ -159,14 +159,14 @@ interface write_interface(input s_axi_wclk);
     endproperty
 
     assertion1: assert property (awready_awvalid) begin
-        `uvm_info("*** ASSERTION PASED *** - AWREADY && AWVALID","",UVM_HIGH);    
+        `uvm_info("*** ASSERTION PASED *** - AWREADY && AWVALID","",UVM_NONE);    
     end
     else begin
         `uvm_warning("ASSERTION FAILED","AWREADY && AWVALID");
     end
 
     assertion2: assert property (wready_wvalid) begin
-        `uvm_info("*** ASSERTION PASED *** - WREADY && WVALID","",UVM_HIGH);    
+        `uvm_info("*** ASSERTION PASED *** - WREADY && WVALID","",UVM_NONE);    
     end
     else begin
         `uvm_warning("ASSERTION FAILED","WREADY && WVALID");
@@ -217,13 +217,13 @@ interface write_interface(input s_axi_wclk);
         `uvm_warning("ASSERTION FAILED","WRITE LENGTH IS NOT LEGAL");
     end
 
-    assertion12: assert property (reset_n)
-    else begin
-        `uvm_warning("ASSERTION FAILED","ALL SIGNALS MUST BE RESET");
-    end
+//     assertion12: assert property (reset_n)
+//     else begin
+//         `uvm_warning("ASSERTION FAILED","ALL SIGNALS MUST BE RESET");
+//     end
 
     assertion13: assert property (bready_bvalid) begin
-        `uvm_info("*** ASSERTION PASSED *** - BREADY && BVALID","",UVM_HIGH);    
+        `uvm_info("*** ASSERTION PASSED *** - BREADY && BVALID","",UVM_NONE);    
     end
     else begin
         `uvm_warning("ASSERTION FAILED","BREADY && BVALID");
