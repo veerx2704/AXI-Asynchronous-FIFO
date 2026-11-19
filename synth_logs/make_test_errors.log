@@ -1,6 +1,0 @@
-6055:%Error: testbench/read_interface.sv:122:33: Duplicate declaration of VARSCOPE 'tb_top.rintf.assertion1.unnamedblk2._local_report_object_': 'assertion1.unnamedblk2._local_report_object_'
-6065:%Error: testbench/read_interface.sv:129:33: Duplicate declaration of VARSCOPE 'tb_top.rintf.assertion2.unnamedblk4._local_report_object_': 'assertion2.unnamedblk4._local_report_object_'
-6074:%Error: testbench/write_interface.sv:162:33: Duplicate declaration of VARSCOPE 'tb_top.wintf.assertion1.unnamedblk2._local_report_object_': 'assertion1.unnamedblk2._local_report_object_'
-6083:%Error: testbench/write_interface.sv:169:33: Duplicate declaration of VARSCOPE 'tb_top.wintf.assertion2.unnamedblk4._local_report_object_': 'assertion2.unnamedblk4._local_report_object_'
-6092:%Error: testbench/write_interface.sv:226:33: Duplicate declaration of VARSCOPE 'tb_top.wintf.assertion13.unnamedblk15._local_report_object_': 'assertion13.unnamedblk15._local_report_object_'
-6101:%Error: Exiting due to 5 error(s)
