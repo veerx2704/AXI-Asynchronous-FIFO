@@ -1,0 +1,209 @@
+%Error: Cannot find file containing module: 'VM_HOME/uvm_pkg.sv'
+        ... See the manual at https://verilator.org/verilator_doc.html?v=5.055 for more assistance.
+        ... Looked in:
+             VM_HOME/VM_HOME/uvm_pkg.sv
+             VM_HOME/VM_HOME/uvm_pkg.sv.v
+             VM_HOME/VM_HOME/uvm_pkg.sv.sv
+             VM_HOME/uvm_pkg.sv
+             VM_HOME/uvm_pkg.sv.v
+             VM_HOME/uvm_pkg.sv.sv
+             obj_dir/VM_HOME/uvm_pkg.sv
+             obj_dir/VM_HOME/uvm_pkg.sv.v
+             obj_dir/VM_HOME/uvm_pkg.sv.sv
+        ... With current working directory '/mnt/c/github_repos/axi_fifo'
+%Error: testbench/environment.sv:5:5: Define or directive not defined: '`uvm_component_utils'
+    5 |     `uvm_component_utils(environment);
+      |     ^~~~~~~~~~~~~~~~~~~~
+%Error: testbench/environment.sv:5:25: syntax error, unexpected '('
+    5 |     `uvm_component_utils(environment);
+      |                         ^
+%Error: testbench/write_interface.sv:162:9: Define or directive not defined: '`uvm_info'
+  162 |         `uvm_info("*** ASSERTION PASED *** - AWREADY && AWVALID","",UVM_NONE);    
+      |         ^~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:162:65: syntax error, unexpected ','
+  162 |         `uvm_info("*** ASSERTION PASED *** - AWREADY && AWVALID","",UVM_NONE);    
+      |                                                                 ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:165:9: Define or directive not defined: '`uvm_warning'
+  165 |         `uvm_warning("ASSERTION FAILED","AWREADY && AWVALID");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:165:40: syntax error, unexpected ','
+  165 |         `uvm_warning("ASSERTION FAILED","AWREADY && AWVALID");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:169:9: Define or directive not defined: '`uvm_info'
+  169 |         `uvm_info("*** ASSERTION PASED *** - WREADY && WVALID","",UVM_NONE);    
+      |         ^~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:169:63: syntax error, unexpected ','
+  169 |         `uvm_info("*** ASSERTION PASED *** - WREADY && WVALID","",UVM_NONE);    
+      |                                                               ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:172:9: Define or directive not defined: '`uvm_warning'
+  172 |         `uvm_warning("ASSERTION FAILED","WREADY && WVALID");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:172:40: syntax error, unexpected ','
+  172 |         `uvm_warning("ASSERTION FAILED","WREADY && WVALID");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:177:9: Define or directive not defined: '`uvm_warning'
+  177 |         `uvm_warning("ASSERTION FAILED","AWVALID STABLE UNTIL AWREADY");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:177:40: syntax error, unexpected ','
+  177 |         `uvm_warning("ASSERTION FAILED","AWVALID STABLE UNTIL AWREADY");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:182:7: Define or directive not defined: '`uvm_warning'
+  182 |       `uvm_warning("ASSERTION FAILED","WVALID STABLE UNTIL WREADY");
+      |       ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:182:38: syntax error, unexpected ','
+  182 |       `uvm_warning("ASSERTION FAILED","WVALID STABLE UNTIL WREADY");
+      |                                      ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:187:9: Define or directive not defined: '`uvm_warning'
+  187 |         `uvm_warning("ASSERTION FAILED","AWVALID NOT DEASSERTED AFTER HANDSHAKE");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:187:40: syntax error, unexpected ','
+  187 |         `uvm_warning("ASSERTION FAILED","AWVALID NOT DEASSERTED AFTER HANDSHAKE");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:192:9: Define or directive not defined: '`uvm_warning'
+  192 |         `uvm_warning("ASSERTION FAILED","WVALID NOT DEASSERTED AFTER HANDSHAKE");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:192:40: syntax error, unexpected ','
+  192 |         `uvm_warning("ASSERTION FAILED","WVALID NOT DEASSERTED AFTER HANDSHAKE");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:197:9: Define or directive not defined: '`uvm_warning'
+  197 |         `uvm_warning("ASSERTION FAILED","AW CHANNEL NOT STABLE BEFORE HANDSHAKE");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:197:40: syntax error, unexpected ','
+  197 |         `uvm_warning("ASSERTION FAILED","AW CHANNEL NOT STABLE BEFORE HANDSHAKE");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:202:9: Define or directive not defined: '`uvm_warning'
+  202 |         `uvm_warning("ASSERTION FAILED","W CHANNEL NOT STABLE BEFORE HANDSHAKE");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:202:40: syntax error, unexpected ','
+  202 |         `uvm_warning("ASSERTION FAILED","W CHANNEL NOT STABLE BEFORE HANDSHAKE");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:207:9: Define or directive not defined: '`uvm_warning'
+  207 |         `uvm_warning("ASSERTION FAILED","WRITE BURST TYPE IS NOT LEGAL");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:207:40: syntax error, unexpected ','
+  207 |         `uvm_warning("ASSERTION FAILED","WRITE BURST TYPE IS NOT LEGAL");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:212:9: Define or directive not defined: '`uvm_warning'
+  212 |         `uvm_warning("ASSERTION FAILED","WRITE SIZE IS NOT LEGAL");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:212:40: syntax error, unexpected ','
+  212 |         `uvm_warning("ASSERTION FAILED","WRITE SIZE IS NOT LEGAL");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:217:9: Define or directive not defined: '`uvm_warning'
+  217 |         `uvm_warning("ASSERTION FAILED","WRITE LENGTH IS NOT LEGAL");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:217:40: syntax error, unexpected ','
+  217 |         `uvm_warning("ASSERTION FAILED","WRITE LENGTH IS NOT LEGAL");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:226:9: Define or directive not defined: '`uvm_info'
+  226 |         `uvm_info("*** ASSERTION PASSED *** - BREADY && BVALID","",UVM_NONE);    
+      |         ^~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:226:64: syntax error, unexpected ','
+  226 |         `uvm_info("*** ASSERTION PASSED *** - BREADY && BVALID","",UVM_NONE);    
+      |                                                                ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:229:9: Define or directive not defined: '`uvm_warning'
+  229 |         `uvm_warning("ASSERTION FAILED","BREADY && BVALID");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:229:40: syntax error, unexpected ','
+  229 |         `uvm_warning("ASSERTION FAILED","BREADY && BVALID");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:234:8: Define or directive not defined: '`uvm_warning'
+  234 |        `uvm_warning("ASSERTION FAILED","BREADY NOT ASSERTED AFTER HANDSHAKE"); 
+      |        ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:234:39: syntax error, unexpected ','
+  234 |        `uvm_warning("ASSERTION FAILED","BREADY NOT ASSERTED AFTER HANDSHAKE"); 
+      |                                       ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:239:9: Define or directive not defined: '`uvm_warning'
+  239 |         `uvm_warning("ASSERTION FAILED","BVALID NOT DEASSERTED AFTER BREADY");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:239:40: syntax error, unexpected ','
+  239 |         `uvm_warning("ASSERTION FAILED","BVALID NOT DEASSERTED AFTER BREADY");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:244:9: Define or directive not defined: '`uvm_warning'
+  244 |         `uvm_warning("ASSERTION FAILED","BVALID NOT STABLE UNTIL READY");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:244:40: syntax error, unexpected ','
+  244 |         `uvm_warning("ASSERTION FAILED","BVALID NOT STABLE UNTIL READY");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:249:9: Define or directive not defined: '`uvm_warning'
+  249 |         `uvm_warning("ASSERTION FAILED","WLAST NOT DEASSERTED IN NEXT CYCLE");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:249:40: syntax error, unexpected ','
+  249 |         `uvm_warning("ASSERTION FAILED","WLAST NOT DEASSERTED IN NEXT CYCLE");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:254:9: Define or directive not defined: '`uvm_warning'
+  254 |         `uvm_warning("ASSERTION FAILED","WVALID NOT DEASSERTED AFTER WLAST IN NEXT CYCLE");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/write_interface.sv:254:40: syntax error, unexpected ','
+  254 |         `uvm_warning("ASSERTION FAILED","WVALID NOT DEASSERTED AFTER WLAST IN NEXT CYCLE");
+      |                                        ^
+        testbench/include_files.sv:2:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/read_interface.sv:122:9: Define or directive not defined: '`uvm_info'
+  122 |         `uvm_info("*** ASSERTION PASED *** - ARREADY && ARVALID","",UVM_NONE);    
+      |         ^~~~~~~~~
+        testbench/include_files.sv:3:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/read_interface.sv:122:65: syntax error, unexpected ','
+  122 |         `uvm_info("*** ASSERTION PASED *** - ARREADY && ARVALID","",UVM_NONE);    
+      |                                                                 ^
+        testbench/include_files.sv:3:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/read_interface.sv:125:9: Define or directive not defined: '`uvm_warning'
+  125 |         `uvm_warning("ASSERTION FAILED", "ARREADY && ARVALID");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:3:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/read_interface.sv:125:40: syntax error, unexpected ','
+  125 |         `uvm_warning("ASSERTION FAILED", "ARREADY && ARVALID");
+      |                                        ^
+        testbench/include_files.sv:3:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/read_interface.sv:129:9: Define or directive not defined: '`uvm_info'
+  129 |         `uvm_info("*** ASSERTION PASED *** - RREADY && RVALID","",UVM_NONE);    
+      |         ^~~~~~~~~
+        testbench/include_files.sv:3:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/read_interface.sv:129:63: syntax error, unexpected ','
+  129 |         `uvm_info("*** ASSERTION PASED *** - RREADY && RVALID","",UVM_NONE);    
+      |                                                               ^
+        testbench/include_files.sv:3:1: ... note: In file included from 'include_files.sv'
+%Error: testbench/read_interface.sv:132:9: Define or directive not defined: '`uvm_warning'
+  132 |         `uvm_warning("ASSERTION FAILED","RREADY && RVALID");
+      |         ^~~~~~~~~~~~
+        testbench/include_files.sv:3:1: ... note: In file included from 'include_files.sv'
+%Error: Exiting due to too many errors encountered; --error-limit=50
+make: *** [Makefile:16: test] Error 1
