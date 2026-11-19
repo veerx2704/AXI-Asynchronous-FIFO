@@ -118,16 +118,16 @@ interface read_interface(input m_axi_rclk);
         @(posedge m_axi_rclk) !rrst |-> (!arvalid && !rvalid);
     endproperty
 
-    assertion1: assert property (arready_arvalid) begin
-        `uvm_info("*** ASSERTION PASED *** - ARREADY && ARVALID","",UVM_NONE);    
-    end
+    assertion1: assert property (arready_arvalid) 
+//        uvm_report_info("*** ASSERTION PASED *** - ARREADY && ARVALID","",UVM_NONE);    
+//    end
     else begin
         `uvm_warning("ASSERTION FAILED", "ARREADY && ARVALID");
     end
 
-    assertion2: assert property (rready_rvalid) begin
-        `uvm_info("*** ASSERTION PASED *** - RREADY && RVALID","",UVM_NONE);    
-    end
+    assertion2: assert property (rready_rvalid)
+//        uvm_report_info("*** ASSERTION PASED *** - RREADY && RVALID","",UVM_NONE);    
+//    end
     else begin
         `uvm_warning("ASSERTION FAILED","RREADY && RVALID");
     end

@@ -20,7 +20,7 @@ test:
   	+define+UVM_NO_DPI \
   	-Wno-fatal \
   	$(UVM_HOME)/uvm_pkg.sv \
-  	testbench/*.sv 
+  	design/*.sv testbench/testbench.sv
 
 	@./obj_dir/Vtb_top
 

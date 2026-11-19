@@ -3,7 +3,7 @@
 
 `define r_vifm v_rintf.monitor_mp_r.monitor_cb_r
 
-class read_monitor extends uvm_monitor#(read_transaction);
+class read_monitor extends uvm_monitor;
     `uvm_component_utils(read_monitor);
 
     virtual read_interface v_rintf;

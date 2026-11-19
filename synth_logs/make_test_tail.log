@@ -1,0 +1,200 @@
+UVM_INFO @ 245000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 245000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO testbench/write_driver.sv(108) @ 245000: uvm_test_top.environment_h.w_agent_h.driver_h [DRIVER - WRITE RESPONSE CHANNEL] 
+(WRITE) Transaction details:
+AWLEN = f	AWADDR = 0	AWSIZE = 2	AWBURST = 0
+AWVALID = 0	AWREADY = 1	AWID = 0
+WDATA = 'h0	AWSTRB = f	WVALID = 0	WREADY = 1
+WLAST = 0
+BRESP = 0
+BVALID = 0	BREADY = 1	BID = 0
+UVM_INFO testbench/write_driver.sv(164) @ 245000: uvm_test_top.environment_h.w_agent_h.driver_h [(WRITE) DRIVER - TRANSACTION NUMBER] 
+UVM_INFO testbench/write_driver.sv(29) @ 245000: uvm_test_top.environment_h.w_agent_h.driver_h [DRIVER - WRITE ADDRESS CHANNEL] 
+UVM_INFO @ 255000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 255000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 255000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 255000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 255000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 255000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO testbench/write_driver.sv(68) @ 255000: uvm_test_top.environment_h.w_agent_h.driver_h [DRIVER - WRITE DATA CHANNEL] 
+UVM_INFO @ 265000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 265000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 265000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 265000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 265000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 265000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO testbench/write_driver.sv(68) @ 265000: uvm_test_top.environment_h.w_agent_h.driver_h [DRIVER - WRITE DATA CHANNEL] 
+UVM_INFO @ 275000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 275000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 275000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 275000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 275000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 275000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO @ 285000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 285000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 285000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 285000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 285000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 285000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO testbench/write_driver.sv(68) @ 285000: uvm_test_top.environment_h.w_agent_h.driver_h [DRIVER - WRITE DATA CHANNEL] 
+UVM_INFO @ 295000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 295000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 295000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 295000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 295000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 295000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO testbench/write_driver.sv(68) @ 295000: uvm_test_top.environment_h.w_agent_h.driver_h [DRIVER - WRITE DATA CHANNEL] 
+UVM_INFO @ 305000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 305000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 305000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 305000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 305000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 305000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO testbench/write_driver.sv(68) @ 305000: uvm_test_top.environment_h.w_agent_h.driver_h [DRIVER - WRITE DATA CHANNEL] 
+UVM_INFO @ 315000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 315000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 315000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 315000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 315000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 315000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO testbench/write_driver.sv(68) @ 315000: uvm_test_top.environment_h.w_agent_h.driver_h [DRIVER - WRITE DATA CHANNEL] 
+UVM_INFO @ 325000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 325000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 325000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 325000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 325000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 325000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO testbench/write_driver.sv(68) @ 325000: uvm_test_top.environment_h.w_agent_h.driver_h [DRIVER - WRITE DATA CHANNEL] 
+UVM_INFO @ 335000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 335000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 335000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 335000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 335000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 335000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO testbench/write_driver.sv(68) @ 335000: uvm_test_top.environment_h.w_agent_h.driver_h [DRIVER - WRITE DATA CHANNEL] 
+UVM_INFO @ 345000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 345000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 345000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 345000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 345000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 345000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO testbench/write_driver.sv(108) @ 345000: uvm_test_top.environment_h.w_agent_h.driver_h [DRIVER - WRITE RESPONSE CHANNEL] 
+(WRITE) Transaction details:
+AWLEN = 7	AWADDR = 0	AWSIZE = 2	AWBURST = 0
+AWVALID = 0	AWREADY = 0	AWID = 0
+WDATA = 'h4000008	AWSTRB = f	WVALID = 0	WREADY = 0
+WLAST = 0
+BRESP = 0
+BVALID = 0	BREADY = 1	BID = 0
+UVM_INFO testbench/write_driver.sv(164) @ 345000: uvm_test_top.environment_h.w_agent_h.driver_h [(WRITE) DRIVER - TRANSACTION NUMBER] 
+UVM_INFO testbench/test.sv(82) @ 345000: uvm_test_top [TEST] Write sequence finished
+UVM_INFO testbench/test.sv(91) @ 345000: uvm_test_top [SEQUENCE ENDED - 1] 
+UVM_INFO @ 355000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 355000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 355000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 355000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 355000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 355000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO @ 365000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 365000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 365000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 365000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 365000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 365000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO @ 375000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 375000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 375000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 375000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 375000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 375000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO @ 385000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 385000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 385000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 385000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 385000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 385000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO @ 395000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 395000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 395000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 395000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 395000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 395000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO @ 405000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 405000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 405000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 405000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 405000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 405000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO @ 415000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 415000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 415000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 415000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 415000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 415000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO @ 425000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 425000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 425000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 425000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 425000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 425000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO @ 435000: reporter [*** ASSERTION PASSED *** - BREADY && BVALID] 
+UVM_INFO @ 435000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 435000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 435000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 435000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 435000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+UVM_INFO @ 445000: reporter [*** ASSERTION PASED *** - WREADY && WVALID] 
+UVM_INFO @ 445000: reporter [*** ASSERTION PASED *** - AWREADY && AWVALID] 
+UVM_INFO @ 445000: reporter [*** ASSERTION PASED *** - RREADY && RVALID] 
+UVM_INFO @ 445000: reporter [*** ASSERTION PASED *** - ARREADY && ARVALID] 
+UVM_INFO testbench/write_monitor.sv(71) @ 445000: uvm_test_top.environment_h.w_agent_h.monitor_h [HANDSHAKE_DEBUG] WVALID && WREADY
+---------------------------------------------------------------
+UVM_INFO testbench/read_subscriber.sv(90) @ 445000: uvm_test_top.environment_h.r_subscriber_h [*    COVERAGE    *] Read Channel Coverage 100 
+---------------------------------------------------------------
+---------------------------------------------------------------
+UVM_INFO testbench/write_subscriber.sv(102) @ 445000: uvm_test_top.environment_h.w_subscriber_h [*    COVERAGE    *] Write Channel Coverage 93 
+---------------------------------------------------------------
+TEST CASE PASSED
+UVM_INFO /home/veer_mukadam/uvm-verilator/src/base/uvm_report_server.svh(1009) @ 445000: reporter [UVM/REPORT/SERVER] 
+--- UVM Report Summary ---
+
+** Report counts by severity
+UVM_INFO :  329
+UVM_WARNING :    4
+UVM_ERROR :    0
+UVM_FATAL :    0
+** Report counts by id
+[ (READ) DRIVER - TRANSACTION NUMBER]     4
+[(WRITE) DRIVER - TRANSACTION NUMBER]     4
+[*    (READ) DRIVER CONNECTED     *]     1
+[*    (READ) MONITOR CONNECTED SUCCESSFULLY   *]     1
+[*    (WRITE) DIRVER CONNECTED    *]     1
+[*    (WRITE) MONITOR CONNECTED SUCCESSFULLY  *]     1
+[*    COVERAGE    *]     2
+[*** ASSERTION PASED *** - ARREADY && ARVALID]    39
+[*** ASSERTION PASED *** - AWREADY && AWVALID]    44
+[*** ASSERTION PASED *** - RREADY && RVALID]    39
+[*** ASSERTION PASED *** - WREADY && WVALID]    44
+[*** ASSERTION PASSED *** - BREADY && BVALID]    43
+[ASSERTION FAILED]     2
+[DRIVER - READ ADDRESS CHANNEL]     1
+[DRIVER - READ DATA CHANNEL]     8
+[DRIVER - WRITE ADDRESS CHANNEL]     3
+[DRIVER - WRITE DATA CHANNEL]    30
+[DRIVER - WRITE RESPONSE CHANNEL]     3
+[HANDSHAKE_DEBUG]    43
+[NO_DPI_USED]     1
+[NO_VISIT_CHECK]     1
+[RNTST]     1
+[SCOREBOARD-PACKETS (READ) RECEIVED]     7
+[SCOREBOARD-PACKETS (WRITE) RECEIVED]     2
+[SEQUENCE ENDED - 1]     1
+[SEQUENCE STARTED - 1]     1
+[TEST]     4
+[UVM/COMP/NAMECHECK]     1
+[UVM/RELNOTES]     1
+
+- /home/veer_mukadam/uvm-verilator/src/base/uvm_test_runner.svh:297: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.055 devel
+- Verilator: $finish at 445ns; walltime 0.473 s; speed 941.428 ns/s
+- Verilator: cpu 0.072 s on 1 threads; allocated 19 MB

@@ -158,16 +158,16 @@ interface write_interface(input s_axi_wclk);
         @(posedge s_axi_wclk) disable iff (!wrst) (bvalid && bready) |-> ##[1:2] !bvalid;
     endproperty
 
-    assertion1: assert property (awready_awvalid) begin
-        `uvm_info("*** ASSERTION PASED *** - AWREADY && AWVALID","",UVM_NONE);    
-    end
+    assertion1: assert property (awready_awvalid)
+//        uvm_report_info("*** ASSERTION PASED *** - AWREADY && AWVALID","",UVM_NONE);    
+//    end
     else begin
         `uvm_warning("ASSERTION FAILED","AWREADY && AWVALID");
     end
 
-    assertion2: assert property (wready_wvalid) begin
-        `uvm_info("*** ASSERTION PASED *** - WREADY && WVALID","",UVM_NONE);    
-    end
+    assertion2: assert property (wready_wvalid)
+//        uvm_report_info("*** ASSERTION PASED *** - WREADY && WVALID","",UVM_NONE);    
+//    end
     else begin
         `uvm_warning("ASSERTION FAILED","WREADY && WVALID");
     end
@@ -223,7 +223,7 @@ interface write_interface(input s_axi_wclk);
 //     end
 
     assertion13: assert property (bready_bvalid) begin
-        `uvm_info("*** ASSERTION PASSED *** - BREADY && BVALID","",UVM_NONE);    
+        uvm_report_info("*** ASSERTION PASSED *** - BREADY && BVALID","",UVM_NONE);    
     end
     else begin
         `uvm_warning("ASSERTION FAILED","BREADY && BVALID");

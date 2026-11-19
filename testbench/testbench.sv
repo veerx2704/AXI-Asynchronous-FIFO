@@ -1,6 +1,6 @@
 import uvm_pkg::*;
 `include "uvm_macros.svh"
-`include "include_files.sv"
+`include "testbench/include_files.sv"
 
 module tb_top;
 bit wclk;
@@ -64,7 +64,8 @@ axi_fifo_wrapper inst(
 );
 
 initial begin
-   uvm_config_db#(virtual axi_interface)::set(null,"*","DATA",intf);
+   uvm_config_db#(virtual write_interface)::set(null,"*","DATA",wintf);
+   uvm_config_db#(virtual read_interface)::set(null,"*","DATA",rintf);
 end
 
 initial begin

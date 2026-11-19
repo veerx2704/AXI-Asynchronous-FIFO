@@ -3,7 +3,7 @@
 
 `define w_vifm v_wintf.monitor_mp_w.monitor_cb_w
 
-class write_monitor extends uvm_monitor#(write_transaction);
+class write_monitor extends uvm_monitor;
     `uvm_component_utils(write_monitor);
 
     virtual write_interface v_wintf;
