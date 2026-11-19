@@ -12,6 +12,18 @@ CONSTR ?=
 
 .PHONY: all cdc_check synthesis tpower clean
 
+test:
+	@verilator --binary -j 0 \
+  	--timing \
+  	--top-module tb_top \
+  	+incdir+$UVM_HOME \
+  	+define+UVM_NO_DPI \
+  	-Wno-fatal \
+  	$UVM_HOME/uvm_pkg.sv \
+  	testbench/*.sv
+
+./obj_dir/Vtb_top
+
 cdc_check: save_config cdc_checker.sh
 	@echo "Beginning CDC Check"
 	@if [[ -n "$(strip $(NETLIST))" ]]; then \
