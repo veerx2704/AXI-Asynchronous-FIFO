@@ -1,3 +1,7 @@
 results/*
 axi_wrapper.sv
 .antigravity/*
+synth_logs/make_test_errors.log
+synth_logs/make_test_tail.log
+synth_logs/verilator_design_lint.log
+synth_logs/git_diff.log
